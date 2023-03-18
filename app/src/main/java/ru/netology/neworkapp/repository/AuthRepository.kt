@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
@@ -63,7 +64,7 @@ class AuthRepositoryImpl @Inject constructor(
         try {
             println("authproblem authrepo try1")
 
-            val response = apiService.registerUser(login, pass, name)
+            val response = withContext(Dispatchers.IO) {apiService.registerUser(login, pass, name)}
             println("authproblem authrepo try2")
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())

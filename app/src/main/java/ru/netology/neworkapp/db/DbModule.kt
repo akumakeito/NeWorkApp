@@ -49,4 +49,10 @@ class DbModule {
         appDb: AppDb
     ) : JobDao = appDb.jobDao()
 
+    @Provides
+    @Singleton
+    fun providesEventDao(
+        appDb: AppDb
+    ) : EventDao = appDb.eventDao()
+
 }
