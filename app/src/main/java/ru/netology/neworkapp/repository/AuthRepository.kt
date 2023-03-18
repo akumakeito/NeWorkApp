@@ -64,7 +64,7 @@ class AuthRepositoryImpl @Inject constructor(
         try {
             println("authproblem authrepo try1")
 
-            val response = withContext(Dispatchers.IO) {apiService.registerUser(login, pass, name)}
+            val response = apiService.registerUser(login, pass, name)
             println("authproblem authrepo try2")
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())

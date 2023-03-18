@@ -25,7 +25,7 @@ data class EventEntity(
     val datetime: String,
     @TypeConverters(InstantConverter::class)
     val published: Instant,
-    val type: EventType,
+    val eventType: EventType,
     @TypeConverters(ListConverter::class)
     val likeOwnerIds: List<Int>,
     val likedByMe: Boolean,
@@ -44,7 +44,7 @@ data class EventEntity(
 
     fun toDto() = Event(
         id, authorId, author, authorAvatar, authorJob, content,
-        datetime, published, type, likeOwnerIds, likedByMe, speakerIds,
+        datetime, published, eventType, likeOwnerIds, likedByMe, speakerIds,
         participantsIds, participatedByMe, attachment, link, ownedByMe, users
     )
 
@@ -53,7 +53,7 @@ data class EventEntity(
             EventEntity(
                 dto.id, dto.authorId, dto.author, dto.authorAvatar, dto.authorJob,
                 dto.content, dto.datetime, dto.published,
-                dto.type, dto.likeOwnerIds, dto.likedByMe,
+                dto.eventType, dto.likeOwnerIds, dto.likedByMe,
                 dto.speakerIds, dto.participantsIds,
                 dto.participatedByMe, dto.attachment,
                 dto.link, dto.ownedByMe, dto.users

@@ -11,7 +11,7 @@ data class Event(
     val content: String,
     val datetime: String,
     val published: Instant = Instant.now(),
-    val type: EventType,
+    val eventType: EventType,
     val likeOwnerIds: List<Int>,
     val likedByMe: Boolean,
     val speakerIds: List<Int>,

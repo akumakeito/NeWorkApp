@@ -7,7 +7,7 @@ import ru.netology.neworkapp.dao.*
 import ru.netology.neworkapp.dto.Event
 import ru.netology.neworkapp.entity.*
 
-@Database(entities = [PostEntity::class, PostRemoteKeyEntity::class, UserEntity::class, JobEntity::class, EventEntity::class], version = 2, exportSchema = false)
+@Database(entities = [PostEntity::class, PostRemoteKeyEntity::class, UserEntity::class, JobEntity::class, EventEntity::class], version = 3, exportSchema = false)
 @TypeConverters(InstantConverter::class, ListConverter::class, UserMapConverter::class)
 abstract class AppDb : RoomDatabase() {
     abstract fun postDao() : PostDao
