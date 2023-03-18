@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_host"
+    app:startDestination="@id/postFragment">
+
+    <fragment
+        android:id="@+id/postFragment"
+        android:name="ru.netology.neworkapp.ui.FeedPostFragment"
+        android:label="PostFragment" >
+        <action
+            android:id="@+id/action_postFragment_to_editPostFragment"
+            app:destination="@id/editPostFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_feedUserFragment"
+            app:destination="@id/feedUserFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_newEventFragment"
+            app:destination="@id/newEventFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editPostFragment"
+        android:name="ru.netology.neworkapp.ui.EditPostFragment"
+        android:label="EditPostFragment" />
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="ru.netology.neworkapp.ui.UserProfileFragment"
+        android:label="UserProfileFragment" >
+        <action
+            android:id="@+id/action_userProfileFragment_to_newJobFragment"
+            app:destination="@id/newJobFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="ru.netology.neworkapp.ui.LoginFragment"
+        android:label="LoginFragment" />
+    <fragment
+        android:id="@+id/feedUserFragment"
+        android:name="ru.netology.neworkapp.ui.FeedUserFragment"
+        android:label="FeedUserFragment" />
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="ru.netology.neworkapp.ui.RegistrationFragment"
+        android:label="RegistrationFragment" >
+        <action
+            android:id="@+id/action_registrationFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newEventFragment"
+        android:name="ru.netology.neworkapp.ui.NewEventFragment"
+        android:label="NewEventFragment" />
+    <fragment
+        android:id="@+id/newPostFragment"
+        android:name="ru.netology.neworkapp.ui.NewPostFragment"
+        android:label="NewPostFragment" >
+        <action
+            android:id="@+id/action_newPostFragment_to_choosePostUsersFragment"
+            app:destination="@id/choosePostUsersFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/choosePostUsersFragment"
+        android:name="ru.netology.nework.ui.ChoosePostUsersFragment"
+        android:label="fragment_choose_user"
+        tools:layout="@layout/fragment_choose_user" />
+    <fragment
+        android:id="@+id/newJobFragment"
+        android:name="ru.netology.neworkapp.ui.NewJobFragment"
+        android:label="fragment_new_job"
+        tools:layout="@layout/fragment_new_job" />
+</navigation>

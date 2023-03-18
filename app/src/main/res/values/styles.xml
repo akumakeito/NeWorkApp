@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Widget.AppTheme.LikeCheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
+        <item name="iconTint">@color/color_like_selector</item>
+    </style>
+
+    <style name="Widget.AppTheme.IconStyle" parent="Widget.MaterialComponents.Button">
+        <item name="iconTint">@color/menu</item>
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="iconPadding">0dp</item>
+        <item name="android:background">@android:color/transparent</item>>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">@dimen/common_spacing</item>
+        <item name="android:paddingRight">@dimen/common_spacing</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="android:minWidth">48dp</item>
+        <item name="android:minHeight">48dp</item>
+    </style>
+
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">@dimen/toolbar_text_size</item>
+        <item name="fontFamily">@font/montserrat_bold</item>
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:layout_marginVertical">@dimen/small_spacing</item>
+    </style>
+</resources>

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:background="@android:color/transparent"
+                android:gravity="start|top"
+                android:hint="@string/enter_text"
+                android:inputType="textMultiLine"
+                android:padding="@dimen/common_spacing"
+                tools:ignore="LabelFor" />
+
+            <EditText
+                android:id="@+id/link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:hint="@string/enter_link"
+                android:inputType="textUri"
+                android:padding="@dimen/small_spacing" />
+
+            <FrameLayout
+                android:id="@+id/media_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/media_height"
+                    android:layout_gravity="center_horizontal"
+                    tools:ignore="ContentDescription" />
+
+                <com.google.android.exoplayer2.ui.PlayerView
+                    android:id="@+id/video_player_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/media_height"
+                    android:layout_gravity="center_horizontal" />
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/removeMedia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:text="@string/remove" />
+            </FrameLayout>
+
+            <ScrollView
+                android:id="@+id/mentioned_users_scroll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_spacing"
+                android:visibility="visible"
+                tools:ignore="NestedScrolling">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mentioned_users"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/mentioned_users_list"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                    app:spanCount="3"
+                    tools:listitem="@layout/card_user_preview" />
+
+
+            </ScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/add_mention_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_user"
+                    android:padding="@dimen/small_spacing"
+                    android:layout_margin="@dimen/small_spacing"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/save"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/save"
+                    android:padding="@dimen/small_spacing"
+                    android:layout_margin="@dimen/small_spacing"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/common_spacing"
+        android:layout_marginEnd="@dimen/common_spacing"
+        app:layout_constraintBottom_toTopOf="@id/buttonPanel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/buttonPanel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pickPhoto"
+            style="@style/Widget.AppTheme.IconStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/common_spacing"
+            app:icon="@drawable/pick_photo_ic" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/takePhoto"
+            style="@style/Widget.AppTheme.IconStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/common_spacing"
+            app:icon="@drawable/take_photo_ic" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pickVideo"
+            style="@style/Widget.AppTheme.IconStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/common_spacing"
+            app:icon="@drawable/pick_video_ic" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pickAudio"
+            style="@style/Widget.AppTheme.IconStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/common_spacing"
+            app:icon="@drawable/pick_audio_ic" />
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="mentioned_users_list">64dp</dimen>
+    <dimen name="small_avatar">24dp</dimen>
+    <dimen name="small_author_name_text_size">14sp</dimen>
+    <dimen name="singleline_edit_text_height">40sp</dimen>
+</resources>
