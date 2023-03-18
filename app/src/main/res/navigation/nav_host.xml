@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_postFragment_to_newEventFragment"
             app:destination="@id/newEventFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_feedEventFragment"
+            app:destination="@id/feedEventFragment" />
     </fragment>
     <fragment
         android:id="@+id/editPostFragment"
@@ -62,7 +65,11 @@
     <fragment
         android:id="@+id/newEventFragment"
         android:name="ru.netology.neworkapp.ui.NewEventFragment"
-        android:label="NewEventFragment" />
+        android:label="NewEventFragment" >
+        <action
+            android:id="@+id/action_newEventFragment_to_chooseEventUsersFragment"
+            app:destination="@id/chooseEventUsersFragment" />
+    </fragment>
     <fragment
         android:id="@+id/newPostFragment"
         android:name="ru.netology.neworkapp.ui.NewPostFragment"
@@ -81,4 +88,13 @@
         android:name="ru.netology.neworkapp.ui.NewJobFragment"
         android:label="fragment_new_job"
         tools:layout="@layout/fragment_new_job" />
+    <fragment
+        android:id="@+id/chooseEventUsersFragment"
+        android:name="ru.netology.neworkapp.ui.ChooseEventUsersFragment"
+        android:label="ChooseEventUsersFragment" />
+    <fragment
+        android:id="@+id/feedEventFragment"
+        android:name="ru.netology.neworkapp.ui.FeedEventFragment"
+        android:label="fragment_feed_events"
+        tools:layout="@layout/fragment_feed_events" />
 </navigation>

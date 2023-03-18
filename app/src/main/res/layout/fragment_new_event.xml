@@ -1,6 +1,238 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ScrollView
+        android:id="@+id/add_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/scroll_view_dimen">
+
+        <EditText
+            android:id="@+id/edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/common_spacing"
+            android:autoLink="web"
+            android:autofillHints="no"
+            android:gravity="start|top"
+            android:hint="@string/enter_text"
+            android:inputType="textMultiLine"
+            android:linksClickable="true"
+            tools:ignore="TouchTargetSizeCheck" />
+
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/media_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/media_height"
+            android:layout_gravity="center_horizontal" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/remove_media"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:text="@string/remove" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/add_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/button_panel"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <RadioButton
+            android:id="@+id/online"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/small_spacing"
+            android:background="@color/primary_dark"
+            android:checked="false"
+            android:text="@string/event_type_online"
+            app:useMaterialThemeColors="false" />
+
+
+        <EditText
+            android:id="@+id/add_date_time"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/avatar_size"
+            android:layout_marginStart="@dimen/small_spacing"
+            android:layout_marginEnd="@dimen/small_spacing"
+            android:layout_marginBottom="@dimen/small_spacing"
+            android:autofillHints="@string/add_date_time"
+            android:focusable="false"
+            android:hint="@string/date"
+            android:inputType="none"
+            android:padding="@dimen/small_spacing"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            tools:ignore="TextFields" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/small_spacing"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/small_spacing"
+            android:paddingEnd="@dimen/small_spacing">
+
+            <EditText
+                android:id="@+id/link"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/avatar_size"
+                android:layout_marginEnd="0dp"
+                android:autofillHints="no"
+                android:background="@color/primary_dark"
+                android:hint="@string/enter_link"
+                android:inputType="textPostalAddress"
+                android:paddingStart="@dimen/common_spacing"
+                android:paddingEnd="@dimen/small_spacing"
+                app:layout_constraintEnd_toStartOf="@id/add_link"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/add_link"
+                android:layout_width="@dimen/common_spacing"
+                android:layout_height="@dimen/avatar_size"
+                android:layout_gravity="bottom"
+                android:background="@color/primary_dark"
+                android:text="@string/enter_link"
+                android:textColor="@color/white"
+                app:icon="@drawable/link_ic"
+                app:iconTint="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/link"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="RelativeOverlap,RtlSymmetry" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:id="@+id/scroll_speakers"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/scroll_view_dimen"
+            android:layout_margin="@dimen/small_spacing"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/speaker_ids"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/scroll_view_dimen"
+                android:layout_gravity="bottom"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                app:spanCount="3"
+                tools:listitem="@layout/card_user_preview" />
+
+        </ScrollView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/add_speakers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="@dimen/small_spacing"
+            android:layout_marginTop="@dimen/scroll_view_dimen"
+            android:layout_marginBottom="@dimen/small_spacing"
+            android:background="@drawable/btn_background_rounded"
+            android:checkable="true"
+            android:text="@string/add_speakers"
+            android:textColor="@color/white"
+            app:icon="@drawable/speaker_ic"
+            app:iconTint="@color/white"
+            tools:ignore="RtlSymmetry" />
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/common_spacing"
+        android:layout_marginBottom="@dimen/small_spacing"
+        android:backgroundTint="@color/accent"
+        android:clickable="true"
+        android:contentDescription="@string/add_post"
+        android:focusable="true"
+        app:layout_constraintBottom_toTopOf="@id/button_panel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ok_ic"
+        app:tint="@color/white" />
+
+    <LinearLayout
+        android:id="@+id/button_panel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_spacing"
+        android:layout_marginEnd="@dimen/small_spacing"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pick_photo"
+            style="@style/Widget.AppTheme.IconStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/small_spacing"
+            android:padding="@dimen/small_spacing"
+            app:icon="@drawable/pick_photo_ic"
+            app:iconSize="@dimen/icon_size"
+            app:iconTint="@color/primary" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/take_photo"
+            style="@style/Widget.AppTheme.IconStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/small_spacing"
+            android:padding="@dimen/small_spacing"
+            app:icon="@drawable/take_photo_ic"
+            app:iconSize="@dimen/icon_size"
+            app:iconTint="@color/primary" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pick_video"
+            style="@style/Widget.AppTheme.IconStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/small_spacing"
+            android:padding="@dimen/small_spacing"
+            app:icon="@drawable/pick_video_ic"
+            app:iconSize="@dimen/icon_size"
+            app:iconTint="@color/primary" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pick_audio"
+            style="@style/Widget.AppTheme.IconStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/small_spacing"
+            android:padding="@dimen/small_spacing"
+            app:icon="@drawable/audiotrack_ic"
+            app:iconSize="@dimen/icon_size"
+            app:iconTint="@color/primary" />
+
+    </LinearLayout>
+
+</LinearLayout>

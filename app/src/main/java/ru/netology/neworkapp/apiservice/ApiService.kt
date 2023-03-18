@@ -85,17 +85,41 @@ interface ApiService {
 
 
     //events
-    @GET("events")
-    suspend fun getEvents() : Response<List<Event>>
+    @GET("events/latest")
+    suspend fun getLatestEvents(@Query("count") count: Int): Response<List<Event>>
+
+    @GET("events/{id}/before")
+    suspend fun getBeforeEvents(
+        @Path("id") id: Long,
+        @Query("count") count: Int,
+    ): Response<List<Event>>
+
+    @GET("events/{id}/after")
+    suspend fun getAfterEvents(
+        @Path("id") id: Long,
+        @Query("count") count: Int,
+    ): Response<List<Event>>
+
+    @DELETE("events/{id}")
+    suspend fun removeEventById(@Path("id") id: Int): Response<Unit>
+
+    @POST("events/{id}/likes")
+    suspend fun likeEventById(@Path("id") id: Int): Response<Event>
+
+    @DELETE("events/{id}/likes")
+    suspend fun dislikeEventById(@Path("id") id: Int): Response<Event>
+
+    @POST("events/{id}/participants")
+    suspend fun participateInEvent(@Path("id") id: Int): Response<Event>
+
+    @DELETE("events/{id}/participants")
+    suspend fun quitParticipateInEvent(@Path("id") id: Int): Response<Event>
 
     @POST("events")
-    suspend fun saveEvent(@Body event: Event) : Response<Event>
+    suspend fun saveEvent(@Body event: EventCreateRequest): Response<Event>
 
     @GET("events/{event_id}")
-    suspend fun getEventById(@Path("event_id") eventId : Int) : Response<Event>
-
-    @DELETE("events/{event_id}")
-    suspend fun removeEventById(@Path("event_id") eventId : Int) : Response<Unit>
+    suspend fun getEventById(@Path("event_id") id: Int): Response<Event>
 
 
     //media

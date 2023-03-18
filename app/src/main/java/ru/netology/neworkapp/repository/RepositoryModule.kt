@@ -26,4 +26,8 @@ interface RepositoryModule {
     @Binds
     @Singleton
     fun bindsJobRepository(jobRepositoryImpl: JobRepositoryImpl): JobRepository
+
+    @Binds
+    @Singleton
+    fun bindsEventRepository(eventRepositoryImpl: EventRepositoryImpl): EventRepository
 }

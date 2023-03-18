@@ -52,4 +52,8 @@
     <string name="you_have_not_job_yet">You have not job yet</string>
     <string name="skip_edit_question">Confirm exit</string>
     <string name="exit">Exit</string>
+    <string name="event_type_online">Online</string>
+    <string name="date">Date</string>
+    <string name="add_speakers">Add speakers</string>
+    <string name="create_event">Create event</string>
 </resources>

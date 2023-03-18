@@ -4,4 +4,5 @@
     <dimen name="small_avatar">24dp</dimen>
     <dimen name="small_author_name_text_size">14sp</dimen>
     <dimen name="singleline_edit_text_height">40sp</dimen>
+    <dimen name="scroll_view_dimen">200dp</dimen>
 </resources>

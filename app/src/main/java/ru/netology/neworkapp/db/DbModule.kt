@@ -55,4 +55,10 @@ class DbModule {
         appDb: AppDb
     ) : EventDao = appDb.eventDao()
 
+    @Provides
+    @Singleton
+    fun providesEventRemoteKeyDao(
+        appDb: AppDb
+    ) : EventRemoteKeyDao = appDb.eventRemoteKeyDao()
+
 }
