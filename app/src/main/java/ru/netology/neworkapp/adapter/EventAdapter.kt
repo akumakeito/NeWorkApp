@@ -23,10 +23,12 @@ import ru.netology.neworkapp.util.loadImage
 
 interface OnEventInteractionListener {
     fun onLike(event: Event) {}
-    fun onParticipateInEvent(event: Event) {}
+//    fun onParticipateInEvent(event: Event) {}
     fun onEdit(event: Event) {}
     fun onRemove(event: Event) {}
-    fun loadEventUsersList(event: Event) {}
+
+    fun onLinkClick(url: String) {}
+//    fun loadEventUsersList(event: Event) {}
 }
 
 class EventAdapter(
@@ -55,11 +57,10 @@ class EventViewHolder(
     var videoPreview: MediaItem? = null
     val videoPlayIcon: ImageView = binding.videoButton
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     fun bind(event: Event) {
         parentView.tag = this
         binding.apply {
-            when (event.eventType) {
+            when (event.type) {
                 EventType.OFFLINE -> type.setImageResource(R.drawable.offline_ic)
                 EventType.ONLINE -> type.setImageResource(R.drawable.online_ic)
             }
@@ -104,36 +105,17 @@ class EventViewHolder(
             author.text = event.author
             published.text = Utils.formatMillisToDateTimeString(event.published.toEpochMilli())
             dateTime.text = Utils.convertDateAndTime(event.datetime)
-            val linkText = if (event.link != null) {
-                "\n" + event.link
-            } else {
-                ""
-            }
-            val eventText = event.content + linkText
-            content.text = eventText
+            content.text = event.content
             like.isChecked = event.likedByMe
             like.text = "${event.likeOwnerIds.size}"
-            participate.isChecked = event.participatedByMe
-            participate.text = "${event.participantsIds.size}"
-            menu.visibility = if (event.ownedByMe) View.VISIBLE else View.INVISIBLE
-            speakers.text = "${event.speakerIds.size}"
+            link.text = event.link
 
-            if (event.users.isEmpty()) {
-                eventUsersGroup.visibility = View.GONE
-            } else {
-                val firstUserAvatarUrl = event.users.values.first().avatarUrl
-                if (firstUserAvatarUrl != null) {
-                    avatar.loadCircleCrop(firstUserAvatarUrl)
-                }
-                eventUsersGroup.visibility = View.VISIBLE
-                if (event.users.size >= 2) {
-                    val likedAndMentionedUsersText =
-                        "${event.users.values.first().name} and ${event.users.size - 1} users"
-                    eventUsers.text = likedAndMentionedUsersText
-                } else if (event.users.size == 1) {
-                    eventUsers.text = event.users.values.first().name
-                }
+            link.setOnClickListener {
+                listener.onLinkClick(link.text.toString())
             }
+
+            menu.visibility = if (event.ownedByMe) View.VISIBLE else View.GONE
+
 
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
@@ -157,13 +139,6 @@ class EventViewHolder(
 
             like.setOnClickListener {
                 listener.onLike(event)
-            }
-            participate.setOnClickListener {
-                listener.onParticipateInEvent(event)
-            }
-
-            eventUsersGroup.setOnClickListener {
-                listener.loadEventUsersList(event)
             }
         }
     }

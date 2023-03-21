@@ -20,6 +20,6 @@ class AppAuthModule {
 
     @Provides
     @Singleton
-    fun provideAppAuth(prefs: SharedPreferences, apiService: ApiService): AppAuth =
-        AppAuth(prefs, apiService)
+    fun provideAppAuth(prefs: SharedPreferences): AppAuth =
+        AppAuth(prefs)
 }

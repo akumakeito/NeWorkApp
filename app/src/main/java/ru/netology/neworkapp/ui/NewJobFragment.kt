@@ -8,13 +8,13 @@ import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.netology.neworkapp.R
 import ru.netology.neworkapp.databinding.FragmentNewJobBinding
-import ru.netology.neworkapp.dto.Job
 import ru.netology.neworkapp.util.Utils
 import ru.netology.neworkapp.viewmodel.UserProfileViewModel
 
@@ -22,7 +22,7 @@ import ru.netology.neworkapp.viewmodel.UserProfileViewModel
 @AndroidEntryPoint
 class NewJobFragment : Fragment() {
     private val viewModel: UserProfileViewModel by activityViewModels()
-    private val navController = findNavController()
+    private lateinit var navController : NavController
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,7 +30,7 @@ class NewJobFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         val binding = FragmentNewJobBinding.inflate(inflater, container, false)
-
+        navController = findNavController()
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.add_new_job)
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
@@ -44,13 +44,13 @@ class NewJobFragment : Fragment() {
         binding.addStartDate.setOnClickListener {
             Utils.selectDateDialog(binding.addStartDate, requireContext())
             val startDate = binding.addStartDate.text.toString()
-            viewModel.addStartDate(startDate)
+            viewModel.updateStartDate(startDate)
         }
 
         binding.addEndDate.setOnClickListener {
             Utils.selectDateDialog(binding.addEndDate, requireContext())
             val endDate = binding.addEndDate.text.toString()
-            viewModel.addEndDate(endDate)
+            viewModel.updateEndDate(endDate)
         }
 
         binding.save.setOnClickListener {
@@ -62,10 +62,10 @@ class NewJobFragment : Fragment() {
                     Snackbar.LENGTH_SHORT
                 ).show()
             } else {
-                val id = if (viewModel.newJob.value!!.id == 0) {
+                val id = if (viewModel.editedJob.value!!.id == 0) {
                     0
                 } else {
-                    viewModel.newJob.value!!.id
+                    viewModel.editedJob.value!!.id
                 }
                 val name = binding.company.text.trim().toString()
                 val position = binding.position.text.trim().toString()
@@ -80,8 +80,12 @@ class NewJobFragment : Fragment() {
                 } else {
                     binding.link.text.trim().toString()
                 }
-                val job = Job(id, name, position, start, finish, link)
-                viewModel.saveJob(job)
+                viewModel.changeJobCompany(name)
+                viewModel.changeJobPosition(position)
+                viewModel.updateStartDate(start)
+                viewModel.changeJobLink(link)
+                viewModel.updateEndDate(finish)
+                viewModel.saveJob()
                 navController.navigateUp()
             }
         }

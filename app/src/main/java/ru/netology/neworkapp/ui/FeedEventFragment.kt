@@ -1,12 +1,10 @@
 package ru.netology.neworkapp.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -18,6 +16,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import ru.netology.neworkapp.R
 import ru.netology.neworkapp.adapter.EventAdapter
@@ -25,30 +24,30 @@ import ru.netology.neworkapp.adapter.EventRecyclerView
 import ru.netology.neworkapp.adapter.OnEventInteractionListener
 import ru.netology.neworkapp.adapter.PagingLoadStateAdapter
 import ru.netology.neworkapp.databinding.FragmentFeedEventsBinding
-import ru.netology.neworkapp.dto.AttachmentType
 import ru.netology.neworkapp.dto.Event
+import ru.netology.neworkapp.dto.EventRequest
 import ru.netology.neworkapp.ui.FeedPostFragment.Companion.intArg
-import ru.netology.neworkapp.ui.UserProfileFragment.Companion.textArg
 import ru.netology.neworkapp.util.IntArg
 import ru.netology.neworkapp.viewmodel.AuthViewModel
 import ru.netology.neworkapp.viewmodel.EventViewModel
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class FeedEventFragment : Fragment() {
     private val authViewModel: AuthViewModel by viewModels()
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val viewModel: EventViewModel by activityViewModels()
-    lateinit var mediaRecyclerView: EventRecyclerView
+    private lateinit var mediaRecyclerView: EventRecyclerView
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        super.onCreateView(inflater, container, savedInstanceState)
         val binding = FragmentFeedEventsBinding.inflate(inflater, container, false)
 
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.events)
-
 
         mediaRecyclerView = binding.list
 
@@ -66,41 +65,17 @@ class FeedEventFragment : Fragment() {
             }
 
             override fun onEdit(event: Event) {
-                findNavController().navigate(
-                    R.id.newEventFragment,
-                    Bundle().apply { intArg = event.id })
+                viewModel.editEvent(event)
+                val text = event.content
+                val bundle = Bundle()
+                bundle.putString("editedText", text)
+                findNavController().navigate(R.id.action_feedEventFragment_to_editEventFragment, bundle)
             }
 
             override fun onRemove(event: Event) {
                 viewModel.removeEventById(event.id)
             }
 
-            override fun loadEventUsersList(event: Event) {
-                if (authViewModel.authenticated) {
-                    if (event.speakerIds.isEmpty()) {
-                        return
-                    } else {
-                        viewModel.getEventUsersList(event)
-                        findNavController().navigate(R.id.choosePostUsersFragment)
-                    }
-                } else {
-                    Snackbar.make(binding.root, R.string.login_to_continue, Snackbar.LENGTH_SHORT)
-                        .show()
-                    findNavController().navigate(R.id.loginFragment)
-                }
-            }
-
-            override fun onParticipateInEvent(event: Event) {
-                if (authViewModel.authenticated) {
-                    if (!event.participatedByMe) viewModel.participateInEvent(event.id) else viewModel.quitParticipateInEvent(
-                        event.id
-                    )
-                } else {
-                    Snackbar.make(binding.root, R.string.login_to_continue, Snackbar.LENGTH_SHORT)
-                        .show()
-                    findNavController().navigate(R.id.loginFragment)
-                }
-            }
 
         })
 
@@ -119,21 +94,14 @@ class FeedEventFragment : Fragment() {
             }),
         )
 
-        binding.list.addItemDecoration(
-            DividerItemDecoration(
-                requireContext(),
-                DividerItemDecoration.VERTICAL
-            )
-        )
+
+
 
         viewModel.dataState.observe(viewLifecycleOwner) { state ->
             binding.progress.isVisible = state.loading
             if (state.error) {
-                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_INDEFINITE)
-                    .show()
-            }
-            if (state.loading) {
-                Snackbar.make(binding.root, R.string.server_error_message, Snackbar.LENGTH_SHORT)
+                Snackbar.make(binding.root, R.string.loading_error, Snackbar.LENGTH_SHORT)
+                    .setAction(R.string.retry, { adapter.refresh() })
                     .show()
             }
         }
@@ -151,11 +119,16 @@ class FeedEventFragment : Fragment() {
             }
         })
 
-        adapter.loadStateFlow
+
+
         lifecycleScope.launchWhenCreated {
             adapter.loadStateFlow.collectLatest {
                 binding.swipeRefresh.isRefreshing = it.refresh is LoadState.Loading
             }
+        }
+
+        binding.swipeRefresh.setOnRefreshListener {
+            adapter.refresh()
         }
 
         return binding.root

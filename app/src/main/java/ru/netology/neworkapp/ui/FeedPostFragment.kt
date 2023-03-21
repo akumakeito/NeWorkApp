@@ -54,10 +54,11 @@ class FeedPostFragment : Fragment() {
 
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.posts)
 
-        Log.d("auth", "id ${authViewModel.authState.value?.id} token  ${authViewModel.authState.value?.id}  authenticated ${authViewModel.authenticated}")
+        Log.d(
+            "auth",
+            "id ${authViewModel.authState.value?.id} token  ${authViewModel.authState.value?.id}  authenticated ${authViewModel.authenticated}"
+        )
 
-
-        binding.postsList
 
         navController = findNavController()
 
@@ -83,6 +84,7 @@ class FeedPostFragment : Fragment() {
             }
 
             override fun onLinkClick(url: String) {
+                println("url ${url}")
                 CustomTabsIntent.Builder()
                     .setShowTitle(true)
                     .build()
@@ -107,31 +109,16 @@ class FeedPostFragment : Fragment() {
             }
 
             override fun onEdit(post: Post) {
-                navController.navigate(R.id.action_postFragment_to_editPostFragment)
-                Bundle().apply { intArg = post.id }
+                viewModel.editPost(post)
+                val text = post.content
+                val bundle = Bundle()
+                bundle.putString("editedText", text)
+                findNavController().navigate(R.id.action_postFragment_to_editPostFragment, bundle)
             }
 
             override fun onRemove(post: Post) {
                 viewModel.removePostById(post.id)
             }
-
-            override fun showMentionedUsers(post: Post) {
-                if (authViewModel.authenticated) {
-                    if (post.users.values.isEmpty()) {
-                        return
-                    } else {
-                        viewModel.getLikedAndMentionedUserList(post)
-                        navController.navigate(R.id.action_postFragment_to_feedUserFragment)
-                    }
-                } else {
-                    Snackbar.make(binding.root, R.string.login_to_continue, Snackbar.LENGTH_SHORT)
-                        .setAction(
-                            R.string.login,
-                            { navController.navigate(R.id.action_postFragment_to_loginFragment) })
-                        .show()
-                }
-            }
-
         })
 
         binding.postsList.adapter = adapter.withLoadStateHeaderAndFooter(
@@ -151,12 +138,12 @@ class FeedPostFragment : Fragment() {
             })
         )
 
-            binding.postsList.addItemDecoration(
-                DividerItemDecoration(
-                    requireContext(),
-                    DividerItemDecoration.VERTICAL
-                )
+        binding.postsList.addItemDecoration(
+            DividerItemDecoration(
+                requireContext(),
+                DividerItemDecoration.VERTICAL
             )
+        )
 
         viewModel.dataState.observe(viewLifecycleOwner) { state ->
             binding.progress.isVisible = state.loading
@@ -165,24 +152,37 @@ class FeedPostFragment : Fragment() {
                     .setAction(R.string.retry, { adapter.refresh() })
                     .show()
             }
-            if (state.loading) {
-
-            }
         }
 
-        binding.swipeRefresh.setOnRefreshListener {
-            adapter.refresh()
-        }
+//        binding.swipeRefresh.setOnRefreshListener {
+//            adapter.refresh()
+//        }
 
         lifecycleScope.launchWhenCreated {
             viewModel.data.collectLatest { adapter.submitData(it) }
 
-                adapter.loadStateFlow.collectLatest { state ->
-                    binding.swipeRefresh.isRefreshing =
-                        state.refresh is LoadState.Loading
-                }
+            adapter.loadStateFlow.collectLatest { state ->
+                binding.swipeRefresh.isRefreshing =
+                    state.refresh is LoadState.Loading
+            }
         }
 
         return binding.root
+    }
+
+
+    override fun onResume() {
+        if (::mediaRecyclerView.isInitialized) mediaRecyclerView.createPlayer()
+        super.onResume()
+    }
+
+    override fun onPause() {
+        if (::mediaRecyclerView.isInitialized) mediaRecyclerView.releasePlayer()
+        super.onPause()
+    }
+
+    override fun onStop() {
+        if (::mediaRecyclerView.isInitialized) mediaRecyclerView.releasePlayer()
+        super.onStop()
     }
 }

@@ -1,12 +1,8 @@
 package ru.netology.neworkapp.repository
 
-import android.content.Context
-import android.content.SharedPreferences
-import android.util.Log
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.NonCancellable
-import kotlinx.coroutines.withContext
+import okhttp3.Call
+import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -14,6 +10,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import ru.netology.neworkapp.apiservice.ApiService
 import ru.netology.neworkapp.auth.AuthState
 import ru.netology.neworkapp.dto.MediaUpload
+import ru.netology.neworkapp.dto.User
 import ru.netology.neworkapp.error.ApiError
 import ru.netology.neworkapp.error.NetworkError
 import java.io.IOException
@@ -46,6 +43,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun signIn(login: String, pass: String): AuthState {
         try {
+            println("repo login ${login} pass ${pass}")
             val response = apiService.authenticateUser(login, pass)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
@@ -61,6 +59,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun registerNewUser(login: String, pass: String, name: String): AuthState {
         println("authproblem authrepo registerUser in")
+
         try {
             println("authproblem authrepo try1")
 

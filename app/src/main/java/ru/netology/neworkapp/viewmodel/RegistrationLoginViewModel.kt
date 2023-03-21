@@ -43,14 +43,19 @@ class RegistrationLoginViewModel @Inject constructor(
         _isSignedIn.value = false
     }
 
+    fun invalidateDataState() {
+        _dataState.value = FeedModelState()
+    }
+
     fun register(login: String, pass: String, name: String) = viewModelScope.launch {
         println("authproblem viewmodel fun register in with param: login ${login}, pass ${pass} name ${name}")
 
             try {
+                _dataState.value = FeedModelState(loading = true)
                 println("authproblem viewmodel try1")
                 val response =  repository.registerNewUser(login, pass, name)
                 println("authproblem viewmodel try2")
-                val id = response.id ?: 0
+                val id = response.id
                 println("authproblem viewmodel try3")
                 val token = response.token ?: "null"
                 println("authproblem viewmodel try4")
@@ -59,9 +64,11 @@ class RegistrationLoginViewModel @Inject constructor(
 
 
                 auth.setAuth(id, token)
-
+                invalidateDataState()
                 _isSignedIn.value = true
             } catch (e: Exception) {
+                _dataState.value = FeedModelState(error = true)
+
                 println("authproblem viewmodel catch error")
                 UnknownAppError
             }
@@ -81,10 +88,11 @@ class RegistrationLoginViewModel @Inject constructor(
             _dataState.value = FeedModelState(loading = true)
             val response = repository.registerWithPhoto(login, pass, name, media)
             response.token?.let {
-                auth.setAuth(response.id, response.token)
+                auth.setAuth(response.id, it)
             }
             _isSignedIn.value = true
             _dataState.value = FeedModelState()
+            invalidateDataState()
         } catch (e: Exception) {
             _dataState.value = FeedModelState(error = true)
         }
@@ -101,10 +109,11 @@ class RegistrationLoginViewModel @Inject constructor(
 
             val response = repository.signIn(login, password)
             response.token?.let {
-                auth.setAuth(response.id, response.token)
+                auth.setAuth(response.id, it)
             }
             _dataState.value = FeedModelState()
             _isSignedIn.value = true
+            invalidateSignedInState()
         } catch (e: Exception) {
             _dataState.value = FeedModelState(error = true)
         }

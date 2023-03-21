@@ -11,20 +11,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toFile
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import ru.netology.neworkapp.R
 import ru.netology.neworkapp.auth.AppAuth
 import ru.netology.neworkapp.databinding.FragmentRegistrationBinding
@@ -57,6 +51,27 @@ class RegistrationFragment : Fragment() {
 
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.create_new_acc)
 
+        viewModel.isSignedIn.observe(viewLifecycleOwner) { isSignedId ->
+            if (isSignedId) {
+                binding.progress.visibility = View.GONE
+                Utils.hideKeyboard(requireView())
+                findNavController().popBackStack()
+                viewModel.invalidateSignedInState()
+            }
+
+        }
+
+        viewModel.dataState.observe(viewLifecycleOwner) { state ->
+            binding.progress.isVisible = state.loading
+
+            if (state.error) {
+                val msg = getString(R.string.error_loading)
+                Snackbar.make(binding.root, msg, Snackbar.LENGTH_SHORT)
+                    .setAction(getString(R.string.ok), {})
+                    .show()
+                viewModel.invalidateDataState()
+            }
+        }
 
 
         binding.createAccountBtn.setOnClickListener {
@@ -84,18 +99,13 @@ class RegistrationFragment : Fragment() {
                 viewModel.photo.value?.file == null -> {
                     viewModel.register(login, pass, name)
 
-
-
-
                     println("authproblem reg.fragment  login ${login}, pass ${pass} name ${name}")
                     Utils.hideKeyboard(requireView())
-                    navController.popBackStack()
                 }
                 else -> {
                     val file = viewModel.photo.value?.file?.let { MediaUpload(it) }
                     file?.let { viewModel.registerWithPhoto(login, pass, name, it) }
                     Utils.hideKeyboard(requireView())
-                    navController.popBackStack()
                 }
             }
 
@@ -152,11 +162,7 @@ class RegistrationFragment : Fragment() {
 
         }
 
-        viewModel.isSignedIn.observe(viewLifecycleOwner) { isSignedId ->
-//            if (isSignedId) {
-//                navController.popBackStack()
-//            }
-        }
+
         return binding.root
 
     }

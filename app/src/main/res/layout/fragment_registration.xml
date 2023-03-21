@@ -7,6 +7,11 @@
     android:layout_margin="@dimen/common_spacing"
     android:orientation="vertical"
     tools:context=".ui.RegistrationFragment">
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/username"
@@ -14,7 +19,8 @@
             android:layout_height="@dimen/singleline_edit_text_height"
             android:layout_marginBottom="@dimen/small_spacing"
             android:hint="@string/enter_user_name"
-            android:inputType="text" />
+            android:inputType="text"
+            android:importantForAutofill="no" />
 
 
         <EditText
@@ -24,7 +30,8 @@
             android:layout_marginBottom="@dimen/small_spacing"
             android:singleLine="true"
             android:hint="@string/enter_login"
-            android:inputType="text" />
+            android:inputType="text"
+            android:importantForAutofill="no" />
 
         <EditText
             android:id="@+id/password"
@@ -33,7 +40,8 @@
             android:layout_marginBottom="@dimen/small_spacing"
             android:singleLine="true"
             android:hint="@string/enter_password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:importantForAutofill="no" />
 
         <EditText
             android:id="@+id/confirm_password"
@@ -42,7 +50,8 @@
             android:singleLine="true"
             android:layout_marginBottom="@dimen/small_spacing"
             android:hint="@string/confirm_password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:importantForAutofill="no" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/avatar_container"
@@ -65,7 +74,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:src="@drawable/avatar_placeholder" />
+            android:src="@drawable/avatar_placeholder"
+            tools:ignore="ContentDescription" />
 
         </androidx.cardview.widget.CardView>
 

@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import ru.netology.neworkapp.entity.EventEntity
+import ru.netology.neworkapp.entity.PostEntity
 
 @Dao
 interface EventDao {
@@ -20,6 +21,9 @@ interface EventDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(events: List<EventEntity>)
+
+    @Query("SELECT * FROM EventEntity ORDER BY id DESC")
+    fun pagingSource(): PagingSource<Int, EventEntity>
 
     @Query("DELETE FROM EventEntity WHERE id = :id")
     suspend fun removeEventById(id: Int)

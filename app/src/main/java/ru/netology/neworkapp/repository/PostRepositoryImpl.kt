@@ -2,18 +2,19 @@ package ru.netology.neworkapp.repository
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.*
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.flow.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import ru.netology.neworkapp.apiservice.ApiService
 import ru.netology.neworkapp.dao.PostDao
+import ru.netology.neworkapp.dto.*
 import ru.netology.neworkapp.entity.PostEntity
 import ru.netology.neworkapp.entity.toEntity
 import ru.netology.neworkapp.error.ApiError
 import ru.netology.neworkapp.error.AppError
 import ru.netology.neworkapp.error.NetworkError
 import ru.netology.neworkapp.error.UnknownAppError
-import kotlinx.coroutines.flow.*
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import ru.netology.neworkapp.dto.*
 import java.io.IOException
 import javax.inject.Inject
 
@@ -69,7 +70,10 @@ class PostRepositoryImpl @Inject constructor(
             postDao.insert(PostEntity.fromDto(body))
         } catch (e: IOException) {
             throw NetworkError
-        } catch (e: java.lang.Exception) {
+        } catch (e : CancellationException) {
+            throw CancellationException()
+        }
+        catch (e: java.lang.Exception) {
             throw UnknownAppError
         }
     }
@@ -95,20 +99,20 @@ class PostRepositoryImpl @Inject constructor(
         media: MediaUpload,
         type: AttachmentType
     ) {
-//
-//        try {
-//            val upload = uploadMedia(media)
-//            val postWithAttach = post.copy(attachment = Attachment(upload.id, type))
-//
-//            savePost(postWithAttach)
-//
-//        } catch (e: AppError) {
-//            throw e
-//        } catch (e: IOException) {
-//            throw NetworkError
-//        } catch (e: Exception) {
-//            throw UnknownAppError
-//        }
+
+        try {
+            val upload = uploadMedia(type, media)
+            val postWithAttach = post.copy(attachment = Attachment(upload.url, type))
+
+            savePost(postWithAttach)
+
+        } catch (e: AppError) {
+            throw e
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownAppError
+        }
     }
 
 
@@ -195,10 +199,13 @@ class PostRepositoryImpl @Inject constructor(
 
     override suspend fun uploadMedia(
         type: AttachmentType,
-        file: MultipartBody.Part,
+        upload: MediaUpload,
     ): Attachment {
         try {
-            val response = apiService.uploadMedia(file)
+            val media = MultipartBody.Part.createFormData(
+                "file", upload.file.name, upload.file.asRequestBody()
+            )
+            val response = apiService.uploadMedia(media)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }

@@ -2,18 +2,14 @@ package ru.netology.neworkapp.auth
 
 import android.content.SharedPreferences
 import android.util.Log
-import ru.netology.neworkapp.repository.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import ru.netology.neworkapp.apiservice.ApiService
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class AppAuth @Inject constructor(
-    private val prefs: SharedPreferences,
-    private val apiService: ApiService
-) {
+    private val prefs: SharedPreferences) {
 
     companion object {
         const val idKey = "id"

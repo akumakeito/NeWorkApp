@@ -4,13 +4,11 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import ru.netology.neworkapp.dao.CoordinatesConverter
 import ru.netology.neworkapp.dao.InstantConverter
 import ru.netology.neworkapp.dao.ListConverter
 import ru.netology.neworkapp.dao.UserMapConverter
-import ru.netology.neworkapp.dto.Attachment
-import ru.netology.neworkapp.dto.Event
-import ru.netology.neworkapp.dto.EventType
-import ru.netology.neworkapp.dto.UserPreview
+import ru.netology.neworkapp.dto.*
 import java.time.Instant
 
 @Entity
@@ -25,7 +23,9 @@ data class EventEntity(
     val datetime: String,
     @TypeConverters(InstantConverter::class)
     val published: Instant,
-    val eventType: EventType,
+    @TypeConverters(CoordinatesConverter::class)
+    val coords: Coordinates?,
+    val type: EventType,
     @TypeConverters(ListConverter::class)
     val likeOwnerIds: List<Int>,
     val likedByMe: Boolean,
@@ -35,30 +35,36 @@ data class EventEntity(
     val participantsIds: List<Int>,
     val participatedByMe: Boolean,
     @Embedded
-    val attachment: Attachment?,
+    val attachment: AttachmentEmbedded?,
     val link: String?,
     val ownedByMe: Boolean,
-    @TypeConverters(UserMapConverter::class)
-    val users: Map<Int, UserPreview>,
-) {
 
-    fun toDto() = Event(
-        id, authorId, author, authorAvatar, authorJob, content,
-        datetime, published, eventType, likeOwnerIds, likedByMe, speakerIds,
-        participantsIds, participatedByMe, attachment, link, ownedByMe, users
-    )
+
+    ) {
+
+    fun toDto() = Event(id, authorId, author, authorAvatar, authorJob, content,
+        datetime, published, coords,type, likeOwnerIds,likedByMe, speakerIds,
+        participantsIds, participatedByMe, attachment?.toDto(), link, ownedByMe)
 
     companion object {
         fun fromDto(dto: Event) =
-            EventEntity(
-                dto.id, dto.authorId, dto.author, dto.authorAvatar, dto.authorJob,
-                dto.content, dto.datetime, dto.published,
-                dto.eventType, dto.likeOwnerIds, dto.likedByMe,
+            EventEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar, dto.authorJob,
+                dto.content, dto.datetime, dto.published, dto.coords,
+                dto.type, dto.likeOwnerIds, dto.likedByMe,
                 dto.speakerIds, dto.participantsIds,
-                dto.participatedByMe, dto.attachment,
-                dto.link, dto.ownedByMe, dto.users
-            )
+                dto.participatedByMe, AttachmentEmbedded.fromDto(dto.attachment),
+                dto.link, dto.ownedByMe)
+
+        fun fromDtoFlow(dto: Event) =
+            EventEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar, dto.authorJob,
+                dto.content, dto.datetime, dto.published, dto.coords,
+                dto.type, dto.likeOwnerIds, dto.likedByMe,
+                dto.speakerIds, dto.participantsIds,
+                dto.participatedByMe, AttachmentEmbedded.fromDto(dto.attachment),
+                dto.link, dto.ownedByMe)
     }
 }
 
+fun List<EventEntity>.toDto(): List<Event> = map(EventEntity::toDto)
 fun List<Event>.toEntity(): List<EventEntity> = map(EventEntity::fromDto)
+fun List<Event>.toEntityFlow(): List<EventEntity> = map(EventEntity::fromDtoFlow)

@@ -11,7 +11,8 @@ data class Event(
     val content: String,
     val datetime: String,
     val published: Instant = Instant.now(),
-    val eventType: EventType,
+    val coords: Coordinates?,
+    val type: EventType,
     val likeOwnerIds: List<Int>,
     val likedByMe: Boolean,
     val speakerIds: List<Int>,
@@ -19,18 +20,23 @@ data class Event(
     val participatedByMe: Boolean,
     val attachment: Attachment?,
     val link: String?,
-    val ownedByMe: Boolean,
-    val users: Map<Int, UserPreview>,
+    val ownedByMe: Boolean
 )
 
-data class EventCreateRequest(
+data class EventRequest(
     val id: Int = 0,
     val content: String = "",
     val datetime: String? = null,
+    val coords: Coordinates? = null,
     val type: EventType? = EventType.OFFLINE,
     val attachment: Attachment? = null,
     val link: String? = null,
     val speakerIds: List<Int>? = null,
+)
+
+data class Coordinates(
+    val lat: String,
+    val long: String
 )
 
 

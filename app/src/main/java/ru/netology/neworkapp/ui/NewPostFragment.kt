@@ -14,6 +14,7 @@ import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.snackbar.Snackbar
@@ -27,12 +28,13 @@ import ru.netology.neworkapp.databinding.FragmentNewPostBinding
 import ru.netology.neworkapp.dto.AttachmentType
 import ru.netology.neworkapp.ui.FeedPostFragment.Companion.intArg
 import ru.netology.neworkapp.util.Utils
+import ru.netology.neworkapp.util.loadImage
 import ru.netology.neworkapp.viewmodel.PostViewModel
 import java.io.File
 
 @AndroidEntryPoint
 class NewPostFragment : Fragment() {
-    private val viewModel : PostViewModel by activityViewModels()
+    private val viewModel: PostViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,50 +44,28 @@ class NewPostFragment : Fragment() {
 
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.create_post)
 
-        val binding = FragmentNewPostBinding.inflate(inflater, container,false)
+        val binding = FragmentNewPostBinding.inflate(inflater, container, false)
 
         if (arguments?.intArg != null) {
             val id = arguments?.intArg
             id?.let { viewModel.getPostById(it) }
         }
 
-        val adapter = CardUserPreviewAdapter(object : OnCardUserPreviewInteractionListener{
-            override fun openUserProfile(id: Int) {
-                findNavController().navigate(
-                    R.id.userProfileFragment,
-                    Bundle().apply { intArg = id }
-                )
-            }
-
-            override fun deleteFromList(id: Int) {
-                viewModel.uncheckUser(id)
-                viewModel.updateMentionsIds()
-            }
-
-        })
-
 
         val pickPhotoLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                when(it.resultCode) {
+                when (it.resultCode) {
                     ImagePicker.RESULT_ERROR -> {
                         Snackbar.make(
                             binding.root,
                             ImagePicker.getError(it.data),
-                            Snackbar.LENGTH_SHORT
+                            Snackbar.LENGTH_LONG
                         ).show()
                     }
-
                     Activity.RESULT_OK -> {
-                        val uri : Uri? = it.data?.data
-                        val resultFile = uri?.toFile()
-                        val file = MultipartBody.Part.createFormData(
-                            "file", resultFile?.name, resultFile!!.asRequestBody()
-                        )
-                        viewModel.changeMedia(uri, resultFile, AttachmentType.IMAGE)
-                        viewModel.addMediaToPost(AttachmentType.IMAGE, file)
+                        val uri: Uri? = it.data?.data
+                        viewModel.changeMedia(uri, uri?.toFile(), AttachmentType.IMAGE)
                     }
-
                 }
             }
 
@@ -97,8 +77,7 @@ class NewPostFragment : Fragment() {
                 .galleryMimeTypes(
                     arrayOf(
                         "image/png",
-                        "image/jpeg",
-                        "image/jpg"
+                        "image/jpeg"
                     )
                 )
                 .createIntent(pickPhotoLauncher::launch)
@@ -112,6 +91,10 @@ class NewPostFragment : Fragment() {
                 .createIntent(pickPhotoLauncher::launch)
         }
 
+        binding.removeMedia.setOnClickListener {
+            viewModel.changeMedia(null, null, null)
+            binding.mediaContainer.visibility = View.GONE
+        }
         val pickVideoLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
                 val resultCode = activityResult.resultCode
@@ -127,7 +110,6 @@ class NewPostFragment : Fragment() {
                             "file", resultFile.name, resultFile.asRequestBody()
                         )
                         viewModel.changeMedia(selectedVideoUri, resultFile, AttachmentType.VIDEO)
-                        viewModel.addMediaToPost(AttachmentType.VIDEO, file)
                     }
                 } else {
                     Snackbar.make(binding.root, R.string.video_container, Snackbar.LENGTH_SHORT)
@@ -158,7 +140,6 @@ class NewPostFragment : Fragment() {
                             "file", resultFile.name, resultFile.asRequestBody()
                         )
                         viewModel.changeMedia(selectedAudioUri, resultFile, AttachmentType.AUDIO)
-                        viewModel.addMediaToPost(AttachmentType.AUDIO, file)
                     }
                 }
             }
@@ -170,6 +151,24 @@ class NewPostFragment : Fragment() {
             )
             pickAudioLauncher.launch(intent)
         }
+
+//        viewModel.edited.observe(viewLifecycleOwner) {
+//            it.content.let(binding.editText::setText)
+//            it.link.let(binding.link::setText)
+//            binding.addLinkBtn.isChecked = viewModel.edited.value?.link != null
+//            if (it.attachment != null) {
+//                binding.mediaContainer.visibility = View.VISIBLE
+//                Glide.with(this)
+//                    .load(it.attachment.url)
+//                    .error(R.drawable.error_ic)
+//                    .placeholder(R.drawable.image_placeholder_ic)
+//                    .timeout(10_000)
+//                    .into(binding.photo)
+//            } else {
+//                binding.mediaContainer.visibility = View.GONE
+//            }
+//
+//        }
 
         viewModel.media.observe(viewLifecycleOwner)
         { mediaModel ->
@@ -194,61 +193,31 @@ class NewPostFragment : Fragment() {
             }
         }
 
-        binding.addMentionBtn.setOnClickListener {
-            findNavController().navigate(R.id.choosePostUsersFragment)
-        }
-        binding.link.setOnClickListener {
+
+        binding.addLinkBtn.setOnClickListener {
             val link: String = binding.link.text.toString()
             viewModel.addLink(link)
         }
 
-        binding.mentionedUsers.adapter = adapter
-        viewModel.mentionsData.observe(viewLifecycleOwner)
-        {
-            if (it.isEmpty()) {
-                binding.mentionedUsersScroll.visibility = View.GONE
-            } else {
-                adapter.submitList(it)
-                binding.mentionedUsersScroll.visibility = View.VISIBLE
-            }
-        }
-
-        viewModel.editedPost.observe(viewLifecycleOwner)
-        {
-            it?.content.let(binding.editText::setText)
-            it?.link.let(binding.link::setText)
-            if (it?.attachment != null) {
-                binding.mediaContainer.visibility = View.VISIBLE
-            } else {
-                binding.mediaContainer.visibility = View.GONE
-            }
-        }
-
-        binding.removeMedia.setOnClickListener {
-            viewModel.changeMedia(null, null, null)
-            viewModel.removeMedia()
-            binding.mediaContainer.visibility = View.GONE
-        }
 
         binding.save.setOnClickListener {
-            val content = binding.editText.text.toString()
-            if (content == "") {
-                Snackbar.make(binding.root, R.string.content_cant_be_empty, Snackbar.LENGTH_SHORT).show()
-            } else {
-                viewModel.savePost(content)
-            }
+            val text = binding.editText.text.toString()
+            viewModel.changeContent(text)
+            viewModel.savePost()
+        }
 
-            viewModel.postCreated.observe(viewLifecycleOwner) {
-                findNavController().navigate(R.id.postFragment)
-            }
+        viewModel.postCreated.observe(viewLifecycleOwner) {
+            viewModel.loadPosts()
+            findNavController().navigateUp()
+        }
 
-            viewModel.dataState.observe(viewLifecycleOwner) { state ->
-                if (state.error) {
-                    Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_SHORT)
-                        .show()
-                }
+        viewModel.dataState.observe(viewLifecycleOwner) { state ->
+            if (state.error) {
+                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_SHORT)
+                    .show()
             }
         }
+
 
         return binding.root
     }

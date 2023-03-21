@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="@dimen/small_spacing"
-    tools:context="ru.netology.nework.ui.ChoosePostUsersFragment">
+    tools:context=".ui.ChoosePostUsersFragment">
 
     <ScrollView
         android:layout_width="match_parent"

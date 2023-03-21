@@ -1,5 +1,6 @@
 package ru.netology.neworkapp.util
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -41,11 +42,6 @@ object Utils {
         }, startYear, startMonth, startDay).show()
     }
 
-    fun showKeyboard(view: View) {
-        val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
-    }
-
 
     fun formatMillisToDateTimeString(millis: Long?): String {
         return SimpleDateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.SHORT)
@@ -58,36 +54,6 @@ object Utils {
         } else {
             val parsedDate = LocalDateTime.parse(dateAndTime, DateTimeFormatter.ISO_DATE_TIME)
             return parsedDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))
-        }
-    }
-
-    fun formatMillisToDateString(millis: Long?): String? {
-        return if (millis == null) null
-        else SimpleDateFormat.getDateInstance(DateFormat.DEFAULT)
-            .format(millis)
-    }
-
-    fun formatDateToDateTimeString(date: Date): String {
-        return SimpleDateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.SHORT)
-            .format(date)
-    }
-
-    fun formatDateToDateString(date: Date): String {
-        return SimpleDateFormat.getDateInstance(DateFormat.DEFAULT)
-            .format(date)
-    }
-
-    fun formatDateTimeStringToMillis(dateString: String): Long {
-        val sdf = SimpleDateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.SHORT)
-        return sdf.parse(dateString)!!.run {
-            time
-        }
-    }
-
-    fun formatDateStringToMillis(dateString: String): Long {
-        val sdf = SimpleDateFormat.getDateInstance(DateFormat.DEFAULT)
-        return sdf.parse(dateString)!!.run {
-            time
         }
     }
 
@@ -139,5 +105,86 @@ object Utils {
         } finally {
             cursor?.close()
         }
+    }
+}
+
+object DataConverter {
+    fun convertDataTime(dateTime: String): String {
+        return if (dateTime == "") {
+            ""
+        } else {
+            val parsedDate = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_DATE_TIME)
+            return parsedDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))
+        }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun convertDataTimeJob(dateTime: String): String {
+        return if (dateTime == "") {
+            ""
+        } else {
+            val parsedDate = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_DATE_TIME)
+            return parsedDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+        }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun convertDataInput(date: List<Int>): String {
+        val x = date[0]
+        val y = date[1] + 1
+        val z = date[2]
+        val day = when (x) {
+            in 1..9 -> "0$x"
+            else -> {
+                "$x"
+            }
+        }
+        val month = when (y) {
+            in 1..9 -> "0$y"
+            else -> {
+                "$y"
+            }
+        }
+        val year = "$z"
+        val newDate = "$day.$month.$year"
+        val formatter = SimpleDateFormat("dd.MM.yyyy")
+        val date = formatter.parse(newDate)
+        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'")
+        return sdf.format(date!!)
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun convertDateToLocalDate(date: List<Int>): String {
+        val x = date[0]
+        val y = date[1] + 1
+        val z = date[2]
+        val h = date[3]
+        val m = date[4]
+        val day = when (x) {
+            in 1..9 -> "0$x"
+            else -> {
+                "$x"
+            }
+        }
+        val month = when (y) {
+            in 1..9 -> "0$y"
+            else -> {
+                "$y"
+            }
+        }
+        val year = "$z"
+        val hour = when (h) {
+            in 1..9 -> "0$h"
+            else -> "$h"
+        }
+        val minute = when (m) {
+            in 1..9 -> "0$m"
+            else -> "$m"
+        }
+        val newDate = "$day.$month.$year $hour:$minute"
+        val formatter = SimpleDateFormat("dd.MM.yyyy HH:mm")
+        val date = formatter.parse(newDate)
+        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'")
+        return sdf.format(date!!)
     }
 }

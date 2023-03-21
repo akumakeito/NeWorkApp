@@ -4,7 +4,6 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import ru.netology.neworkapp.dto.User
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -30,4 +29,8 @@ interface RepositoryModule {
     @Binds
     @Singleton
     fun bindsEventRepository(eventRepositoryImpl: EventRepositoryImpl): EventRepository
+
+    @Binds
+    @Singleton
+    fun bindsNewEventRepository(newEventRepositoryImpl: NewEventRepositoryImpl): NewEventRepository
 }

@@ -11,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.netology.neworkapp.viewmodel.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.neworkapp.R
@@ -28,9 +29,6 @@ class MainActivity : AppCompatActivity() {
         binding.toolbar.title = title
     }
 
-    fun onClickFabAddPost(view: View) {}
-    fun onClickFabAddEvent(view: View) {}
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,8 +40,10 @@ class MainActivity : AppCompatActivity() {
 
         navController = navHostFragment.navController
 
+
         val toolbar = binding.toolbar
         setSupportActionBar(toolbar)
+
 
         val bottomNavView = binding.bottomNavView.apply {
             background = null
@@ -51,9 +51,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         val topLevelDestinations = setOf(
-            R.id.navigation_home,
-            R.id.navigation_events,
-            R.id.navigation_my_profile,
+            R.id.feed_post_nav,
+            R.id.feed_event_nav,
+            R.id.user_profile_nav,
         )
 
         appBarConfig = AppBarConfiguration.Builder(topLevelDestinations).build()
@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.registrationFragment -> {
+
                     toolbar.visibility = View.GONE
                     bottomNavView.visibility = View.GONE
                     binding.bottomAppBar.visibility = View.GONE
@@ -84,11 +85,49 @@ class MainActivity : AppCompatActivity() {
                     binding.fabLayout.visibility = View.GONE
                 }
 
+                R.id.editJobFragment -> {
+                    bottomNavView.visibility = View.GONE
+                    binding.bottomAppBar.visibility = View.GONE
+                    binding.fabLayout.visibility = View.GONE
+                }
+
+                R.id.editEventFragment -> {
+                    bottomNavView.visibility = View.GONE
+                    binding.bottomAppBar.visibility = View.GONE
+                    binding.fabLayout.visibility = View.GONE
+                }
+
+
+                R.id.editPostFragment -> {
+                    bottomNavView.visibility = View.GONE
+                    binding.bottomAppBar.visibility = View.GONE
+                    binding.fabLayout.visibility = View.GONE
+                }
+
+
                 R.id.newEventFragment -> {
                     bottomNavView.visibility = View.GONE
                     binding.bottomAppBar.visibility = View.GONE
                     binding.fabLayout.visibility = View.GONE
                 }
+
+                R.id.newJobFragment -> {
+                    bottomNavView.visibility = View.GONE
+                    binding.bottomAppBar.visibility = View.GONE
+                    binding.fabLayout.visibility = View.GONE
+                }
+                R.id.chooseEventUsersFragment -> {
+                    bottomNavView.visibility = View.GONE
+                    binding.bottomAppBar.visibility = View.GONE
+                    binding.fabLayout.visibility = View.GONE
+                }
+
+                R.id.choosePostUsersFragment -> {
+                    bottomNavView.visibility = View.GONE
+                    binding.bottomAppBar.visibility = View.GONE
+                    binding.fabLayout.visibility = View.GONE
+                }
+
                 else -> {
                     toolbar.visibility = View.VISIBLE
                     bottomNavView.visibility = View.VISIBLE
@@ -100,6 +139,28 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavView.setupWithNavController(navController)
 
+        bottomNavView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.feed_post_nav -> {
+                    navController.navigate(R.id.postFragment)
+                    true
+                }
+
+                R.id.feed_event_nav -> {
+                    navController.navigate(R.id.feedEventFragment)
+                    true
+                }
+
+                R.id.user_profile_nav -> {
+                    navController.navigate(R.id.userProfileFragment)
+                    true
+                }
+
+                else -> false
+
+            }
+        }
+
         binding.fabAddPost.setOnClickListener {
             navController.navigate(R.id.newPostFragment)
         }
@@ -110,19 +171,19 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        authViewModel.authState.observe(this) {user ->
+        authViewModel.authState.observe(this) { user ->
             if (!authViewModel.authenticated) {
                 binding.fabLayout.visibility = View.GONE
                 binding.loginButton.visibility = View.VISIBLE
                 binding.signUpButton.visibility = View.VISIBLE
-                binding.bottomNavView.menu.findItem(R.id.navigation_my_profile).isEnabled = false
-                binding.bottomNavView.menu.findItem(R.id.navigation_my_profile).isVisible = false
+                binding.bottomNavView.menu.findItem(R.id.user_profile_nav).isEnabled = false
+                binding.bottomNavView.menu.findItem(R.id.user_profile_nav).isVisible = false
             } else {
                 binding.fab.visibility = View.VISIBLE
                 binding.loginButton.visibility = View.GONE
                 binding.signUpButton.visibility = View.GONE
-                binding.bottomNavView.menu.findItem(R.id.navigation_my_profile).isEnabled = true
-                binding.bottomNavView.menu.findItem(R.id.navigation_my_profile).isVisible = true
+                binding.bottomNavView.menu.findItem(R.id.user_profile_nav).isEnabled = true
+                binding.bottomNavView.menu.findItem(R.id.user_profile_nav).isVisible = true
             }
         }
 

@@ -1,10 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.NewJobFragment">
+    android:orientation="vertical">
+
     <EditText
         android:id="@+id/company"
         android:layout_width="match_parent"
@@ -23,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/avatar_size"
         android:layout_gravity="start"
-       android:layout_margin="@dimen/common_spacing"
+        android:layout_margin="@dimen/common_spacing"
         android:autofillHints="@string/position"
         android:hint="@string/position"
         android:inputType="textMultiLine"
@@ -36,6 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/avatar_size"
         android:layout_margin="@dimen/common_spacing"
+        android:layout_weight="4"
         android:autofillHints="@string/start_date"
         android:focusable="false"
         android:hint="@string/start_date"
@@ -44,11 +46,13 @@
         android:textSize="18sp"
         tools:ignore="TextFields" />
 
+
     <EditText
         android:id="@+id/add_end_date"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/avatar_size"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/common_spacing"
+        android:layout_weight="3"
         android:autofillHints="@string/end_date"
         android:focusable="false"
         android:hint="@string/end_date"
@@ -62,6 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/small_spacing"
         android:orientation="horizontal"
+
         android:paddingStart="@dimen/small_spacing"
         android:paddingEnd="@dimen/small_spacing">
 
@@ -69,36 +74,58 @@
             android:id="@+id/link"
             android:layout_width="0dp"
             android:layout_height="@dimen/avatar_size"
+            android:layout_weight="3"
             android:hint="@string/enter_link"
+            android:importantForAutofill="no"
             android:inputType="textPostalAddress"
             android:paddingStart="@dimen/small_spacing"
-            android:layout_weight="2"
-            android:paddingEnd="@dimen/small_spacing"
-            android:importantForAutofill="no" />
+            android:paddingEnd="@dimen/small_spacing" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/add_link_btn"
             android:layout_width="0dp"
             android:layout_height="@dimen/avatar_size"
             android:layout_gravity="bottom"
+            android:layout_weight="1"
             android:background="@color/accent"
             android:textColor="@color/white"
-            app:icon="@drawable/link_ic"
+            app:icon="@drawable/baseline_add_link_24"
             app:iconTint="@color/white"
-            android:layout_weight="1"
             tools:ignore="RelativeOverlap,RtlSymmetry" />
 
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/small_spacing"
-        android:clickable="true"
-        android:contentDescription="@string/add_post"
-        android:focusable="true"
-        app:srcCompat="@drawable/ok_ic" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/ok"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/avatar_size"
+            android:layout_margin="@dimen/small_spacing"
+            android:layout_weight="1"
+            android:gravity="center"
+            app:icon="@drawable/ok_ic"
+            app:iconTint="@color/white"
+            tools:ignore="RelativeOverlap,RtlSymmetry" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cancel_button"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/avatar_size"
+            android:layout_margin="@dimen/small_spacing"
+            android:layout_weight="1"
+            android:gravity="center"
+            app:icon="@drawable/cancel_ic"
+            app:iconTint="@color/white"
+            tools:ignore="RelativeOverlap,RtlSymmetry" />
+
+
+    </LinearLayout>
+
 
 </LinearLayout>

@@ -1,7 +1,6 @@
 package ru.netology.neworkapp.dto
 
 import android.net.Uri
-import retrofit2.http.Url
 import java.io.File
 
 data class Media(val uri : String)

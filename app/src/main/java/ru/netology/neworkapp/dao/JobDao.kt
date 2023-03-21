@@ -5,12 +5,13 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 import ru.netology.neworkapp.entity.JobEntity
 
 @Dao
 interface JobDao {
     @Query("SELECT * FROM JobEntity ORDER BY id DESC")
-    fun getAllJobs(): LiveData<List<JobEntity>>
+    fun getAllJobs(): Flow<List<JobEntity>>
 
     @Query("SELECT COUNT(*) == 0 FROM JobEntity")
     suspend fun isEmpty(): Boolean

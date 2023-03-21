@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.neworkapp.R
 import ru.netology.neworkapp.auth.AppAuth
@@ -50,7 +53,11 @@ class LoginFragment : Fragment() {
         savedStateHandle = navController.previousBackStackEntry!!.savedStateHandle
         savedStateHandle.set(LOGIN_SUCCESSFUL, false)
 
-        binding.login.setOnClickListener {
+        viewModel.dataState.observe(viewLifecycleOwner) {
+            binding.progress.isVisible = it.loading
+        }
+
+        binding.signInBtn.setOnClickListener {
             val login = binding.login.text.toString()
             val pass = binding.password.text.toString()
             if (binding.login.text.isNullOrBlank() || binding.password.text.isNullOrBlank()) {
@@ -61,9 +68,9 @@ class LoginFragment : Fragment() {
                 )
                     .show()
             } else {
+                println("login ${login} pass ${pass}")
                 viewModel.signIn(login, pass)
                 Utils.hideKeyboard(requireView())
-                navController.navigateUp()
             }
         }
 

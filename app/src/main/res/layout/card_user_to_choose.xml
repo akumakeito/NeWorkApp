@@ -18,7 +18,8 @@
             android:layout_marginBottom="@dimen/common_spacing"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/avatar_placeholder" />
+            tools:srcCompat="@drawable/avatar_placeholder"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/author"

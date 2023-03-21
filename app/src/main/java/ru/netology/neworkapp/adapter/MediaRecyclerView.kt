@@ -112,7 +112,7 @@ class MediaRecyclerView : RecyclerView {
             return
         }
 
-        val postHolder = view.tag as PostViewHolder ?: return
+        val postHolder = view.tag as PostViewHolder
         thumbnail = postHolder.videoThumbnail
         playIcon = postHolder.videoPlayIcon
         progressBar = postHolder.videoProgressBar

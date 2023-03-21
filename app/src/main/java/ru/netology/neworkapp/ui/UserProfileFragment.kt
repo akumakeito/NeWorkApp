@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.neworkapp.R
@@ -16,6 +18,7 @@ import ru.netology.neworkapp.adapter.JobAdapter
 import ru.netology.neworkapp.adapter.OnJobInteractionListener
 import ru.netology.neworkapp.databinding.FragmentUserProfileBinding
 import ru.netology.neworkapp.dto.Job
+import ru.netology.neworkapp.util.IntArg
 import ru.netology.neworkapp.util.StringArg
 import ru.netology.neworkapp.util.loadCircleCrop
 import ru.netology.neworkapp.viewmodel.AuthViewModel
@@ -25,7 +28,7 @@ import ru.netology.neworkapp.viewmodel.UserProfileViewModel
 class UserProfileFragment : Fragment() {
     private val userProfileViewModel: UserProfileViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
-    private val navController = findNavController()
+    private lateinit var navController : NavController
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,6 +36,7 @@ class UserProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentUserProfileBinding.inflate(inflater, container, false)
+        navController = findNavController()
 
         authViewModel.authState.observe(viewLifecycleOwner) {
             (activity as AppCompatActivity?)?.supportActionBar?.title = "profile"
@@ -48,6 +52,7 @@ class UserProfileFragment : Fragment() {
             }
         }
 
+
         val jobAdapter = JobAdapter(object : OnJobInteractionListener {
             override fun onLinkClick(url: String) {
                 CustomTabsIntent.Builder()
@@ -59,6 +64,15 @@ class UserProfileFragment : Fragment() {
             override fun onRemoveJob(job: Job) {
                 userProfileViewModel.removeJobById(job.id)
             }
+
+            override fun onEditJob(job: Job) {
+                userProfileViewModel.editJob(job)
+                val id = job.id
+                val bundle = Bundle()
+                bundle.putInt("jobId", id)
+                findNavController().navigate(R.id.action_userProfileFragment_to_editJobFragment, bundle)
+            }
+
         })
 
         binding.jobList.adapter = jobAdapter
@@ -69,15 +83,19 @@ class UserProfileFragment : Fragment() {
                     job.ownedByMe = true
                 }
             }
+
             if (it.isEmpty()) {
                 binding.jobList.visibility = View.GONE
                 binding.noJobs.visibility = View.VISIBLE
             } else {
-                jobAdapter.submitList(it)
                 binding.jobList.visibility = View.VISIBLE
                 binding.noJobs.visibility = View.GONE
             }
+            jobAdapter.submitList(it)
+
         }
+
+
 
         userProfileViewModel.userData.observe(viewLifecycleOwner) {
             (activity as AppCompatActivity?)?.supportActionBar?.title = it.name
@@ -95,6 +113,6 @@ class UserProfileFragment : Fragment() {
     }
 
     companion object {
-        var Bundle.textArg: String? by StringArg
+        var Bundle.intArg: Int by IntArg
     }
 }

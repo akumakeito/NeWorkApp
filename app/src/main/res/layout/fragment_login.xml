@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="@dimen/common_spacing">
+    android:padding="@dimen/common_spacing"
+    tools:context=".ui.LoginFragment">
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
     <EditText
         android:id="@+id/login"
@@ -11,6 +19,7 @@
         android:layout_height="@dimen/singleline_edit_text_height"
         android:layout_margin="@dimen/small_spacing"
         android:hint="@string/enter_login"
+        android:importantForAutofill="no"
         android:inputType="text"
         android:singleLine="true" />
 
@@ -18,10 +27,11 @@
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="@dimen/singleline_edit_text_height"
-        android:layout_marginBottom="@dimen/small_spacing"
-        android:singleLine="true"
+        android:layout_margin="@dimen/small_spacing"
         android:hint="@string/enter_password"
-        android:inputType="textPassword" />
+        android:importantForAutofill="no"
+        android:inputType="textPassword"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/sign_in_btn"

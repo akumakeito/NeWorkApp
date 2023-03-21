@@ -1,20 +1,27 @@
 package ru.netology.neworkapp.ui
 
+
+import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
+import android.widget.TimePicker
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toFile
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.snackbar.Snackbar
@@ -23,59 +30,59 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import ru.netology.neworkapp.R
-import ru.netology.neworkapp.adapter.CardUserPreviewAdapter
-import ru.netology.neworkapp.adapter.ChooseUsersAdapter
-import ru.netology.neworkapp.adapter.ChooseUsersInteractionListener
-import ru.netology.neworkapp.adapter.OnCardUserPreviewInteractionListener
 import ru.netology.neworkapp.databinding.FragmentNewEventBinding
-import ru.netology.neworkapp.dto.AttachmentType
 import ru.netology.neworkapp.dto.EventType
 import ru.netology.neworkapp.ui.FeedEventFragment.Companion.intArg
-import ru.netology.neworkapp.ui.UserProfileFragment.Companion.textArg
-import ru.netology.neworkapp.util.Utils
-import ru.netology.neworkapp.viewmodel.EventViewModel
-import java.io.File
+import ru.netology.neworkapp.util.DataConverter
+import ru.netology.neworkapp.viewmodel.NewEventViewModel
+import java.util.*
+
+
+var dayEvent = 0
+var monthEvent = 0
+var yearEvent = 0
+var hourEvent = 0
+var minuteEvent = 0
+
+var day = 0
+var month = 0
+var year = 0
+var startEndFinished = true
+
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class NewEventFragment : Fragment() {
-    private val viewModel: EventViewModel by activityViewModels()
-
-
+@SuppressLint("FragmentBackPressedCallback")
+class NewEventFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+    private val newEventViewModel : NewEventViewModel by activityViewModels()
+    @SuppressLint("UseRequireInsteadOfGet")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val binding = FragmentNewEventBinding.inflate(inflater, container,false)
+    ): View {
+        val binding = FragmentNewEventBinding.inflate(
+            inflater,
+            container,
+            false
+        )
 
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.create_event)
+
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.new_event)
+
+        var file: MultipartBody.Part
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            Snackbar.make(binding.root, R.string.skip_edit_question, Snackbar.LENGTH_SHORT)
-                .setAction(R.string.exit) {
-                    viewModel.deleteEditEvent()
-                    findNavController().navigate(R.id.feedEventFragment)
-                }.show()
+            Snackbar.make(binding.root, R.string.be_lost, Snackbar.LENGTH_SHORT).setAction(R.string.exit) {
+                newEventViewModel.deleteEditPost()
+                findNavController().navigate(R.id.feedEventFragment)
+            }.show()
         }
 
         if (arguments?.intArg != null) {
             val id = arguments?.intArg
-            id?.let { viewModel.getEventCreateRequest(it) }
+            id?.let {newEventViewModel.getEvent(it) }
         }
-
-        val adapter = CardUserPreviewAdapter(object : OnCardUserPreviewInteractionListener {
-            override fun openUserProfile(id: Int) {
-                val idAuthor = id.toString()
-                findNavController().navigate(R.id.userProfileFragment,
-                    Bundle().apply { textArg = idAuthor })
-            }
-
-            override fun deleteFromList(id: Int) {
-                viewModel.unCheck(id)
-                viewModel.addSpeakerIds()
-            }
-        })
 
         val pickPhotoLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -90,193 +97,129 @@ class NewEventFragment : Fragment() {
                     Activity.RESULT_OK -> {
                         val uri: Uri? = it.data?.data
                         val resultFile = uri?.toFile()
-                        val file = MultipartBody.Part.createFormData(
-                            "file", resultFile?.name, resultFile!!.asRequestBody()
-                        )
-                        viewModel.changeMedia(uri, resultFile, AttachmentType.IMAGE)
-                        viewModel.addMediaToEvent(AttachmentType.IMAGE, file)
+                        file = MultipartBody.Part.createFormData(
+                            "file", resultFile?.name, resultFile!!.asRequestBody())
+                        newEventViewModel.addPictureToThePost(file)
+                        binding.image.setImageURI(uri)
                     }
                 }
             }
 
-        binding.pickPhoto.setOnClickListener {
-            ImagePicker.with(this)
+
+        binding.menuAdd.setOnClickListener {
+            binding.menuAdd.isChecked = binding.image.isVisible
+            ImagePicker.with(this@NewEventFragment)
                 .crop()
                 .compress(2048)
-                .provider(ImageProvider.GALLERY)
+                .provider(ImageProvider.BOTH)
                 .galleryMimeTypes(
                     arrayOf(
                         "image/png",
                         "image/jpeg",
-                        "image/jpg"
                     )
                 )
                 .createIntent(pickPhotoLauncher::launch)
         }
 
-        binding.takePhoto.setOnClickListener {
-            ImagePicker.with(this)
-                .crop()
-                .compress(2048)
-                .provider(ImageProvider.CAMERA)
-                .createIntent(pickPhotoLauncher::launch)
+
+        binding.linkAdd.setOnClickListener {
+            binding.linkAdd.isChecked = newEventViewModel.newEvent.value?.link != null
+            binding.linkContainer.visibility = View.VISIBLE
         }
 
-        val pickVideoLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
-                val resultCode = activityResult.resultCode
-                val data = activityResult.data
-
-                if (resultCode == Activity.RESULT_OK) {
-                    val selectedVideoUri = data?.data!!
-                    val selectedVideoPath =
-                        Utils.getVideoPathFromUri(selectedVideoUri, requireActivity())
-                    if (selectedVideoPath != null) {
-                        val resultFile = File(selectedVideoPath)
-                        val file = MultipartBody.Part.createFormData(
-                            "file", resultFile.name, resultFile.asRequestBody()
-                        )
-                        viewModel.changeMedia(
-                            selectedVideoUri,
-                            resultFile,
-                            AttachmentType.VIDEO
-                        )
-                        viewModel.addMediaToEvent(AttachmentType.VIDEO, file)
-                    }
-                }
-            }
-
-        binding.pickVideo.setOnClickListener {
-            val intent = Intent(
-                Intent.ACTION_PICK,
-                MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-            )
-            pickVideoLauncher.launch(intent)
+        binding.okAdd.setOnClickListener {
+            val link: String = binding.editLink.text.toString()
+            newEventViewModel.addLink(link)
         }
 
-        val pickAudioLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
-                val resultCode = activityResult.resultCode
-                val data = activityResult.data
-
-                if (resultCode == Activity.RESULT_OK) {
-                    val selectedAudioUri = data?.data!!
-                    val selectedAudioPath =
-                        Utils.getAudioPathFromUri(selectedAudioUri, requireActivity())
-                    if (selectedAudioPath != null) {
-                        val resultFile = File(selectedAudioPath)
-                        val file = MultipartBody.Part.createFormData(
-                            "file", resultFile.name, resultFile.asRequestBody()
-                        )
-                        viewModel.changeMedia(
-                            selectedAudioUri,
-                            resultFile,
-                            AttachmentType.AUDIO
-                        )
-                        viewModel.addMediaToEvent(AttachmentType.AUDIO, file)
-                    }
-                }
-            }
-
-        binding.pickAudio.setOnClickListener {
-            val intent = Intent(
-                Intent.ACTION_PICK,
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-            )
-            pickAudioLauncher.launch(intent)
-        }
-
-        viewModel.media.observe(viewLifecycleOwner) { mediaModel ->
-            if (mediaModel.uri == null) {
-                binding.mediaContainer.visibility = View.GONE
-                return@observe
-            }
-            when (mediaModel.type) {
-                AttachmentType.IMAGE -> {
-                    binding.mediaContainer.visibility = View.VISIBLE
-                    binding.image.setImageURI(mediaModel.uri)
-                }
-                AttachmentType.VIDEO -> {
-                    binding.mediaContainer.visibility = View.VISIBLE
-                    binding.image.setImageResource(R.drawable.pick_video_ic)
-                }
-                AttachmentType.AUDIO -> {
-                    binding.mediaContainer.visibility = View.VISIBLE
-                    binding.image.setImageResource(R.drawable.audiotrack_ic)
-                }
-                null -> return@observe
-            }
-        }
-
-        binding.addSpeakers.setOnClickListener {
-            binding.addSpeakers.isChecked =
-                viewModel.newEvent.value?.speakerIds?.isNotEmpty() ?: false
-            findNavController().navigate(R.id.event_users)
-        }
-
-        binding.addLink.setOnClickListener {
-            val link: String = binding.link.text.toString()
-            viewModel.addLink(link)
-        }
-
-        binding.speakerIds.adapter = adapter
-        viewModel.speakersData.observe(viewLifecycleOwner) {
-            if (it.isEmpty()) {
-                binding.scrollSpeakers.visibility = View.GONE
-            } else {
-                adapter.submitList(it)
-                binding.scrollSpeakers.visibility = View.VISIBLE
-            }
-        }
-
-        viewModel.newEvent.observe(viewLifecycleOwner) {
+        newEventViewModel.newEvent.observe(viewLifecycleOwner) {
             it.content.let(binding.edit::setText)
-            it.link.let(binding.addLink::setText)
-            binding.online.isChecked = it.type == EventType.ONLINE
+            it.link.let(binding.editLink::setText)
+            binding.linkAdd.isChecked = newEventViewModel.newEvent.value?.link != null
+            binding.dateTime.isChecked = newEventViewModel.newEvent.value?.datetime != null
+            binding.type.isChecked = newEventViewModel.newEvent.value?.type == EventType.ONLINE
             if (it.attachment != null) {
-                binding.mediaContainer.visibility = View.VISIBLE
+                binding.image.visibility = View.VISIBLE
+                Glide.with(this)
+                    .load(it.attachment.url)
+                    .error(R.drawable.error_ic)
+                    .placeholder(R.drawable.avatar_placeholder)
+                    .timeout(10_000)
+                    .into(binding.image)
+                binding.menuAdd.isChecked = true
             } else {
-                binding.mediaContainer.visibility = View.GONE
+                binding.menuAdd.isChecked = false
+                binding.image.visibility = View.GONE
             }
+
         }
 
-        binding.removeMedia.setOnClickListener {
-            viewModel.changeMedia(null, null, null)
-            viewModel.newEvent.value = viewModel.newEvent.value?.copy(attachment = null)
-            binding.mediaContainer.visibility = View.GONE
+        binding.image.setOnClickListener {
+            newEventViewModel.deletePicture()
         }
 
-        binding.addDateTime.setOnClickListener {
-            Utils.selectDateTimeDialog(binding.addDateTime, requireContext())
-        }
-
-        binding.save.setOnClickListener {
-            Utils.hideKeyboard(requireView())
+        binding.ok.setOnClickListener {
             val content = binding.edit.text.toString()
-            val datetime = binding.addDateTime.text.toString()
-            viewModel.addDateAndTime(datetime)
-            val event = viewModel.newEvent.value!!.copy(content = content)
-            if (content == "" || datetime == "") {
-                Snackbar.make(binding.root, R.string.enter_text, Snackbar.LENGTH_SHORT).show()
+            val date = newEventViewModel.newEvent.value?.datetime
+            if (content ==""|| date == null) {
+                Snackbar.make(binding.root, R.string.field_cant_be_empty, Snackbar.LENGTH_SHORT).show()
             } else {
-                viewModel.saveEvent(event)
+                newEventViewModel.addPost(content)
             }
         }
-
-        binding.online.setOnClickListener {
-            viewModel.addEventType()
+        binding.dateTime.setOnClickListener {
+            binding.dateTime.isChecked = newEventViewModel.newEvent.value?.datetime != null
+            getDataCalendar()
+            DatePickerDialog(context!!, this, yearEvent, monthEvent, dayEvent).show()
+        }
+        binding.type.setOnClickListener {
+            binding.type.isChecked = newEventViewModel.newEvent.value?.type == EventType.ONLINE
+            newEventViewModel.addTypeEvent()
         }
 
-        viewModel.eventCreated.observe(viewLifecycleOwner) {
+        newEventViewModel.postCreated.observe(viewLifecycleOwner) {
             findNavController().navigateUp()
         }
-        viewModel.dataState.observe(viewLifecycleOwner) { state ->
+
+        newEventViewModel.dataState.observe(viewLifecycleOwner) { state ->
             if (state.error) {
-                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_SHORT)
-                    .show()
+                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_INDEFINITE).show()
             }
         }
-
         return binding.root
+    }
+
+    private fun getDataCalendar(){
+        if (day == 0){
+            val cal = Calendar.getInstance()
+            dayEvent =  cal.get(Calendar.DAY_OF_MONTH)
+            monthEvent  = cal.get(Calendar.MONTH)
+            yearEvent = cal.get(Calendar.YEAR)
+        }
+    }
+
+    private fun getTimeCalendar(){
+        if (day == 0){
+            val cal = Calendar.getInstance()
+            hourEvent = cal.get(Calendar.HOUR)
+            minuteEvent = cal.get(Calendar.MINUTE)
+        }
+    }
+
+
+    override fun onDateSet(p0: DatePicker?, yearOf: Int, monthOf: Int, dayOfMonth: Int) {
+        dayEvent = dayOfMonth
+        monthEvent = monthOf
+        yearEvent = yearOf
+        getTimeCalendar()
+        TimePickerDialog(context, this, hourEvent, minuteEvent, true).show()
+    }
+
+    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+        hourEvent = hourOfDay
+        minuteEvent = minute
+        val date = listOf(dayEvent, monthEvent, yearEvent, hourEvent, minuteEvent)
+        val dateTime = DataConverter.convertDateToLocalDate(date)
+        newEventViewModel.addDateTime(dateTime)
     }
 }

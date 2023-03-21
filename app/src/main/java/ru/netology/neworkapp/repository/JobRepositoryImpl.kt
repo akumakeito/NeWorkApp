@@ -1,10 +1,19 @@
 package ru.netology.neworkapp.repository
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.map
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import ru.netology.neworkapp.apiservice.ApiService
 import ru.netology.neworkapp.dao.JobDao
 import ru.netology.neworkapp.dto.Job
+import ru.netology.neworkapp.dto.Post
 import ru.netology.neworkapp.entity.JobEntity
+import ru.netology.neworkapp.entity.PostEntity
+import ru.netology.neworkapp.entity.toDto
 import ru.netology.neworkapp.entity.toEntity
 import ru.netology.neworkapp.error.ApiError
 import ru.netology.neworkapp.error.NetworkError
@@ -19,7 +28,11 @@ class JobRepositoryImpl @Inject constructor(
     private val jobDao: JobDao
 ): JobRepository {
 
-    override val data: MutableLiveData<List<Job>> = MutableLiveData(emptyJobList)
+
+
+    override val data: Flow<List<Job>> = jobDao.getAllJobs()
+        .map(List<JobEntity>::toDto)
+        .flowOn(Dispatchers.Default)
 
     override suspend fun getUserJobs(id: Int) {
         try {
@@ -28,7 +41,6 @@ class JobRepositoryImpl @Inject constructor(
                 throw ApiError(response.code(), response.message())
             }
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            data.postValue(response.body())
             jobDao.insert(body.toEntity())
         } catch (e: IOException) {
             throw NetworkError
@@ -67,7 +79,6 @@ class JobRepositoryImpl @Inject constructor(
                 throw ApiError(response.code(), response.message())
             }
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            data.postValue(body)
             jobDao.insert(body.toEntity())
         } catch (e: IOException) {
             throw NetworkError

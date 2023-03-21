@@ -4,166 +4,138 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ui.NewPostFragment">
 
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/divider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:background="@android:color/transparent"
+            android:gravity="start|top"
+            android:hint="@string/enter_text"
+            android:inputType="textMultiLine"
+            android:padding="@dimen/common_spacing"
+            tools:ignore="LabelFor" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/editText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints=""
-                android:background="@android:color/transparent"
-                android:gravity="start|top"
-                android:hint="@string/enter_text"
-                android:inputType="textMultiLine"
-                android:padding="@dimen/common_spacing"
-                tools:ignore="LabelFor" />
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/link"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:autofillHints=""
+                android:layout_weight="2"
                 android:hint="@string/enter_link"
                 android:inputType="textUri"
                 android:padding="@dimen/small_spacing" />
 
-            <FrameLayout
-                android:id="@+id/media_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/photo"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/media_height"
-                    android:layout_gravity="center_horizontal"
-                    tools:ignore="ContentDescription" />
-
-                <com.google.android.exoplayer2.ui.PlayerView
-                    android:id="@+id/video_player_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/media_height"
-                    android:layout_gravity="center_horizontal" />
-
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/removeMedia"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:text="@string/remove" />
-            </FrameLayout>
-
-            <ScrollView
-                android:id="@+id/mentioned_users_scroll"
-                android:layout_width="match_parent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/add_link_btn"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/small_spacing"
-                android:visibility="visible"
-                tools:ignore="NestedScrolling">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/mentioned_users"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/mentioned_users_list"
-                    android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-                    app:spanCount="3"
-                    tools:listitem="@layout/card_user_preview" />
-
-
-            </ScrollView>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/add_mention_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/add_user"
-                    android:padding="@dimen/small_spacing"
-                    android:layout_margin="@dimen/small_spacing"/>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/save"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/save"
-                    android:padding="@dimen/small_spacing"
-                    android:layout_margin="@dimen/small_spacing"/>
-
-            </LinearLayout>
-
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@color/accent"
+                app:icon="@drawable/baseline_add_link_24"
+                app:iconTint="@color/white"
+                tools:ignore="RelativeOverlap,RtlSymmetry" />
 
         </LinearLayout>
-    </ScrollView>
 
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="@dimen/common_spacing"
-        android:layout_marginEnd="@dimen/common_spacing"
-        app:layout_constraintBottom_toTopOf="@id/buttonPanel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <FrameLayout
+            android:id="@+id/media_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:id="@+id/buttonPanel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/photo"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/media_height"
+                android:layout_gravity="center_horizontal"
+                tools:ignore="ContentDescription" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/pickPhoto"
-            style="@style/Widget.AppTheme.IconStyle"
+            <com.google.android.exoplayer2.ui.PlayerView
+                android:id="@+id/video_player_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/media_height"
+                android:layout_gravity="center_horizontal" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/removeMedia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:text="@string/remove" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/buttonPanel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/common_spacing"
-            app:icon="@drawable/pick_photo_ic" />
+            android:orientation="horizontal"
+            android:layout_gravity="bottom">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/takePhoto"
-            style="@style/Widget.AppTheme.IconStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/common_spacing"
-            app:icon="@drawable/take_photo_ic" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/pickPhoto"
+                style="@style/Widget.AppTheme.IconStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/common_spacing"
+                app:icon="@drawable/pick_photo_ic" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/pickVideo"
-            style="@style/Widget.AppTheme.IconStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/common_spacing"
-            app:icon="@drawable/pick_video_ic" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/takePhoto"
+                style="@style/Widget.AppTheme.IconStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/common_spacing"
+                app:icon="@drawable/take_photo_ic" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/pickAudio"
-            style="@style/Widget.AppTheme.IconStyle"
-            android:layout_width="wrap_content"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/pickVideo"
+                style="@style/Widget.AppTheme.IconStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/common_spacing"
+                app:icon="@drawable/pick_video_ic" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/pickAudio"
+                style="@style/Widget.AppTheme.IconStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/common_spacing"
+                app:icon="@drawable/pick_audio_ic" />
+        </LinearLayout>
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/save"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/common_spacing"
-            app:icon="@drawable/pick_audio_ic" />
+            android:layout_gravity="bottom"
+            android:layout_margin="@dimen/small_spacing"
+            android:src="@drawable/ok_ic"
+            android:padding="@dimen/small_spacing"
+            android:text="@string/save" />
+
+
     </LinearLayout>
+
+
+
 
 
 </LinearLayout>

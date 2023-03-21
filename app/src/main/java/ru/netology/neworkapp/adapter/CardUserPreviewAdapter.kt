@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.neworkapp.databinding.CardUserPreviewBinding
-import ru.netology.neworkapp.databinding.FragmentUserProfileBinding
 import ru.netology.neworkapp.dto.User
 import ru.netology.neworkapp.util.loadCircleCrop
 

@@ -55,5 +55,15 @@
     <string name="event_type_online">Online</string>
     <string name="date">Date</string>
     <string name="add_speakers">Add speakers</string>
+    <string name="add_date_time">Add speakers</string>
     <string name="create_event">Create event</string>
+    <string name="ok">OK</string>
+    <string name="users">Users</string>
+    <string name="be_lost">All changes be lost</string>
+    <string name="add_link">Add link</string>
+    <string name="edit_job">Edit Job</string>
+    <string name="till_now">Till now</string>
+    <string name="edit_event">Edit event</string>
+    <string name="edit_post">Edit post</string>
+    <string name="new_event">New event</string>
 </resources>

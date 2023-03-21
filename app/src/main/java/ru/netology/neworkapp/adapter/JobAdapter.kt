@@ -3,9 +3,11 @@ package ru.netology.neworkapp.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.TypedArrayUtils.getString
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import ru.netology.neworkapp.R
 import ru.netology.neworkapp.databinding.CardJobBinding
 import ru.netology.neworkapp.dto.Job
 import ru.netology.neworkapp.util.Utils
@@ -13,6 +15,8 @@ import ru.netology.neworkapp.util.Utils
 interface OnJobInteractionListener {
     fun onLinkClick(url: String) {}
     fun onRemoveJob(job: Job) {}
+
+    fun onEditJob(job: Job) {}
 }
 
 class JobAdapter (private val onInteractionListener: OnJobInteractionListener) : ListAdapter<Job,
@@ -38,7 +42,7 @@ class JobViewHolder(
             companyName.text = job.name
             position.text = job.position
             startDate.text = Utils.convertDate(job.start)
-            endDate.text = job.finish?.let { Utils.convertDate(it) }
+            if (job.finish.isNullOrBlank()) endDate.setText(R.string.till_now) else { endDate.text = Utils.convertDate(job.finish) }
             link.text = job.link
             link.setOnClickListener {
                 listener.onLinkClick(link.text.toString())
@@ -47,6 +51,11 @@ class JobViewHolder(
             delete.setOnClickListener {
                 listener.onRemoveJob(job)
             }
+
+            editJob.setOnClickListener {
+                listener.onEditJob(job)
+            }
+
         }
     }
 }

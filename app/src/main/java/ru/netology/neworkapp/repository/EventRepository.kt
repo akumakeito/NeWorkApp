@@ -8,16 +8,22 @@ import ru.netology.neworkapp.dto.*
 
 interface EventRepository {
     val data: Flow<PagingData<Event>>
-    val eventUsersData: MutableLiveData<List<UserPreview>>
-    suspend fun getEventUsersList(event: Event)
     suspend fun removeEventById(id: Int)
     suspend fun likeEventById(id: Int): Event
-    suspend fun dislikeEventById(id: Int): Event
-    suspend fun participateInEvent(id: Int): Event
-    suspend fun quitParticipateInEvent(id: Int): Event
-    suspend fun getUsers(): List<User>
-    suspend fun addMediaToEvent(type: AttachmentType, file: MultipartBody.Part): Attachment
-    suspend fun saveEvent(event: EventCreateRequest)
-    suspend fun getEventCreateRequest(id: Int): EventCreateRequest
-    suspend fun getUserById(id: Int): User
+    suspend fun unlikeEventById(id: Int): Event
+
+    suspend fun getEvents()
+
+    suspend fun addPictureToTheEvent(
+        attachmentType: AttachmentType,
+        image: MultipartBody.Part
+    ): Attachment
+
+    suspend fun saveEventWithAttachment(event: Event, mediaUpload: MediaUpload, type: AttachmentType)
+    suspend fun getEvent(id: Int): EventRequest
+    suspend fun saveEvent(event: Event)
+
+    suspend fun addEvent(event: EventRequest)
+
+    suspend fun uploadMedia(type: AttachmentType, upload: MediaUpload): Attachment
 }

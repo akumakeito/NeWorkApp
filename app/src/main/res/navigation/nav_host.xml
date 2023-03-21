@@ -45,6 +45,9 @@
         <action
             android:id="@+id/action_userProfileFragment_to_newJobFragment"
             app:destination="@id/newJobFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_editJobFragment"
+            app:destination="@id/editJobFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -80,7 +83,7 @@
     </fragment>
     <fragment
         android:id="@+id/choosePostUsersFragment"
-        android:name="ru.netology.nework.ui.ChoosePostUsersFragment"
+        android:name="ru.netology.neworkapp.ui.ChoosePostUsersFragment"
         android:label="fragment_choose_user"
         tools:layout="@layout/fragment_choose_user" />
     <fragment
@@ -96,5 +99,17 @@
         android:id="@+id/feedEventFragment"
         android:name="ru.netology.neworkapp.ui.FeedEventFragment"
         android:label="fragment_feed_events"
-        tools:layout="@layout/fragment_feed_events" />
+        tools:layout="@layout/fragment_feed_events" >
+        <action
+            android:id="@+id/action_feedEventFragment_to_editEventFragment"
+            app:destination="@id/editEventFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editEventFragment"
+        android:name="ru.netology.neworkapp.ui.EditEventFragment"
+        android:label="EditEventFragment" />
+    <fragment
+        android:id="@+id/editJobFragment"
+        android:name="ru.netology.neworkapp.ui.EditJobFragment"
+        android:label="EditJobFragment" />
 </navigation>

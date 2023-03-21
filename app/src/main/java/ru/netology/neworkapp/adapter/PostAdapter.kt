@@ -1,5 +1,6 @@
 package ru.netology.neworkapp.adapter
 
+import android.net.Uri
 import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.View
@@ -27,7 +28,6 @@ interface OnPostInteractionListener {
     fun onLike(post: Post)
     fun onEdit(post: Post)
     fun onRemove(post: Post)
-    fun showMentionedUsers(post: Post)
 }
 
 class PostAdapter(
@@ -71,11 +71,6 @@ class PostViewHolder(
             published.text =
                 Utils.formatMillisToDateTimeString(post.published.toEpochMilli())
             postText.text = post.content
-            BetterLinkMovementMethod.linkify(Linkify.WEB_URLS, postText)
-                .setOnLinkClickListener { textView, url ->
-                    onPostInteractionListener.onLinkClick(url)
-                    true
-                }
 
 
             post.authorAvatar?.let {
@@ -92,21 +87,22 @@ class PostViewHolder(
                 onPostInteractionListener.onAvatarClick(post)
             }
 
+            link.text = post.link
+
+            link.setOnClickListener {
+                var url = link.text.toString()
+                if (!url.startsWith("http://") || !url.startsWith("https://"))
+                    url = "http://" + url;
+                onPostInteractionListener.onLinkClick(url)
+            }
+
+
             like.isChecked = post.likedByMe
 
             like.setOnClickListener {
                 onPostInteractionListener.onLike(post)
             }
 
-            if (post.mentionedMe) {
-                mentionedUsers.setIconTintResource(R.color.accent)
-            }
-
-            mentionedUsers.text = post.mentionIds.size.toString()
-
-            mentionedUsers.setOnClickListener {
-                onPostInteractionListener.showMentionedUsers(post)
-            }
 
             if (post.attachment == null) {
                 postImage.visibility = View.GONE
@@ -118,7 +114,9 @@ class PostViewHolder(
                         videoContainer.visibility = View.GONE
                         postImage.visibility = View.VISIBLE
                         videoPreview = null
-                        postImage.loadImage(post.attachment.url)
+                        Glide.with(binding.postImage)
+                            .load(post.attachment.url)
+                            .into(binding.postImage)
                     }
                     AttachmentType.VIDEO -> {
                         videoContainer.visibility = View.VISIBLE
@@ -132,68 +130,37 @@ class PostViewHolder(
                         videoContainer.visibility = View.VISIBLE
                         postImage.visibility = View.GONE
                         videoPreview = MediaItem.fromUri(post.attachment.url)
-                        videoThumbnail.setImageDrawable(
-                            AppCompatResources.getDrawable(
-                                itemView.context,
-                                R.drawable.audiotrack_ic
-                            )
-                        )
 
                     }
                 }
             }
 
-            if (!post.ownedByMe) {
-                postMenu.visibility = View.GONE
-            } else {
-                postMenu.visibility = View.VISIBLE
-                postMenu.setOnClickListener {
-                    PopupMenu(it.context, it).apply {
-                        inflate(R.menu.list_item_menu)
-                        menu.setGroupVisible(R.menu.list_item_menu, post.ownedByMe)
-                        setOnMenuItemClickListener { item ->
-                            when (item.itemId) {
-                                R.id.edit -> {
-                                    onPostInteractionListener.onEdit(post)
-                                    true
-                                }
-                                R.id.remove -> {
-                                    onPostInteractionListener.onRemove(post)
-                                    true
-                                }
-                                else -> false
+            postMenu.visibility = if (post.ownedByMe) View.VISIBLE else View.INVISIBLE
+
+            postMenu.setOnClickListener {
+                PopupMenu(it.context, it).apply {
+                    inflate(R.menu.list_item_menu)
+                    menu.setGroupVisible(R.menu.list_item_menu, post.ownedByMe)
+                    setOnMenuItemClickListener { item ->
+                        when (item.itemId) {
+                            R.id.edit -> {
+                                onPostInteractionListener.onEdit(post)
+                                true
                             }
+                            R.id.remove -> {
+                                onPostInteractionListener.onRemove(post)
+                                true
+                            }
+                            else -> false
                         }
-                    }.show()
+                    }
+                }.show()
 
-                }
-            }
-
-            if (post.users.isEmpty()) {
-                postUsersGroup.visibility = View.GONE
-            } else {
-                postUsersGroup.visibility = View.VISIBLE
-                post.users.values.first().avatarUrl?.let {
-                    firstUserAvatar.loadCircleCrop(it)
-                }
-                if (post.users.size >= 2) {
-                    val likedAndMentionedUsersText =
-                        "${post.users.values.first().name} and ${post.users.size - 1} users"
-                    likedAndMentionedUsers.text = likedAndMentionedUsersText
-                } else if (post.users.size == 1) {
-                    likedAndMentionedUsers.text = post.users.values.first().name
-                }
-
-                postUsersGroup.setOnClickListener {
-                    onPostInteractionListener.showMentionedUsers(post)
-                }
             }
         }
 
-
     }
 }
-
 
 
 class PostDiffCallback : DiffUtil.ItemCallback<Post>() {

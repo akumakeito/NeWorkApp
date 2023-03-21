@@ -59,6 +59,7 @@ interface ApiService {
     @GET("users/{user_id}")
     suspend fun getUserById(@Path("user_id") userId : Int) : Response<User>
 
+    @FormUrlEncoded
     @Multipart
     @POST("users/registration")
     suspend fun registerWithPhoto(
@@ -109,17 +110,17 @@ interface ApiService {
     @DELETE("events/{id}/likes")
     suspend fun dislikeEventById(@Path("id") id: Int): Response<Event>
 
-    @POST("events/{id}/participants")
-    suspend fun participateInEvent(@Path("id") id: Int): Response<Event>
-
-    @DELETE("events/{id}/participants")
-    suspend fun quitParticipateInEvent(@Path("id") id: Int): Response<Event>
+    @POST("events")
+    suspend fun saveEvent(@Body event: Event): Response<Event>
 
     @POST("events")
-    suspend fun saveEvent(@Body event: EventCreateRequest): Response<Event>
+    suspend fun addEvent(@Body post: EventRequest): Response<Event>
+
+    @GET("events")
+    suspend fun getEvents() : Response<List<Event>>
 
     @GET("events/{event_id}")
-    suspend fun getEventById(@Path("event_id") id: Int): Response<Event>
+    suspend fun getEvent(@Path("event_id") id: Int): Response<Event>
 
 
     //media

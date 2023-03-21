@@ -35,7 +35,8 @@
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="16dp"
                         tools:layout_editor_absoluteY="16dp"
-                        tools:srcCompat="@tools:sample/avatars" />
+                        tools:srcCompat="@tools:sample/avatars"
+                        tools:ignore="ContentDescription" />
 
                     <TextView
                         android:id="@+id/name"

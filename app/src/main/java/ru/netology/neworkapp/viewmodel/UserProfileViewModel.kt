@@ -1,10 +1,8 @@
 package ru.netology.neworkapp.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.netology.neworkapp.auth.AppAuth
 import ru.netology.neworkapp.dto.Job
@@ -15,7 +13,7 @@ import ru.netology.neworkapp.repository.UserRepository
 import ru.netology.neworkapp.util.SingleLiveEvent
 import javax.inject.Inject
 
-val editedJob = Job(
+val emptyJob = Job(
     id = 0,
     name = "",
     position = "",
@@ -33,7 +31,7 @@ class UserProfileViewModel @Inject constructor(
 
     val myId: Int = appAuth.authStateFlow.value.id
 
-    val newJob: MutableLiveData<Job> = MutableLiveData(editedJob)
+    val editedJob: MutableLiveData<Job> = MutableLiveData(emptyJob)
 
     private val _jobCreated = SingleLiveEvent<Unit>()
     val jobCreated: LiveData<Unit>
@@ -42,7 +40,7 @@ class UserProfileViewModel @Inject constructor(
     val data: MutableLiveData<List<User>> = userRepository.data
     val userData: MutableLiveData<User> = userRepository.userData
 
-    val jobData: MutableLiveData<List<Job>> = jobRepository.data
+    val jobData: LiveData<List<Job>> = jobRepository.data.asLiveData(Dispatchers.Default)
 
 
     private val _dataState = MutableLiveData<FeedModelState>()
@@ -80,9 +78,10 @@ class UserProfileViewModel @Inject constructor(
         }
     }
 
-    fun saveJob(job: Job) {
+    fun saveJob() {
         viewModelScope.launch {
             try {
+                val job = editedJob.value!!
                 jobRepository.saveJob(job)
                 _dataState.value = FeedModelState(loading = false)
                 deleteEditJob()
@@ -116,14 +115,44 @@ class UserProfileViewModel @Inject constructor(
     }
 
     fun deleteEditJob() {
-        newJob.postValue(editedJob)
+        editedJob.postValue(emptyJob)
     }
 
-    fun addStartDate(date: String) {
-        newJob.value = newJob.value?.copy(start = date)
+    fun editJob(job: Job) {
+        editedJob.value = job
     }
 
-    fun addEndDate(date: String) {
-        newJob.value = newJob.value?.copy(finish = date)
+    fun changeJobCompany(company: String) {
+        var text = company.trim()
+
+        if (editedJob.value?.name == text) return
+        editedJob.value = editedJob.value?.copy(name = text)
+    }
+
+
+    fun changeJobPosition(position: String) {
+        var positionText = position.trim()
+        if (editedJob.value?.position == positionText) return
+        editedJob.value = editedJob.value?.copy(position = positionText)
+    }
+
+    fun changeJobLink(link: String?) {
+        var linkText = link?.trim()
+
+        if (editedJob.value?.link == linkText) return
+        editedJob.value = editedJob.value?.copy(link = linkText)
+    }
+
+    fun updateStartDate(date: String) {
+        editedJob.value = editedJob.value?.copy(start = date)
+    }
+
+    fun updateEndDate(date: String?) {
+        println("update to date ${date}")
+        editedJob.value = editedJob.value?.copy(finish = date)
+    }
+
+    fun clearEndDate() {
+        editedJob.value = editedJob.value?.copy(finish = null)
     }
 }
