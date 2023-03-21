@@ -14,7 +14,6 @@ import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.snackbar.Snackbar
@@ -22,13 +21,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import ru.netology.neworkapp.R
-import ru.netology.neworkapp.adapter.CardUserPreviewAdapter
-import ru.netology.neworkapp.adapter.OnCardUserPreviewInteractionListener
 import ru.netology.neworkapp.databinding.FragmentNewPostBinding
 import ru.netology.neworkapp.dto.AttachmentType
 import ru.netology.neworkapp.ui.FeedPostFragment.Companion.intArg
 import ru.netology.neworkapp.util.Utils
-import ru.netology.neworkapp.util.loadImage
 import ru.netology.neworkapp.viewmodel.PostViewModel
 import java.io.File
 
