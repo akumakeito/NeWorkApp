@@ -29,11 +29,14 @@ class EditJobFragment : Fragment() {
 
         val job = viewModel.editedJob
 
-        binding.company.setText(job?.value?.name)
-        binding.position.setText(job?.value?.position)
-        binding.addStartDate.setText(job?.value?.start)
-        binding.addEndDate.setText(job?.value?.finish)
-        binding.link.setText(job?.value?.link)
+        job.value?.let{
+            binding.company.setText(it.name)
+            binding.position.setText(it.position)
+            binding.addStartDate.setText(it.start)
+            binding.addEndDate.setText(it.finish)
+            binding.link.setText(it.link)
+        }
+
 
 
 
