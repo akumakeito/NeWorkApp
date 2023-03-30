@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/feed_post_nav"
+        android:id="@+id/postFragment"
         android:icon="@drawable/home_ic"
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/feed_event_nav"
+        android:id="@+id/feedEventFragment"
         android:icon="@drawable/event_ic"
         android:title="@string/events" />
 
     <item
-        android:id="@+id/user_profile_nav"
+        android:id="@+id/userProfileFragment"
         android:icon="@drawable/user_ic"
         android:title="@string/my_profile" />
 

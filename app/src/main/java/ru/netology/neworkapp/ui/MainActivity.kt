@@ -25,9 +25,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfig: AppBarConfiguration
 
-    fun setActionBarTitle(title: String) {
-        binding.toolbar.title = title
-    }
+//   TODO fun setActionBarTitle(title: String) {
+//        binding.toolbar.title = title
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,9 +51,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         val topLevelDestinations = setOf(
-            R.id.feed_post_nav,
-            R.id.feed_event_nav,
-            R.id.user_profile_nav,
+            R.id.postFragment,
+            R.id.feedEventFragment,
+            R.id.userProfileFragment,
         )
 
         appBarConfig = AppBarConfiguration.Builder(topLevelDestinations).build()
@@ -139,27 +139,6 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavView.setupWithNavController(navController)
 
-        bottomNavView.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.feed_post_nav -> {
-                    navController.navigate(R.id.postFragment)
-                    true
-                }
-
-                R.id.feed_event_nav -> {
-                    navController.navigate(R.id.feedEventFragment)
-                    true
-                }
-
-                R.id.user_profile_nav -> {
-                    navController.navigate(R.id.userProfileFragment)
-                    true
-                }
-
-                else -> false
-
-            }
-        }
 
         binding.fabAddPost.setOnClickListener {
             navController.navigate(R.id.newPostFragment)
@@ -176,14 +155,14 @@ class MainActivity : AppCompatActivity() {
                 binding.fabLayout.visibility = View.GONE
                 binding.loginButton.visibility = View.VISIBLE
                 binding.signUpButton.visibility = View.VISIBLE
-                binding.bottomNavView.menu.findItem(R.id.user_profile_nav).isEnabled = false
-                binding.bottomNavView.menu.findItem(R.id.user_profile_nav).isVisible = false
+                binding.bottomNavView.menu.findItem(R.id.userProfileFragment).isEnabled = false
+                binding.bottomNavView.menu.findItem(R.id.userProfileFragment).isVisible = false
             } else {
                 binding.fab.visibility = View.VISIBLE
                 binding.loginButton.visibility = View.GONE
                 binding.signUpButton.visibility = View.GONE
-                binding.bottomNavView.menu.findItem(R.id.user_profile_nav).isEnabled = true
-                binding.bottomNavView.menu.findItem(R.id.user_profile_nav).isVisible = true
+                binding.bottomNavView.menu.findItem(R.id.userProfileFragment).isEnabled = true
+                binding.bottomNavView.menu.findItem(R.id.userProfileFragment).isVisible = true
             }
         }
 
