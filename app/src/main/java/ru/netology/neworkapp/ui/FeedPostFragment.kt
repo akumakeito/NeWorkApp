@@ -66,7 +66,7 @@ class FeedPostFragment : Fragment() {
 
         navController = findNavController()
 
-        val currentBackStackEntry = navController.currentBackStackEntry!!
+        val currentBackStackEntry = requireNotNull(navController.currentBackStackEntry)
         val savedStateHandle = currentBackStackEntry.savedStateHandle
         savedStateHandle.getLiveData<Boolean>(LoginFragment.LOGIN_SUCCESSFUL)
             .observe(currentBackStackEntry) { success ->

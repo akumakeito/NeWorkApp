@@ -46,7 +46,7 @@ class LoginFragment : Fragment() {
         val binding = FragmentLoginBinding.inflate(inflater, container, false)
 
         navController = findNavController()
-        savedStateHandle = navController.previousBackStackEntry!!.savedStateHandle
+        savedStateHandle = requireNotNull(navController.previousBackStackEntry).savedStateHandle
         savedStateHandle.set(LOGIN_SUCCESSFUL, false)
 
         viewModel.dataState.observe(viewLifecycleOwner) {

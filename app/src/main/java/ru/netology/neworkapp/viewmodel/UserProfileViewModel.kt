@@ -81,7 +81,7 @@ class UserProfileViewModel @Inject constructor(
     fun saveJob() {
         viewModelScope.launch {
             try {
-                val job = editedJob.value!!
+                val job = requireNotNull(editedJob.value)
                 jobRepository.saveJob(job)
                 _dataState.value = FeedModelState(loading = false)
                 deleteEditJob()

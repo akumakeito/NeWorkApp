@@ -49,7 +49,7 @@ object Utils {
     }
 
     fun convertDateAndTime(dateAndTime: String): String {
-        return if (dateAndTime == "") {
+        return if (dateAndTime.isBlank()) {
             ""
         } else {
             val parsedDate = LocalDateTime.parse(dateAndTime, DateTimeFormatter.ISO_DATE_TIME)
@@ -58,7 +58,7 @@ object Utils {
     }
 
     fun convertDate(date: String): String {
-        return if (date == "") {
+        return if (date.isBlank()) {
             ""
         } else {
             val parsedDate = LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME)
@@ -88,7 +88,7 @@ object Utils {
             cursor = activity.contentResolver.query(uri, projection, null, null, null)
             val columnIndex = cursor?.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)
             cursor?.moveToFirst()
-            cursor?.getString(columnIndex!!)
+            cursor?.getString(requireNotNull(columnIndex))
         } finally {
             cursor?.close()
         }
@@ -101,7 +101,7 @@ object Utils {
             cursor = activity.contentResolver.query(uri, projection, null, null, null)
             val columnIndex = cursor?.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
             cursor?.moveToFirst()
-            cursor?.getString(columnIndex!!)
+            cursor?.getString(requireNotNull(columnIndex))
         } finally {
             cursor?.close()
         }
@@ -110,7 +110,7 @@ object Utils {
 
 object DataConverter {
     fun convertDataTime(dateTime: String): String {
-        return if (dateTime == "") {
+        return if (dateTime.isBlank()) {
             ""
         } else {
             val parsedDate = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_DATE_TIME)
@@ -120,7 +120,7 @@ object DataConverter {
 
     @SuppressLint("SimpleDateFormat")
     fun convertDataTimeJob(dateTime: String): String {
-        return if (dateTime == "") {
+        return if (dateTime.isBlank()) {
             ""
         } else {
             val parsedDate = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_DATE_TIME)
@@ -150,7 +150,7 @@ object DataConverter {
         val formatter = SimpleDateFormat("dd.MM.yyyy")
         val date = formatter.parse(newDate)
         val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'")
-        return sdf.format(date!!)
+        return sdf.format(requireNotNull(date))
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -185,6 +185,6 @@ object DataConverter {
         val formatter = SimpleDateFormat("dd.MM.yyyy HH:mm")
         val date = formatter.parse(newDate)
         val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'")
-        return sdf.format(date!!)
+        return sdf.format(requireNotNull(date))
     }
 }

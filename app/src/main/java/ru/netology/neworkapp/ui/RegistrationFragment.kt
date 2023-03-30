@@ -113,7 +113,7 @@ class RegistrationFragment : Fragment() {
 
                 if (resultCode == Activity.RESULT_OK) {
                     //Image Uri will not be null for RESULT_OK
-                    val fileUri = data?.data!!
+                    val fileUri = requireNotNull(data?.data)
                     viewModel.changePhoto(fileUri, fileUri.toFile())
                 } else if (resultCode == ImagePicker.RESULT_ERROR) {
                     Snackbar.make(

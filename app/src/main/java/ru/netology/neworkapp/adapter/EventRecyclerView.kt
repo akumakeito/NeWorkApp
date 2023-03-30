@@ -128,7 +128,7 @@ class EventRecyclerView : RecyclerView {
     }
 
     private fun addVideoView() {
-        videoContainer!!.addView(videoSurfaceView)
+        requireNotNull(videoContainer).addView(videoSurfaceView)
         isVideoViewAdded = true
         videoSurfaceView.requestFocus()
         videoSurfaceView.visibility = View.VISIBLE

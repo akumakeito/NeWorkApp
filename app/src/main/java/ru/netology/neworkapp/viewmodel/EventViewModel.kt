@@ -187,7 +187,7 @@ class EventViewModel @Inject constructor(
 
     fun saveEvent() {
         viewModelScope.launch {
-            val edit = edited.value!!
+            val edit = requireNotNull(edited.value)
             try {
                 _dataState.value = FeedModelState(loading = true)
                 when (_media.value) {

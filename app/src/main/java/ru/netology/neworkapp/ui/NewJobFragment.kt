@@ -51,27 +51,27 @@ class NewJobFragment : Fragment() {
 
         binding.save.setOnClickListener {
             Utils.hideKeyboard(requireView())
-            if (binding.company.text.toString() == "" || binding.position.text.toString() == "" || binding.addStartDate.text.toString() == "") {
+            if (binding.company.text.toString().isBlank() || binding.position.text.toString().isBlank() || binding.addStartDate.text.toString().isBlank()) {
                 Snackbar.make(
                     binding.root,
                     R.string.field_cant_be_empty,
                     Snackbar.LENGTH_SHORT
                 ).show()
             } else {
-                val id = if (viewModel.editedJob.value!!.id == 0) {
+                val id = if (requireNotNull(viewModel.editedJob.value).id == 0) {
                     0
                 } else {
-                    viewModel.editedJob.value!!.id
+                    requireNotNull(viewModel.editedJob.value).id
                 }
                 val name = binding.company.text.trim().toString()
                 val position = binding.position.text.trim().toString()
                 val start = binding.addStartDate.text.trim().toString()
-                val finish = if (binding.addEndDate.text.toString() == "") {
+                val finish = if (binding.addEndDate.text.toString().isBlank()) {
                     null
                 } else {
                     binding.addEndDate.text.trim().toString()
                 }
-                val link = if (binding.link.text.toString() == "") {
+                val link = if (binding.link.text.toString().isBlank()) {
                     null
                 } else {
                     binding.link.text.trim().toString()

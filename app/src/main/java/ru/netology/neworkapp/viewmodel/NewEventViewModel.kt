@@ -61,7 +61,7 @@ class NewEventViewModel @Inject constructor(
 
     fun addPost(content: String) {
         newEvent.value = newEvent.value?.copy(content = content)
-        val event = newEvent.value!!
+        val event = requireNotNull(newEvent.value)
         viewModelScope.launch {
             try {
                 repository.addEvent(event)
@@ -75,10 +75,10 @@ class NewEventViewModel @Inject constructor(
     }
 
     fun addLink(link: String) {
-        if (link != "") {
-            newEvent.value = newEvent.value?.copy(link = link)
-        } else {
+        if (link.isBlank()) {
             newEvent.value = newEvent.value?.copy(link = null)
+        } else {
+            newEvent.value = newEvent.value?.copy(link = link)
         }
     }
 

@@ -123,8 +123,8 @@ class PostRepositoryImpl @Inject constructor(
                 throw ApiError(response.code(), response.message())
             }
 
-            val usersList = response.body()?.users?.values?.toMutableList()!!
-            postUserData.postValue(usersList)
+            val usersList = response.body()?.users?.values?.toMutableList()
+            postUserData.postValue(requireNotNull(usersList))
         } catch (e: IOException) {
             throw NetworkError
         }

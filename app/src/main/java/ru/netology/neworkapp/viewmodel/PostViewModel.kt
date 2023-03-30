@@ -162,7 +162,7 @@ class PostViewModel @Inject constructor(
 
     fun savePost() {
         viewModelScope.launch {
-            val post = edited.value!!
+            val post = requireNotNull(edited.value)
             try {
                 _dataState.value = FeedModelState(loading = true)
                 when (_media.value) {

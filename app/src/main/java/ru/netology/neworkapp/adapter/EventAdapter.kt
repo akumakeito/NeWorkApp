@@ -10,7 +10,6 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.exoplayer2.MediaItem
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.netology.neworkapp.R
 import ru.netology.neworkapp.databinding.CardEventBinding
 import ru.netology.neworkapp.dto.AttachmentType
@@ -23,12 +22,12 @@ import ru.netology.neworkapp.util.loadImage
 
 interface OnEventInteractionListener {
     fun onLike(event: Event) {}
-//    fun onParticipateInEvent(event: Event) {}
+
     fun onEdit(event: Event) {}
     fun onRemove(event: Event) {}
 
     fun onLinkClick(url: String) {}
-//    fun loadEventUsersList(event: Event) {}
+
 }
 
 class EventAdapter(
@@ -69,7 +68,7 @@ class EventViewHolder(
                 }
 
 
-            if (event.attachment?.url != "") {
+            if (!event.attachment?.url.isNullOrBlank()) {
                 when (event.attachment?.type) {
                     AttachmentType.IMAGE -> {
                         videoPreview = null

@@ -85,7 +85,7 @@ class NewEventFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
                         val uri: Uri? = it.data?.data
                         val resultFile = uri?.toFile()
                         file = MultipartBody.Part.createFormData(
-                            "file", resultFile?.name, resultFile!!.asRequestBody())
+                            "file", resultFile?.name, requireNotNull(resultFile).asRequestBody())
                         newEventViewModel.addPictureToThePost(file)
                         binding.image.setImageURI(uri)
                     }
@@ -148,7 +148,7 @@ class NewEventFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
         binding.ok.setOnClickListener {
             val content = binding.edit.text.toString()
             val date = newEventViewModel.newEvent.value?.datetime
-            if (content ==""|| date == null) {
+            if (content.isBlank()|| date == null) {
                 Snackbar.make(binding.root, R.string.field_cant_be_empty, Snackbar.LENGTH_SHORT).show()
             } else {
                 newEventViewModel.addPost(content)

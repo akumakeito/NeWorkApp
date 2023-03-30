@@ -94,7 +94,7 @@ class NewPostFragment : Fragment() {
                 val data = activityResult.data
 
                 if (resultCode == Activity.RESULT_OK) {
-                    val selectedVideoUri = data?.data!!
+                    val selectedVideoUri = requireNotNull(data?.data)
                     val selectedVideoPath =
                         Utils.getVideoPathFromUri(selectedVideoUri, requireActivity())
                     if (selectedVideoPath != null) {
@@ -124,7 +124,7 @@ class NewPostFragment : Fragment() {
                 val data = activityResult.data
 
                 if (resultCode == Activity.RESULT_OK) {
-                    val selectedAudioUri = data?.data!!
+                    val selectedAudioUri = requireNotNull(data?.data)
                     val selectedAudioPath =
                         Utils.getAudioPathFromUri(selectedAudioUri, requireActivity())
                     if (selectedAudioPath != null) {
