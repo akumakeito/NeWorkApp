@@ -25,9 +25,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfig: AppBarConfiguration
 
-//   TODO fun setActionBarTitle(title: String) {
-//        binding.toolbar.title = title
-//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,17 +109,6 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.newJobFragment -> {
-                    bottomNavView.visibility = View.GONE
-                    binding.bottomAppBar.visibility = View.GONE
-                    binding.fabLayout.visibility = View.GONE
-                }
-                R.id.chooseEventUsersFragment -> {
-                    bottomNavView.visibility = View.GONE
-                    binding.bottomAppBar.visibility = View.GONE
-                    binding.fabLayout.visibility = View.GONE
-                }
-
-                R.id.choosePostUsersFragment -> {
                     bottomNavView.visibility = View.GONE
                     binding.bottomAppBar.visibility = View.GONE
                     binding.fabLayout.visibility = View.GONE

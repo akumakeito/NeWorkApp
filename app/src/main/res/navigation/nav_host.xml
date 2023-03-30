@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/postFragment"
         android:name="ru.netology.neworkapp.ui.FeedPostFragment"
-        android:label="PostFragment" >
+        android:label="@string/posts" >
         <action
             android:id="@+id/action_postFragment_to_editPostFragment"
             app:destination="@id/editPostFragment" />
@@ -18,9 +18,6 @@
         <action
             android:id="@+id/action_postFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
-        <action
-            android:id="@+id/action_postFragment_to_feedUserFragment"
-            app:destination="@id/feedUserFragment" />
         <action
             android:id="@+id/action_postFragment_to_registrationFragment"
             app:destination="@id/registrationFragment" />
@@ -37,11 +34,11 @@
     <fragment
         android:id="@+id/editPostFragment"
         android:name="ru.netology.neworkapp.ui.EditPostFragment"
-        android:label="EditPostFragment" />
+        android:label="@string/edit_post" />
     <fragment
         android:id="@+id/userProfileFragment"
         android:name="ru.netology.neworkapp.ui.UserProfileFragment"
-        android:label="UserProfileFragment" >
+        android:label="@string/my_profile" >
         <action
             android:id="@+id/action_userProfileFragment_to_newJobFragment"
             app:destination="@id/newJobFragment" />
@@ -52,15 +49,11 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="ru.netology.neworkapp.ui.LoginFragment"
-        android:label="LoginFragment" />
-    <fragment
-        android:id="@+id/feedUserFragment"
-        android:name="ru.netology.neworkapp.ui.FeedUserFragment"
-        android:label="FeedUserFragment" />
+        android:label="@string/login" />
     <fragment
         android:id="@+id/registrationFragment"
         android:name="ru.netology.neworkapp.ui.RegistrationFragment"
-        android:label="RegistrationFragment" >
+        android:label="@string/create_new_acc" >
         <action
             android:id="@+id/action_registrationFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
@@ -68,37 +61,22 @@
     <fragment
         android:id="@+id/newEventFragment"
         android:name="ru.netology.neworkapp.ui.NewEventFragment"
-        android:label="NewEventFragment" >
-        <action
-            android:id="@+id/action_newEventFragment_to_chooseEventUsersFragment"
-            app:destination="@id/chooseEventUsersFragment" />
+        android:label="@string/new_event" >
     </fragment>
     <fragment
         android:id="@+id/newPostFragment"
         android:name="ru.netology.neworkapp.ui.NewPostFragment"
-        android:label="NewPostFragment" >
-        <action
-            android:id="@+id/action_newPostFragment_to_choosePostUsersFragment"
-            app:destination="@id/choosePostUsersFragment" />
+        android:label="@string/add_post" >
     </fragment>
-    <fragment
-        android:id="@+id/choosePostUsersFragment"
-        android:name="ru.netology.neworkapp.ui.ChoosePostUsersFragment"
-        android:label="fragment_choose_user"
-        tools:layout="@layout/fragment_choose_user" />
     <fragment
         android:id="@+id/newJobFragment"
         android:name="ru.netology.neworkapp.ui.NewJobFragment"
-        android:label="fragment_new_job"
+        android:label="@string/add_new_job"
         tools:layout="@layout/fragment_new_job" />
-    <fragment
-        android:id="@+id/chooseEventUsersFragment"
-        android:name="ru.netology.neworkapp.ui.ChooseEventUsersFragment"
-        android:label="ChooseEventUsersFragment" />
     <fragment
         android:id="@+id/feedEventFragment"
         android:name="ru.netology.neworkapp.ui.FeedEventFragment"
-        android:label="fragment_feed_events"
+        android:label="@string/events"
         tools:layout="@layout/fragment_feed_events" >
         <action
             android:id="@+id/action_feedEventFragment_to_editEventFragment"
@@ -107,9 +85,9 @@
     <fragment
         android:id="@+id/editEventFragment"
         android:name="ru.netology.neworkapp.ui.EditEventFragment"
-        android:label="EditEventFragment" />
+        android:label="@string/edit_event" />
     <fragment
         android:id="@+id/editJobFragment"
         android:name="ru.netology.neworkapp.ui.EditJobFragment"
-        android:label="EditJobFragment" />
+        android:label="@string/edit_job" />
 </navigation>

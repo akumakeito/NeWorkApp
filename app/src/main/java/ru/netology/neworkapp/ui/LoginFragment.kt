@@ -47,7 +47,6 @@ class LoginFragment : Fragment() {
     ): View? {
 
         val binding = FragmentLoginBinding.inflate(inflater, container, false)
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.login)
 
         navController = findNavController()
         savedStateHandle = navController.previousBackStackEntry!!.savedStateHandle

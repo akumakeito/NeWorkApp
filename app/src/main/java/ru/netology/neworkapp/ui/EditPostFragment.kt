@@ -34,8 +34,6 @@ class EditPostFragment : Fragment() {
     ): View {
         val binding = EditPostBinding.inflate(inflater, container, false)
 
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.edit_post)
-
         arguments?.edit?.let(binding.editText::setText)
         binding.editText.setText(arguments?.getString("editedText"))
 

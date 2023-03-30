@@ -52,12 +52,6 @@ class FeedPostFragment : Fragment() {
     ): View? {
         val binding = FeedPostsBinding.inflate(inflater, container, false)
 
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.posts)
-
-        Log.d(
-            "auth",
-            "id ${authViewModel.authState.value?.id} token  ${authViewModel.authState.value?.id}  authenticated ${authViewModel.authenticated}"
-        )
 
         viewLifecycleOwner.lifecycle.addObserver(
             object : LifecycleEventObserver {

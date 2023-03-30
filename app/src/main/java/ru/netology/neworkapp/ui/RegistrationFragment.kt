@@ -49,8 +49,6 @@ class RegistrationFragment : Fragment() {
 
         navController = findNavController()
 
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.create_new_acc)
-
         viewModel.isSignedIn.observe(viewLifecycleOwner) { isSignedId ->
             if (isSignedId) {
                 binding.progress.visibility = View.GONE

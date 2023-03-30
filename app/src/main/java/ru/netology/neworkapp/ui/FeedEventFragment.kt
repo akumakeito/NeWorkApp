@@ -48,8 +48,6 @@ class FeedEventFragment : Fragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         val binding = FragmentFeedEventsBinding.inflate(inflater, container, false)
 
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.events)
-
         viewLifecycleOwner.lifecycle.addObserver(
             object : LifecycleEventObserver {
                 override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {

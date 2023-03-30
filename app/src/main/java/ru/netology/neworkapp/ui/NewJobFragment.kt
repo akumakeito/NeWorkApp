@@ -31,7 +31,6 @@ class NewJobFragment : Fragment() {
     ): View {
         val binding = FragmentNewJobBinding.inflate(inflater, container, false)
         navController = findNavController()
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.add_new_job)
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             Snackbar.make(binding.root, R.string.skip_edit_question, Snackbar.LENGTH_SHORT)

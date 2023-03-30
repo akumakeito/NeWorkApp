@@ -68,8 +68,6 @@ class NewEventFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
         )
 
 
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.new_event)
-
         var file: MultipartBody.Part
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {

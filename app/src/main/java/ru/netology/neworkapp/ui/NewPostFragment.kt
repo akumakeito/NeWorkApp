@@ -38,8 +38,6 @@ class NewPostFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.create_post)
-
         val binding = FragmentNewPostBinding.inflate(inflater, container, false)
 
         if (arguments?.intArg != null) {

@@ -33,8 +33,6 @@ class EditEventFragment : Fragment() {
     ): View? {
         val binding = FragmentEditEventBinding.inflate(inflater, container,false)
 
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.edit_event)
-
         arguments?.edit?.let(binding.edit::setText)
         binding.edit.setText(arguments?.getString("editedText"))
 
