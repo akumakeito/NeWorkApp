@@ -62,52 +62,19 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.loginFragment -> {
-                    toolbar.visibility = View.GONE
-                    bottomNavView.visibility = View.GONE
-                    binding.bottomAppBar.visibility = View.GONE
-                    binding.fabLayout.visibility = View.GONE
-                }
-
+                R.id.loginFragment,
                 R.id.registrationFragment -> {
-
                     toolbar.visibility = View.GONE
                     bottomNavView.visibility = View.GONE
                     binding.bottomAppBar.visibility = View.GONE
                     binding.fab.visibility = View.GONE
                 }
-                R.id.newPostFragment -> {
-                    bottomNavView.visibility = View.GONE
-                    binding.bottomAppBar.visibility = View.GONE
-                    binding.fabLayout.visibility = View.GONE
-                }
 
-                R.id.editJobFragment -> {
-                    bottomNavView.visibility = View.GONE
-                    binding.bottomAppBar.visibility = View.GONE
-                    binding.fabLayout.visibility = View.GONE
-                }
-
-                R.id.editEventFragment -> {
-                    bottomNavView.visibility = View.GONE
-                    binding.bottomAppBar.visibility = View.GONE
-                    binding.fabLayout.visibility = View.GONE
-                }
-
-
-                R.id.editPostFragment -> {
-                    bottomNavView.visibility = View.GONE
-                    binding.bottomAppBar.visibility = View.GONE
-                    binding.fabLayout.visibility = View.GONE
-                }
-
-
-                R.id.newEventFragment -> {
-                    bottomNavView.visibility = View.GONE
-                    binding.bottomAppBar.visibility = View.GONE
-                    binding.fabLayout.visibility = View.GONE
-                }
-
+                R.id.newPostFragment,
+                R.id.editJobFragment,
+                R.id.editEventFragment,
+                R.id.editPostFragment,
+                R.id.newEventFragment,
                 R.id.newJobFragment -> {
                     bottomNavView.visibility = View.GONE
                     binding.bottomAppBar.visibility = View.GONE
