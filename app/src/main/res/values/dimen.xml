@@ -7,7 +7,6 @@
     <dimen name="author_name_text_size">20sp</dimen>
     <dimen name="icon_size">24dp</dimen>
     <dimen name="media_height">300dp</dimen>
-    <dimen name="bottom_bar">32dp</dimen>
     <dimen name="elevation">4dp</dimen>
     <dimen name="toolbar_text_size">32sp</dimen>
     <dimen name="medium_card_corner_radius">48dp</dimen>

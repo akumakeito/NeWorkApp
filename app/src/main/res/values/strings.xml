@@ -1,12 +1,7 @@
 <resources>
     <string name="app_name">NeWork</string>
     <string name="title_home">Home</string>
-    <string name="avatar">avatar</string>
-    <string name="sing_in">Sign in</string>
     <string name="sing_up">Sign up</string>
-    <string name="name">Jane Doe</string>
-    <string name="menu">menu</string>
-    <string name="post_image">post image</string>
     <string name="author_name">Ekaterina Zolotova</string>
     <string name="text_tool">Other widgets can then be constrained to the barrier itself, instead of the individual widget. This allows a layout to automatically adapt on widget dimension changes (e.g. different languages will end up with different length for similar worlds).</string>
     <string name="link_tool">https://mirpozitiva.ru/wp-content/uploads/2019/11/1480505775_cosmos_0011.jpg</string>
@@ -16,26 +11,17 @@
     <string name="events">Events</string>
     <string name="remove">Remove</string>
     <string name="edit">Edit</string>
-    <string name="liked_and_mentioned_users_sample_text">like and mention users</string>
     <string name="retry">Retry</string>
     <string name="login_to_continue">Please, log in to continue</string>
     <string name="login">Log in</string>
-    <string name="empty_feed">Feed is empty</string>
     <string name="loading_error">Loading error. please try again</string>
     <string name="my_profile">My profile</string>
     <string name="enter_text">Enter text</string>
     <string name="enter_link">Enter link</string>
-    <string name="add_user">Add user</string>
     <string name="save">Save</string>
-    <string name="create_post">Create new post</string>
     <string name="video_container" translatable="false">Video container</string>
-    <string name="choose_users" translatable="false">Choose users</string>
-    <string name="add">Add</string>
-    <string name="server_error_message">Server error</string>
-    <string name="content_cant_be_empty">Content can\'t be empty</string>
     <string name="field_cant_be_empty">Field can\'t be empty</string>
     <string name="error_loading">Loading error</string>
-    <string name="add_avatar">Add avatar</string>
     <string name="enter_user_name">Enter user name</string>
     <string name="enter_login">Enter login</string>
     <string name="enter_password">Enter password</string>
@@ -52,13 +38,7 @@
     <string name="you_have_not_job_yet">You have not job yet</string>
     <string name="skip_edit_question">Confirm exit</string>
     <string name="exit">Exit</string>
-    <string name="event_type_online">Online</string>
-    <string name="date">Date</string>
-    <string name="add_speakers">Add speakers</string>
-    <string name="add_date_time">Add speakers</string>
-    <string name="create_event">Create event</string>
     <string name="ok">OK</string>
-    <string name="users">Users</string>
     <string name="be_lost">All changes be lost</string>
     <string name="add_link">Add link</string>
     <string name="edit_job">Edit Job</string>

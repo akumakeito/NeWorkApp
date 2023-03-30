@@ -58,7 +58,7 @@ class NewJobFragment : Fragment() {
                     Snackbar.LENGTH_SHORT
                 ).show()
             } else {
-                val id = if (requireNotNull(viewModel.editedJob.value).id == 0) {
+                if (requireNotNull(viewModel.editedJob.value).id == 0) {
                     0
                 } else {
                     requireNotNull(viewModel.editedJob.value).id
