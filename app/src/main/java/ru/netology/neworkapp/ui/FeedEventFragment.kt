@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -12,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,13 +19,10 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.netology.neworkapp.R
 import ru.netology.neworkapp.adapter.EventAdapter
-import ru.netology.neworkapp.adapter.EventRecyclerView
 import ru.netology.neworkapp.adapter.OnEventInteractionListener
 import ru.netology.neworkapp.adapter.PagingLoadStateAdapter
 import ru.netology.neworkapp.databinding.FragmentFeedEventsBinding
 import ru.netology.neworkapp.dto.Event
-import ru.netology.neworkapp.dto.EventRequest
-import ru.netology.neworkapp.ui.FeedPostFragment.Companion.intArg
 import ru.netology.neworkapp.util.IntArg
 import ru.netology.neworkapp.viewmodel.AuthViewModel
 import ru.netology.neworkapp.viewmodel.EventViewModel

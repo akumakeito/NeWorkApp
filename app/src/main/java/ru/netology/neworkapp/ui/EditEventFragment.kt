@@ -17,7 +17,7 @@ import ru.netology.neworkapp.util.StringArg
 import ru.netology.neworkapp.util.Utils
 import ru.netology.neworkapp.viewmodel.EventViewModel
 
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
 class EditEventFragment : Fragment() {
     private val viewModel: EventViewModel by activityViewModels()

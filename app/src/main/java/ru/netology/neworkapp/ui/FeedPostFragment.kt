@@ -1,37 +1,33 @@
 package ru.netology.neworkapp.ui
 
-import ru.netology.neworkapp.util.IntArg
-import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.google.android.material.snackbar.Snackbar
+import androidx.lifecycle.*
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
-import ru.netology.neworkapp.adapter.MediaRecyclerView
-import ru.netology.neworkapp.adapter.OnPostInteractionListener
-import ru.netology.neworkapp.adapter.PagingLoadStateAdapter
-import ru.netology.neworkapp.adapter.PostAdapter
-import ru.netology.neworkapp.dto.Post
-import ru.netology.neworkapp.viewmodel.AuthViewModel
-import ru.netology.neworkapp.viewmodel.PostViewModel
-import dagger.hilt.android.AndroidEntryPoint
-import androidx.browser.customtabs.CustomTabsIntent
-import androidx.core.view.isVisible
-import androidx.lifecycle.*
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.DividerItemDecoration
+import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.netology.neworkapp.R
+import ru.netology.neworkapp.adapter.OnPostInteractionListener
+import ru.netology.neworkapp.adapter.PagingLoadStateAdapter
+import ru.netology.neworkapp.adapter.PostAdapter
 import ru.netology.neworkapp.databinding.FeedPostsBinding
+import ru.netology.neworkapp.dto.Post
+import ru.netology.neworkapp.util.IntArg
+import ru.netology.neworkapp.viewmodel.AuthViewModel
+import ru.netology.neworkapp.viewmodel.PostViewModel
 
 
 @AndroidEntryPoint
@@ -44,7 +40,6 @@ class FeedPostFragment : Fragment() {
         var Bundle.intArg: Int by IntArg
     }
 
-    @SuppressLint("SuspiciousIndentation")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

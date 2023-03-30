@@ -5,20 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.netology.neworkapp.R
 import ru.netology.neworkapp.databinding.FragmentNewJobBinding
 import ru.netology.neworkapp.util.Utils
 import ru.netology.neworkapp.viewmodel.UserProfileViewModel
 
-@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class NewJobFragment : Fragment() {
     private val viewModel: UserProfileViewModel by activityViewModels()

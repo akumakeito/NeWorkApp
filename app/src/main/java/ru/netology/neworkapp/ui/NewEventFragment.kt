@@ -1,11 +1,8 @@
 package ru.netology.neworkapp.ui
 
-
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +12,6 @@ import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toFile
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -38,24 +34,17 @@ import ru.netology.neworkapp.viewmodel.NewEventViewModel
 import java.util.*
 
 
-var dayEvent = 0
-var monthEvent = 0
-var yearEvent = 0
-var hourEvent = 0
-var minuteEvent = 0
-
-var day = 0
-var month = 0
-var year = 0
-var startEndFinished = true
-
-
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
-@SuppressLint("FragmentBackPressedCallback")
 class NewEventFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private val newEventViewModel : NewEventViewModel by activityViewModels()
-    @SuppressLint("UseRequireInsteadOfGet")
+    var dayEvent = 0
+    var monthEvent = 0
+    var yearEvent = 0
+    var hourEvent = 0
+    var minuteEvent = 0
+
+    var day = 0
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -168,7 +157,7 @@ class NewEventFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
         binding.dateTime.setOnClickListener {
             binding.dateTime.isChecked = newEventViewModel.newEvent.value?.datetime != null
             getDataCalendar()
-            DatePickerDialog(context!!, this, yearEvent, monthEvent, dayEvent).show()
+            DatePickerDialog(requireContext(), this, yearEvent, monthEvent, dayEvent).show()
         }
         binding.type.setOnClickListener {
             binding.type.isChecked = newEventViewModel.newEvent.value?.type == EventType.ONLINE

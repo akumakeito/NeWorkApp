@@ -1,21 +1,19 @@
 package ru.netology.neworkapp.ui
 
+
 import android.os.Bundle
-
-
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupWithNavController
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import ru.netology.neworkapp.viewmodel.AuthViewModel
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.neworkapp.R
 import ru.netology.neworkapp.databinding.ActivityMainBinding
+import ru.netology.neworkapp.viewmodel.AuthViewModel
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
