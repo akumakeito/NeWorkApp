@@ -102,7 +102,6 @@ class EventRepositoryImpl @Inject constructor(
 
             val response = apiService.getEvents()
             if (!response.isSuccessful) {
-                println("eventproblem repo getevents apierr ${response}")
                 throw ApiError(response.code(), response.message())
             }
             val body = response.body() ?: throw ApiError(response.code(), response.message())
@@ -165,20 +164,16 @@ class EventRepositoryImpl @Inject constructor(
 
     override suspend fun saveEvent(event: Event) {
         try {
-            println("eventproblem repo saveevent")
             val response = apiService.saveEvent(event)
             if (!response.isSuccessful) {
-                println("eventproblem repo saveevent apierr ${response}")
                 throw ApiError(response.code(), response.message())
             } else {
                 val body = response.body() ?: throw ApiError(response.code(), response.message())
                 dao.insert(EventEntity.fromDto(body))
             }
         } catch (e: IOException) {
-            println("eventproblem repo saveevent IO ${e}")
             throw NetworkError
         } catch (e: Exception) {
-            println("eventproblem repo saveevent E ${e}")
             throw UnknownAppError
         }
     }

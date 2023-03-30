@@ -50,8 +50,7 @@ class AppAuth @Inject constructor(
             apply()
         }
 
-        println("authproblem AppAuth after setAuth id ${authStateFlow.value.id} token  ${authStateFlow.value.token} ")
-    }
+   }
 
     @Synchronized
     fun removeAuth() {

@@ -43,7 +43,6 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun signIn(login: String, pass: String): AuthState {
         try {
-            println("repo login ${login} pass ${pass}")
             val response = apiService.authenticateUser(login, pass)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
@@ -52,33 +51,25 @@ class AuthRepositoryImpl @Inject constructor(
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
-            println(e.message)
             throw NetworkError
         }
     }
 
     override suspend fun registerNewUser(login: String, pass: String, name: String): AuthState {
-        println("authproblem authrepo registerUser in")
 
         try {
-            println("authproblem authrepo try1")
 
             val response = apiService.registerUser(login, pass, name)
-            println("authproblem authrepo try2")
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            println("authproblem authrepo after api.registerUser: id ${response.body()?.id}, token ${response.body()?.token}")
             return response.body() ?: throw ApiError(response.code(), response.message())
         } catch (e: IOException) {
-            println("authproblem authrepo catch IO")
             throw NetworkError
         } catch (e : CancellationException) {
-            println("authproblem authrepo catch CancellationException ${e.message}")
             throw CancellationException()
         }
         catch (e: Exception) {
-            println("authproblem authrepo catch Exception ${e.message}")
             throw NetworkError
         }
     }
@@ -106,7 +97,6 @@ class AuthRepositoryImpl @Inject constructor(
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
-            println(e.message)
             throw NetworkError
         }
     }

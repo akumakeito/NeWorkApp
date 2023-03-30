@@ -98,8 +98,6 @@ class RegistrationFragment : Fragment() {
                 }
                 viewModel.photo.value?.file == null -> {
                     viewModel.register(login, pass, name)
-
-                    println("authproblem reg.fragment  login ${login}, pass ${pass} name ${name}")
                     Utils.hideKeyboard(requireView())
                 }
                 else -> {
@@ -109,10 +107,6 @@ class RegistrationFragment : Fragment() {
                 }
             }
 
-            Log.d(
-                "auth",
-                "id ${auth.authStateFlow.value.id} token  ${auth.authStateFlow.value.id} "
-            )
 
         }
 

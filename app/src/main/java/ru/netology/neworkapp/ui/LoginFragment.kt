@@ -68,7 +68,6 @@ class LoginFragment : Fragment() {
                 )
                     .show()
             } else {
-                println("login ${login} pass ${pass}")
                 viewModel.signIn(login, pass)
                 Utils.hideKeyboard(requireView())
             }

@@ -148,24 +148,6 @@ class NewPostFragment : Fragment() {
             pickAudioLauncher.launch(intent)
         }
 
-//        viewModel.edited.observe(viewLifecycleOwner) {
-//            it.content.let(binding.editText::setText)
-//            it.link.let(binding.link::setText)
-//            binding.addLinkBtn.isChecked = viewModel.edited.value?.link != null
-//            if (it.attachment != null) {
-//                binding.mediaContainer.visibility = View.VISIBLE
-//                Glide.with(this)
-//                    .load(it.attachment.url)
-//                    .error(R.drawable.error_ic)
-//                    .placeholder(R.drawable.image_placeholder_ic)
-//                    .timeout(10_000)
-//                    .into(binding.photo)
-//            } else {
-//                binding.mediaContainer.visibility = View.GONE
-//            }
-//
-//        }
-
         viewModel.media.observe(viewLifecycleOwner)
         { mediaModel ->
             if (mediaModel.uri == null) {

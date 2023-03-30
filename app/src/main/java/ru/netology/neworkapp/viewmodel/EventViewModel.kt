@@ -193,14 +193,12 @@ class EventViewModel @Inject constructor(
                 when (_media.value) {
 
                     noMedia -> {
-                        println("eventproblem viewmodel try2")
                         repository.saveEvent(edit)
                     }
                     else -> {
                         when (_media.value?.type) {
 
                             AttachmentType.IMAGE -> _media.value?.file?.let { file ->
-                                println("postproblem viewmodel try3")
 
                                 repository.saveEventWithAttachment(
                                     edit,

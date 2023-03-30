@@ -26,9 +26,10 @@ import ru.netology.neworkapp.viewmodel.PostViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.*
 import androidx.paging.LoadState
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import ru.netology.neworkapp.R
 import ru.netology.neworkapp.databinding.FeedPostsBinding
 
@@ -38,7 +39,6 @@ class FeedPostFragment : Fragment() {
     private val viewModel: PostViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
     private lateinit var navController: NavController
-    private lateinit var mediaRecyclerView: MediaRecyclerView
 
     companion object {
         var Bundle.intArg: Int by IntArg
@@ -59,6 +59,21 @@ class FeedPostFragment : Fragment() {
             "id ${authViewModel.authState.value?.id} token  ${authViewModel.authState.value?.id}  authenticated ${authViewModel.authenticated}"
         )
 
+        viewLifecycleOwner.lifecycle.addObserver(
+            object : LifecycleEventObserver {
+                override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+                    when (event) {
+                        Lifecycle.Event.ON_RESUME -> binding.postsList.createPlayer()
+                        Lifecycle.Event.ON_PAUSE,
+                        Lifecycle.Event.ON_STOP -> binding.postsList.releasePlayer()
+                        Lifecycle.Event.ON_DESTROY -> source.lifecycle.removeObserver(this)
+                        else -> Unit
+                    }
+                }
+
+            }
+        )
+
 
         navController = findNavController()
 
@@ -75,8 +90,6 @@ class FeedPostFragment : Fragment() {
                 }
             }
 
-        mediaRecyclerView = binding.postsList
-
 
         val adapter = PostAdapter(object : OnPostInteractionListener {
             override fun onAvatarClick(post: Post) {
@@ -84,7 +97,6 @@ class FeedPostFragment : Fragment() {
             }
 
             override fun onLinkClick(url: String) {
-                println("url ${url}")
                 CustomTabsIntent.Builder()
                     .setShowTitle(true)
                     .build()
@@ -154,35 +166,22 @@ class FeedPostFragment : Fragment() {
             }
         }
 
-//        binding.swipeRefresh.setOnRefreshListener {
-//            adapter.refresh()
-//        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.data.collectLatest { adapter.submitData(it) }
+            }
+        }
 
-        lifecycleScope.launchWhenCreated {
-            viewModel.data.collectLatest { adapter.submitData(it) }
 
-            adapter.loadStateFlow.collectLatest { state ->
-                binding.swipeRefresh.isRefreshing =
-                    state.refresh is LoadState.Loading
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                adapter.loadStateFlow.collectLatest { state ->
+                    binding.swipeRefresh.isRefreshing =
+                        state.refresh is LoadState.Loading
+                }
             }
         }
 
         return binding.root
-    }
-
-
-    override fun onResume() {
-        if (::mediaRecyclerView.isInitialized) mediaRecyclerView.createPlayer()
-        super.onResume()
-    }
-
-    override fun onPause() {
-        if (::mediaRecyclerView.isInitialized) mediaRecyclerView.releasePlayer()
-        super.onPause()
-    }
-
-    override fun onStop() {
-        if (::mediaRecyclerView.isInitialized) mediaRecyclerView.releasePlayer()
-        super.onStop()
     }
 }

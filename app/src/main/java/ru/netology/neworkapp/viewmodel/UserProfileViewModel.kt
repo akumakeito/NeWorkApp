@@ -148,7 +148,6 @@ class UserProfileViewModel @Inject constructor(
     }
 
     fun updateEndDate(date: String?) {
-        println("update to date ${date}")
         editedJob.value = editedJob.value?.copy(finish = date)
     }
 

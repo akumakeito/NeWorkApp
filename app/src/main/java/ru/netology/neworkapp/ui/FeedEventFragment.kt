@@ -9,7 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -18,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import ru.netology.neworkapp.R
 import ru.netology.neworkapp.adapter.EventAdapter
 import ru.netology.neworkapp.adapter.EventRecyclerView
@@ -31,14 +32,14 @@ import ru.netology.neworkapp.util.IntArg
 import ru.netology.neworkapp.viewmodel.AuthViewModel
 import ru.netology.neworkapp.viewmodel.EventViewModel
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
 class FeedEventFragment : Fragment() {
     private val authViewModel: AuthViewModel by viewModels()
-    @OptIn(ExperimentalCoroutinesApi::class)
     private val viewModel: EventViewModel by activityViewModels()
-    private lateinit var mediaRecyclerView: EventRecyclerView
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,7 +50,20 @@ class FeedEventFragment : Fragment() {
 
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.events)
 
-        mediaRecyclerView = binding.list
+        viewLifecycleOwner.lifecycle.addObserver(
+            object : LifecycleEventObserver {
+                override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+                    when (event) {
+                        Lifecycle.Event.ON_RESUME -> binding.list.createPlayer()
+                        Lifecycle.Event.ON_PAUSE,
+                        Lifecycle.Event.ON_STOP -> binding.list.releasePlayer()
+                        Lifecycle.Event.ON_DESTROY -> source.lifecycle.removeObserver(this)
+                        else -> Unit
+                    }
+                }
+
+            }
+        )
 
         val adapter = EventAdapter(object : OnEventInteractionListener {
             override fun onLike(event: Event) {
@@ -106,8 +120,10 @@ class FeedEventFragment : Fragment() {
             }
         }
 
-        lifecycleScope.launchWhenCreated {
-            viewModel.data.collectLatest(adapter::submitData)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.data.collectLatest(adapter::submitData)
+            }
         }
 
         adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
@@ -121,9 +137,11 @@ class FeedEventFragment : Fragment() {
 
 
 
-        lifecycleScope.launchWhenCreated {
-            adapter.loadStateFlow.collectLatest {
-                binding.swipeRefresh.isRefreshing = it.refresh is LoadState.Loading
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                adapter.loadStateFlow.collectLatest {
+                    binding.swipeRefresh.isRefreshing = it.refresh is LoadState.Loading
+                }
             }
         }
 
@@ -136,20 +154,5 @@ class FeedEventFragment : Fragment() {
 
     companion object {
         var Bundle.intArg: Int by IntArg
-    }
-
-    override fun onResume() {
-        if (::mediaRecyclerView.isInitialized) mediaRecyclerView.createPlayer()
-        super.onResume()
-    }
-
-    override fun onPause() {
-        if (::mediaRecyclerView.isInitialized) mediaRecyclerView.releasePlayer()
-        super.onPause()
-    }
-
-    override fun onStop() {
-        if (::mediaRecyclerView.isInitialized) mediaRecyclerView.releasePlayer()
-        super.onStop()
     }
 }

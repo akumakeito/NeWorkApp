@@ -48,20 +48,12 @@ class RegistrationLoginViewModel @Inject constructor(
     }
 
     fun register(login: String, pass: String, name: String) = viewModelScope.launch {
-        println("authproblem viewmodel fun register in with param: login ${login}, pass ${pass} name ${name}")
 
             try {
                 _dataState.value = FeedModelState(loading = true)
-                println("authproblem viewmodel try1")
                 val response =  repository.registerNewUser(login, pass, name)
-                println("authproblem viewmodel try2")
                 val id = response.id
-                println("authproblem viewmodel try3")
                 val token = response.token ?: "null"
-                println("authproblem viewmodel try4")
-
-                println("authproblem viewmodel after repo.registerNewUser: id ${id}, token ${token}")
-
 
                 auth.setAuth(id, token)
                 invalidateDataState()
@@ -69,7 +61,6 @@ class RegistrationLoginViewModel @Inject constructor(
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
 
-                println("authproblem viewmodel catch error")
                 UnknownAppError
             }
 

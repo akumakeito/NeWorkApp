@@ -29,7 +29,6 @@ class EditJobFragment : Fragment() {
 
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.edit_job)
 
-        val jobId = arguments?.getInt("jobId")
         val job = viewModel.editedJob
 
         binding.company.setText(job?.value?.name)

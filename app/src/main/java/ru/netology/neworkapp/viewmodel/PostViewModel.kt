@@ -13,6 +13,7 @@ import ru.netology.neworkapp.model.FeedModelState
 import ru.netology.neworkapp.repository.PostRepository
 import ru.netology.neworkapp.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -45,6 +46,7 @@ private val emptyPost = Post(
 
 private val noMedia = MediaModel()
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class PostViewModel @Inject constructor(
     private val repository: PostRepository,
@@ -159,23 +161,19 @@ class PostViewModel @Inject constructor(
 
 
     fun savePost() {
-        println("postproblem viewmodel save")
         viewModelScope.launch {
             val post = edited.value!!
             try {
                 _dataState.value = FeedModelState(loading = true)
-                println("postproblem viewmodel try1")
                 when (_media.value) {
 
                     noMedia -> {
-                        println("postproblem viewmodel try2")
                         repository.savePost(post)
                     }
                     else -> {
                         when (_media.value?.type) {
 
                             AttachmentType.IMAGE -> _media.value?.file?.let { file ->
-                                println("postproblem viewmodel try3")
 
                                 repository.savePostWithAttachment(
                                     post,

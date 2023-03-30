@@ -49,8 +49,8 @@ class EventRecyclerView : RecyclerView {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == SCROLL_STATE_IDLE) {
-                    if (thumbnail != null) {
-                        thumbnail?.visibility = View.VISIBLE
+                    thumbnail?.let {
+                        it.visibility = View.VISIBLE
                         playIcon?.visibility = View.VISIBLE
                     }
                 }
@@ -59,8 +59,8 @@ class EventRecyclerView : RecyclerView {
         })
         addOnChildAttachStateChangeListener(object : OnChildAttachStateChangeListener {
             override fun onChildViewAttachedToWindow(view: View) {
-                view.setOnClickListener { v ->
-                    playVideo(v)
+                view.setOnClickListener {
+                    playVideo(view)
                 }
             }
 
@@ -71,7 +71,7 @@ class EventRecyclerView : RecyclerView {
             }
         })
         videoPlayer?.addListener(object : Player.Listener {
-            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+            override fun onPlaybackStateChanged(playbackState: Int) {
                 when (playbackState) {
                     Player.STATE_BUFFERING -> {
                         progressBar?.visibility = VISIBLE

@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,8 +17,6 @@ import ru.netology.neworkapp.adapter.JobAdapter
 import ru.netology.neworkapp.adapter.OnJobInteractionListener
 import ru.netology.neworkapp.databinding.FragmentUserProfileBinding
 import ru.netology.neworkapp.dto.Job
-import ru.netology.neworkapp.util.IntArg
-import ru.netology.neworkapp.util.StringArg
 import ru.netology.neworkapp.util.loadCircleCrop
 import ru.netology.neworkapp.viewmodel.AuthViewModel
 import ru.netology.neworkapp.viewmodel.UserProfileViewModel
@@ -110,9 +107,5 @@ class UserProfileFragment : Fragment() {
         }
 
         return binding.root
-    }
-
-    companion object {
-        var Bundle.intArg: Int by IntArg
     }
 }
