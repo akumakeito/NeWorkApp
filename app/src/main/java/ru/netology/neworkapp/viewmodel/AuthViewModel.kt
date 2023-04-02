@@ -7,10 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import ru.netology.neworkapp.auth.AppAuth
 import ru.netology.neworkapp.auth.AuthState
-import ru.netology.neworkapp.dto.MediaModel
 import javax.inject.Inject
-
-private val noAvatar = MediaModel()
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(

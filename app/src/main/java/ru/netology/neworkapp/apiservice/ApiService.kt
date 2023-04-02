@@ -1,10 +1,10 @@
 package ru.netology.neworkapp.apiservice
 
-import ru.netology.neworkapp.auth.AuthState
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
+import ru.netology.neworkapp.auth.AuthState
 import ru.netology.neworkapp.dto.*
 
 interface ApiService {

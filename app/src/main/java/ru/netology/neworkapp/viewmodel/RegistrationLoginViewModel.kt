@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.launch
 import ru.netology.neworkapp.auth.AppAuth
 import ru.netology.neworkapp.dto.AttachmentType
 import ru.netology.neworkapp.dto.MediaModel

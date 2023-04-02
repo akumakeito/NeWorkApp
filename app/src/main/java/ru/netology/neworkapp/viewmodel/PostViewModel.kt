@@ -8,18 +8,17 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
-import ru.netology.neworkapp.auth.AppAuth
-import ru.netology.neworkapp.model.FeedModelState
-import ru.netology.neworkapp.repository.PostRepository
-import ru.netology.neworkapp.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import okhttp3.MultipartBody
+import ru.netology.neworkapp.auth.AppAuth
 import ru.netology.neworkapp.dto.*
+import ru.netology.neworkapp.model.FeedModelState
+import ru.netology.neworkapp.repository.PostRepository
+import ru.netology.neworkapp.util.SingleLiveEvent
 import java.io.File
 import java.time.Instant
 import javax.inject.Inject
@@ -41,8 +40,6 @@ private val emptyPost = Post(
     ownedByMe = false,
     users = emptyMap()
 )
-
-//private val mentions = mutableListOf<User>()
 
 private val noMedia = MediaModel()
 
@@ -87,7 +84,6 @@ class PostViewModel @Inject constructor(
     fun loadPosts() = viewModelScope.launch {
         try {
             _dataState.value = FeedModelState(loading = true)
-            //repository.getAll()
             _dataState.value = FeedModelState()
         } catch (e: Exception) {
             _dataState.value = FeedModelState(error = true)
@@ -212,36 +208,6 @@ class PostViewModel @Inject constructor(
         }
     }
 
-//    fun updateMentionsIds() {
-//        mentionsData.postValue(mentions)
-//        val listChecked = mutableListOf<Int>()
-//        val mentionsUserList = mutableListOf<User>()
-//        usersList.value?.forEach { user ->
-//            if (user.isChecked) {
-//                listChecked.add(user.id)
-//                mentionsUserList.add(user)
-//            }
-//        }
-//
-//        mentionsData.postValue(mentionsUserList)
-//        _editedPost.value = editedPost.value?.copy(mentionIds = listChecked)
-//    }
-//
-//    fun checkUser (id : Int) {
-//        usersList.value?.forEach {
-//            if (it.id == id) {
-//                it.isChecked = true
-//            }
-//        }
-//    }
-//
-//    fun uncheckUser (id : Int) {
-//        usersList.value?.forEach {
-//            if (it.id == id) {
-//                it.isChecked = false
-//            }
-//        }
-//    }
 
     fun addLink(link : String) {
         if (link.isNullOrBlank()) {
@@ -252,14 +218,10 @@ class PostViewModel @Inject constructor(
     }
 
     fun getPostById(id : Int) {
-//        mentionsData.postValue(mentions)
         _dataState.value = FeedModelState(loading = false)
         viewModelScope.launch {
             try {
                 edited.value = repository.getPostById(id)
-//                edited.value?.mentionIds?.forEach {
-//                    mentionsData.value!!.add(repository.getUserById(it))
-//                }
                 _dataState.value = FeedModelState()
             } catch (e: RuntimeException) {
                 _dataState.value = FeedModelState(error = true)
@@ -267,47 +229,6 @@ class PostViewModel @Inject constructor(
         }
 
     }
-
-//    fun getUsers() {
-////        mentionsData.postValue(mentions)
-//        _dataState.value = FeedModelState(loading = true)
-//        viewModelScope.launch {
-//            try {
-//                usersList.value = repository.getUsers()
-//                usersList.value?.forEach { user ->
-//                    _editedPost.value?.mentionIds?.forEach {
-//                        if (user.id == it) {
-//                            user.isChecked = true
-//                        }
-//                    }
-//                }
-//
-//                _dataState.value = FeedModelState()
-//            } catch (e: Exception) {
-//                _dataState.value = FeedModelState(error = true)
-//            }
-//        }
-//    }
-
-//    fun addMediaToPost(
-//        type: AttachmentType,
-//        file: MultipartBody.Part,
-//    ) {
-//        viewModelScope.launch {
-//            try {
-//                _dataState.value = FeedModelState(loading = false)
-//                val attachment = repository.uploadMedia(type, file)
-//                edited.value = edited.value?.copy(attachment = attachment)
-//                _dataState.value = FeedModelState()
-//            } catch (e: RuntimeException) {
-//                _dataState.value = FeedModelState(error = true)
-//            }
-//        }
-//    }
-
-
-
-
 }
 
 

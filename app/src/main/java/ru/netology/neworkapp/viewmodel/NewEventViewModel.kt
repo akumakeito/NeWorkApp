@@ -1,6 +1,5 @@
 package ru.netology.neworkapp.viewmodel
 
-import android.graphics.Point
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,14 +9,12 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import ru.netology.neworkapp.dto.AttachmentType
-import ru.netology.neworkapp.dto.Coordinates
 import ru.netology.neworkapp.dto.EventRequest
 import ru.netology.neworkapp.dto.EventType
 import ru.netology.neworkapp.model.FeedModelState
 import ru.netology.neworkapp.repository.NewEventRepository
 import ru.netology.neworkapp.util.SingleLiveEvent
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 val editedEvent = EventRequest(
     id = 0,
@@ -59,7 +56,7 @@ class NewEventViewModel @Inject constructor(
     }
 
 
-    fun addPost(content: String) {
+    fun addEvent(content: String) {
         newEvent.value = newEvent.value?.copy(content = content)
         val event = requireNotNull(newEvent.value)
         viewModelScope.launch {

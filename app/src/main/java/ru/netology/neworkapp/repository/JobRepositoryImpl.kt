@@ -1,8 +1,5 @@
 package ru.netology.neworkapp.repository
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asFlow
-import androidx.lifecycle.map
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -10,9 +7,7 @@ import kotlinx.coroutines.flow.map
 import ru.netology.neworkapp.apiservice.ApiService
 import ru.netology.neworkapp.dao.JobDao
 import ru.netology.neworkapp.dto.Job
-import ru.netology.neworkapp.dto.Post
 import ru.netology.neworkapp.entity.JobEntity
-import ru.netology.neworkapp.entity.PostEntity
 import ru.netology.neworkapp.entity.toDto
 import ru.netology.neworkapp.entity.toEntity
 import ru.netology.neworkapp.error.ApiError

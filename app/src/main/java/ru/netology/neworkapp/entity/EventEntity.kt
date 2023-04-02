@@ -7,7 +7,6 @@ import androidx.room.TypeConverters
 import ru.netology.neworkapp.dao.CoordinatesConverter
 import ru.netology.neworkapp.dao.InstantConverter
 import ru.netology.neworkapp.dao.ListConverter
-import ru.netology.neworkapp.dao.UserMapConverter
 import ru.netology.neworkapp.dto.*
 import java.time.Instant
 

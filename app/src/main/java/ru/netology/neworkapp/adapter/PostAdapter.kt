@@ -1,7 +1,5 @@
 package ru.netology.neworkapp.adapter
 
-import android.net.Uri
-import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,15 +10,13 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import ru.netology.neworkapp.dto.AttachmentType
-import ru.netology.neworkapp.dto.Post
 import com.google.android.exoplayer2.MediaItem
-import me.saket.bettermovementmethod.BetterLinkMovementMethod
 import ru.netology.neworkapp.R
 import ru.netology.neworkapp.databinding.CardPostBinding
+import ru.netology.neworkapp.dto.AttachmentType
+import ru.netology.neworkapp.dto.Post
 import ru.netology.neworkapp.util.Utils
 import ru.netology.neworkapp.util.loadCircleCrop
-import ru.netology.neworkapp.util.loadImage
 
 interface OnPostInteractionListener {
     fun onAvatarClick(post: Post)

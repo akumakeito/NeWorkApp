@@ -20,9 +20,6 @@ class DbModule {
         @ApplicationContext context : Context
    ) : AppDb = Room.databaseBuilder(context, AppDb::class.java, "app.db")
         .fallbackToDestructiveMigration()
-//        .addTypeConverter(InstantConverter::class)
-//        .addTypeConverter(ListConverter::class)
-//        .addTypeConverter(UserMapConverter::class)
         .build()
 
     @Provides

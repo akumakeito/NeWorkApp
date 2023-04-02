@@ -3,8 +3,8 @@ package ru.netology.neworkapp.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
-import ru.netology.neworkapp.entity.PostRemoteKeyEntity
 import androidx.room.Query
+import ru.netology.neworkapp.entity.PostRemoteKeyEntity
 
 @Dao
 interface PostRemoteKeyDao {

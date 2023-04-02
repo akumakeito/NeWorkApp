@@ -1,8 +1,6 @@
 package ru.netology.neworkapp.repository
 
 import kotlinx.coroutines.CancellationException
-import okhttp3.Call
-import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -10,7 +8,6 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import ru.netology.neworkapp.apiservice.ApiService
 import ru.netology.neworkapp.auth.AuthState
 import ru.netology.neworkapp.dto.MediaUpload
-import ru.netology.neworkapp.dto.User
 import ru.netology.neworkapp.error.ApiError
 import ru.netology.neworkapp.error.NetworkError
 import java.io.IOException

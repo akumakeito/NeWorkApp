@@ -22,10 +22,8 @@ import ru.netology.neworkapp.util.loadImage
 
 interface OnEventInteractionListener {
     fun onLike(event: Event) {}
-
     fun onEdit(event: Event) {}
     fun onRemove(event: Event) {}
-
     fun onLinkClick(url: String) {}
 
 }

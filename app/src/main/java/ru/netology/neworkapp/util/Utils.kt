@@ -3,7 +3,6 @@ package ru.netology.neworkapp.util
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
@@ -23,24 +22,6 @@ object Utils {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    fun selectDateTimeDialog(editText: EditText?, context: Context) {
-        val currentDateTime = Calendar.getInstance()
-        val startYear = currentDateTime.get(Calendar.YEAR)
-        val startMonth = currentDateTime.get(Calendar.MONTH)
-        val startDay = currentDateTime.get(Calendar.DAY_OF_MONTH)
-        val startHour = currentDateTime.get(Calendar.HOUR_OF_DAY)
-        val startMinute = currentDateTime.get(Calendar.MINUTE)
-
-        DatePickerDialog(context, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-            TimePickerDialog(context, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                val pickedDateTime = Calendar.getInstance()
-                pickedDateTime.set(year, month, dayOfMonth, hourOfDay, minute)
-                val result = GregorianCalendar(year, month, dayOfMonth, hourOfDay, minute).time
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
-                editText?.setText(dateFormat.format(result))
-            }, startHour, startMinute, false).show()
-        }, startYear, startMonth, startDay).show()
-    }
 
 
     fun formatMillisToDateTimeString(millis: Long?): String {
@@ -109,49 +90,6 @@ object Utils {
 }
 
 object DataConverter {
-    fun convertDataTime(dateTime: String): String {
-        return if (dateTime.isBlank()) {
-            ""
-        } else {
-            val parsedDate = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_DATE_TIME)
-            return parsedDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))
-        }
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    fun convertDataTimeJob(dateTime: String): String {
-        return if (dateTime.isBlank()) {
-            ""
-        } else {
-            val parsedDate = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_DATE_TIME)
-            return parsedDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
-        }
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    fun convertDataInput(date: List<Int>): String {
-        val x = date[0]
-        val y = date[1] + 1
-        val z = date[2]
-        val day = when (x) {
-            in 1..9 -> "0$x"
-            else -> {
-                "$x"
-            }
-        }
-        val month = when (y) {
-            in 1..9 -> "0$y"
-            else -> {
-                "$y"
-            }
-        }
-        val year = "$z"
-        val newDate = "$day.$month.$year"
-        val formatter = SimpleDateFormat("dd.MM.yyyy")
-        val date = formatter.parse(newDate)
-        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'")
-        return sdf.format(requireNotNull(date))
-    }
 
     @SuppressLint("SimpleDateFormat")
     fun convertDateToLocalDate(date: List<Int>): String {

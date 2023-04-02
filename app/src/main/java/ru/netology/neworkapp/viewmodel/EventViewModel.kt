@@ -146,26 +146,6 @@ class EventViewModel @Inject constructor(
     }
 
 
-    fun addLink(link : String) {
-        if (link.isNullOrBlank()) {
-            edited.value = edited.value?.copy(link = null)
-        } else {
-            edited.value = edited.value?.copy(link = link)
-        }
-    }
-
-    fun changeMedia(uri: Uri?, file: File?, type: AttachmentType?) {
-        _media.value = MediaModel(uri, file, type)
-    }
-
-      fun addDateAndTime(dateAndTime: String) {
-          edited.value = edited.value?.copy(datetime = dateAndTime)
-    }
-
-    fun addEventType() {
-        val type =  EventType.ONLINE
-        edited.value = edited.value?.copy(type = type)
-    }
 
     private fun clearEditedPost() {
         _eventCreated.value = Unit

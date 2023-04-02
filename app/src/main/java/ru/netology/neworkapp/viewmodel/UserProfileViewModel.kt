@@ -48,15 +48,6 @@ class UserProfileViewModel @Inject constructor(
         get() = _dataState
 
 
-    fun getAllUsers() {
-        viewModelScope.launch {
-            try {
-                userRepository.getAllUsers()
-            } catch (e: Exception) {
-                _dataState.value = FeedModelState(error = true)
-            }
-        }
-    }
 
     fun getUserById(id: Int) {
         viewModelScope.launch {
@@ -68,15 +59,6 @@ class UserProfileViewModel @Inject constructor(
         }
     }
 
-    fun getUserJobs(id: Int) {
-        viewModelScope.launch {
-            try {
-                jobRepository.getUserJobs(id)
-            } catch (e: Exception) {
-                _dataState.value = FeedModelState(error = true)
-            }
-        }
-    }
 
     fun saveJob() {
         viewModelScope.launch {
@@ -151,7 +133,4 @@ class UserProfileViewModel @Inject constructor(
         editedJob.value = editedJob.value?.copy(finish = date)
     }
 
-    fun clearEndDate() {
-        editedJob.value = editedJob.value?.copy(finish = null)
-    }
 }

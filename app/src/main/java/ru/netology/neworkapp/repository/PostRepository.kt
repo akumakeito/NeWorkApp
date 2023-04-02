@@ -4,7 +4,6 @@ package ru.netology.neworkapp.repository
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
-import okhttp3.MultipartBody
 import ru.netology.neworkapp.dto.*
 
 interface PostRepository {

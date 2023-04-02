@@ -151,7 +151,7 @@ class NewEventFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
             if (content.isBlank()|| date == null) {
                 Snackbar.make(binding.root, R.string.field_cant_be_empty, Snackbar.LENGTH_SHORT).show()
             } else {
-                newEventViewModel.addPost(content)
+                newEventViewModel.addEvent(content)
             }
         }
         binding.dateTime.setOnClickListener {
