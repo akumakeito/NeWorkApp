@@ -101,7 +101,7 @@ class PostRepositoryImpl @Inject constructor(
     ) {
 
         try {
-            val upload = uploadMedia(type, media)
+            val upload = uploadMedia(media)
             val postWithAttach = post.copy(attachment = Attachment(upload.url, type))
 
             savePost(postWithAttach)
@@ -110,6 +110,7 @@ class PostRepositoryImpl @Inject constructor(
             throw e
         } catch (e: IOException) {
             throw NetworkError
+
         } catch (e: Exception) {
             throw UnknownAppError
         }
@@ -198,9 +199,8 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     override suspend fun uploadMedia(
-        type: AttachmentType,
         upload: MediaUpload,
-    ): Attachment {
+    ): Media {
         try {
             val media = MultipartBody.Part.createFormData(
                 "file", upload.file.name, upload.file.asRequestBody()
@@ -209,9 +209,7 @@ class PostRepositoryImpl @Inject constructor(
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            val mediaResponse =
-                response.body() ?: throw ApiError(response.code(), response.message())
-            return Attachment(mediaResponse.uri, type)
+            return response.body() ?: throw ApiError(response.code(), response.message())
         } catch (e: IOException) {
             throw NetworkError
         }

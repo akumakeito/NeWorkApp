@@ -49,23 +49,22 @@ class RegistrationLoginViewModel @Inject constructor(
 
     fun register(login: String, pass: String, name: String) = viewModelScope.launch {
 
-            try {
-                _dataState.value = FeedModelState(loading = true)
-                val response =  repository.registerNewUser(login, pass, name)
-                val id = response.id
-                val token = response.token ?: "null"
+        try {
+            _dataState.value = FeedModelState(loading = true)
+            val response = repository.registerNewUser(login, pass, name)
+            val id = response.id
+            val token = response.token ?: "null"
 
-                auth.setAuth(id, token)
-                invalidateDataState()
-                _isSignedIn.value = true
-            } catch (e: Exception) {
-                _dataState.value = FeedModelState(error = true)
+            auth.setAuth(id, token)
+            invalidateDataState()
+            _isSignedIn.value = true
+        } catch (e: Exception) {
+            _dataState.value = FeedModelState(error = true)
 
-                UnknownAppError
-            }
-
+            UnknownAppError
         }
 
+    }
 
 
     fun registerWithPhoto(
@@ -110,4 +109,7 @@ class RegistrationLoginViewModel @Inject constructor(
         }
 
     }
+
+
+
 }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -19,6 +20,7 @@ import ru.netology.neworkapp.databinding.FragmentUserProfileBinding
 import ru.netology.neworkapp.dto.Job
 import ru.netology.neworkapp.util.loadCircleCrop
 import ru.netology.neworkapp.viewmodel.AuthViewModel
+import ru.netology.neworkapp.viewmodel.RegistrationLoginViewModel
 import ru.netology.neworkapp.viewmodel.UserProfileViewModel
 
 @AndroidEntryPoint
@@ -90,6 +92,11 @@ class UserProfileFragment : Fragment() {
             }
             jobAdapter.submitList(it)
 
+        }
+
+        binding.btnLogOut.setOnClickListener {
+            userProfileViewModel.logOut()
+            navController.navigate(R.id.postFragment)
         }
 
 

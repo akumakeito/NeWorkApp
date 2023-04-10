@@ -26,7 +26,7 @@ val emptyJob = Job(
 class UserProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val jobRepository: JobRepository,
-    appAuth: AppAuth,
+    private val appAuth: AppAuth,
 ) : ViewModel() {
 
     val myId: Int = appAuth.authStateFlow.value.id
@@ -131,6 +131,20 @@ class UserProfileViewModel @Inject constructor(
 
     fun updateEndDate(date: String?) {
         editedJob.value = editedJob.value?.copy(finish = date)
+    }
+
+    fun logOut() = viewModelScope.launch {
+
+        try {
+            _dataState.value = FeedModelState(loading = true)
+
+            appAuth.removeAuth()
+            _dataState.value = FeedModelState()
+
+        } catch (e: Exception) {
+            _dataState.value = FeedModelState(error = true)
+        }
+
     }
 
 }

@@ -6,6 +6,7 @@ import ru.netology.neworkapp.dao.EventDao
 import ru.netology.neworkapp.dto.Attachment
 import ru.netology.neworkapp.dto.AttachmentType
 import ru.netology.neworkapp.dto.EventRequest
+import ru.netology.neworkapp.dto.Media
 import ru.netology.neworkapp.entity.EventEntity
 import ru.netology.neworkapp.error.ApiError
 import ru.netology.neworkapp.error.NetworkError
@@ -16,7 +17,7 @@ interface NewEventRepository {
     suspend fun addPictureToTheEvent(
         attachmentType: AttachmentType,
         image: MultipartBody.Part
-    ): Attachment
+    ): Media
 
     suspend fun addEvent(event: EventRequest)
     suspend fun getEvent(id: Int): EventRequest
@@ -31,16 +32,13 @@ class NewEventRepositoryImpl @Inject constructor(
     override suspend fun addPictureToTheEvent(
         attachmentType: AttachmentType,
         image: MultipartBody.Part
-    ): Attachment {
+    ): Media {
         try {
             val response = apiService.uploadMedia(image)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            val mediaResponse =
-                response.body() ?: throw ApiError(response.code(), response.message())
-            val attachment = Attachment(mediaResponse.uri, attachmentType)
-            return attachment
+            return response.body() ?: throw ApiError(response.code(), response.message())
         } catch (e: IOException) {
             throw NetworkError
         }

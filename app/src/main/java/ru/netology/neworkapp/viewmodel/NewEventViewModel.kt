@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
+import ru.netology.neworkapp.dto.Attachment
 import ru.netology.neworkapp.dto.AttachmentType
 import ru.netology.neworkapp.dto.EventRequest
 import ru.netology.neworkapp.dto.EventType
@@ -82,8 +83,8 @@ class NewEventViewModel @Inject constructor(
     fun addPictureToThePost(image: MultipartBody.Part) {
         viewModelScope.launch {
             try {
-                val attachment = repository.addPictureToTheEvent(AttachmentType.IMAGE, image)
-                newEvent.value = newEvent.value?.copy(attachment = attachment)
+                val media = repository.addPictureToTheEvent(AttachmentType.IMAGE, image)
+                newEvent.value = newEvent.value?.copy(attachment = Attachment(media.url, AttachmentType.IMAGE) )
                 _dataState.value = FeedModelState(error = false)
             } catch (e: RuntimeException) {
                 _dataState.value = FeedModelState(error = true)

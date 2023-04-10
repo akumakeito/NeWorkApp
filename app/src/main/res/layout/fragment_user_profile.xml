@@ -25,6 +25,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                    <Button
+                        android:id="@+id/btn_log_out"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/log_out"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:padding="@dimen/common_spacing"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
                     <ImageView
                         android:id="@+id/avatar"
                         android:layout_width="@dimen/big_avatar_size"

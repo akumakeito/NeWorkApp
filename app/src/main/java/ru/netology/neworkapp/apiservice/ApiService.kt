@@ -66,7 +66,7 @@ interface ApiService {
         @Part("login") login: RequestBody,
         @Part("password") pass: RequestBody,
         @Part("name") name: RequestBody,
-        @Field("file") file: MultipartBody.Part?,
+        @Part("file") file: MultipartBody.Part?,
     ): Response<AuthState>
 
 

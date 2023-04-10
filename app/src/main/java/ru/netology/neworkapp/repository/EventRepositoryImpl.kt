@@ -122,16 +122,13 @@ class EventRepositoryImpl @Inject constructor(
     override suspend fun addPictureToTheEvent(
         attachmentType: AttachmentType,
         image: MultipartBody.Part
-    ): Attachment {
+    ): Media {
         try {
             val response = apiService.uploadMedia(image)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            val mediaResponse =
-                response.body() ?: throw ApiError(response.code(), response.message())
-            val attachment = Attachment(mediaResponse.uri, attachmentType)
-            return attachment
+            return response.body() ?: throw ApiError(response.code(), response.message())
         } catch (e: IOException) {
             throw NetworkError
         }
@@ -191,7 +188,7 @@ class EventRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun uploadMedia(type: AttachmentType, upload: MediaUpload): Attachment {
+    override suspend fun uploadMedia(type: AttachmentType, upload: MediaUpload): Media {
         try {
             val media = MultipartBody.Part.createFormData(
                 "file", upload.file.name, upload.file.asRequestBody()
@@ -200,9 +197,7 @@ class EventRepositoryImpl @Inject constructor(
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            val mediaResponse =
-                response.body() ?: throw ApiError(response.code(), response.message())
-            return Attachment(mediaResponse.uri, type)
+            return response.body() ?: throw ApiError(response.code(), response.message())
         } catch (e: IOException) {
             throw NetworkError
         }

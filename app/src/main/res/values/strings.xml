@@ -46,4 +46,5 @@
     <string name="edit_event">Edit event</string>
     <string name="edit_post">Edit post</string>
     <string name="new_event">New event</string>
+    <string name="log_out">Log out</string>
 </resources>

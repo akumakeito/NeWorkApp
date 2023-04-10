@@ -47,7 +47,7 @@ val emptyEvent = Event(
 
 private val noMedia = MediaModel()
 
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class EventViewModel @Inject constructor(
     private val repository: EventRepository,
