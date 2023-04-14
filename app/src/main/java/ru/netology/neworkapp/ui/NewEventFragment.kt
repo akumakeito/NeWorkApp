@@ -86,7 +86,7 @@ class NewEventFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
                         val resultFile = uri?.toFile()
                         file = MultipartBody.Part.createFormData(
                             "file", resultFile?.name, requireNotNull(resultFile).asRequestBody())
-                        newEventViewModel.addPictureToThePost(file)
+                        newEventViewModel.addPictureToEvent(file)
                         binding.image.setImageURI(uri)
                     }
                 }
@@ -96,7 +96,6 @@ class NewEventFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
         binding.menuAdd.setOnClickListener {
             binding.menuAdd.isChecked = binding.image.isVisible
             ImagePicker.with(this@NewEventFragment)
-                .crop()
                 .compress(2048)
                 .provider(ImageProvider.BOTH)
                 .galleryMimeTypes(
@@ -164,8 +163,8 @@ class NewEventFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
             newEventViewModel.addTypeEvent()
         }
 
-        newEventViewModel.postCreated.observe(viewLifecycleOwner) {
-            findNavController().navigateUp()
+        newEventViewModel.eventCreated.observe(viewLifecycleOwner) {
+            findNavController().navigate(R.id.feedEventFragment)
         }
 
         newEventViewModel.dataState.observe(viewLifecycleOwner) { state ->

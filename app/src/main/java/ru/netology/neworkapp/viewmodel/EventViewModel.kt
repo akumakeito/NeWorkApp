@@ -1,6 +1,5 @@
 package ru.netology.neworkapp.viewmodel
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,7 +18,6 @@ import ru.netology.neworkapp.dto.*
 import ru.netology.neworkapp.model.FeedModelState
 import ru.netology.neworkapp.repository.EventRepository
 import ru.netology.neworkapp.util.SingleLiveEvent
-import java.io.File
 import java.time.Instant
 import javax.inject.Inject
 

@@ -97,7 +97,8 @@
             android:layout_height="wrap_content"
             android:onClick="onClickFabAddPost"
             app:fab_orientation="portrait"
-            app:label_text="@string/add_post" />
+            app:label_text="@string/add_post"
+            tools:ignore="OnClick" />
 
         <com.nambimobile.widgets.efab.FabOption
             android:id="@+id/fab_add_event"
@@ -105,7 +106,8 @@
             android:layout_height="wrap_content"
             android:onClick="onClickFabAddEvent"
             app:fab_orientation="portrait"
-            app:label_text="@string/add_event" />
+            app:label_text="@string/add_event"
+            tools:ignore="OnClick" />
 
     </com.nambimobile.widgets.efab.ExpandableFabLayout>
 

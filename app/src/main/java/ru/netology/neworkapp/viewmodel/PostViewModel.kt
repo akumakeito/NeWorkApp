@@ -211,7 +211,7 @@ class PostViewModel @Inject constructor(
 
 
     fun addLink(link : String) {
-        if (link.isNullOrBlank()) {
+        if (link.isBlank()) {
             edited.value = edited.value?.copy(link = null)
         } else {
             edited.value = edited.value?.copy(link = link)

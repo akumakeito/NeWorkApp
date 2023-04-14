@@ -3,7 +3,6 @@ package ru.netology.neworkapp.repository
 import okhttp3.MultipartBody
 import ru.netology.neworkapp.apiservice.ApiService
 import ru.netology.neworkapp.dao.EventDao
-import ru.netology.neworkapp.dto.Attachment
 import ru.netology.neworkapp.dto.AttachmentType
 import ru.netology.neworkapp.dto.EventRequest
 import ru.netology.neworkapp.dto.Media

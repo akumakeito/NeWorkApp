@@ -37,9 +37,9 @@ class NewEventViewModel @Inject constructor(
 
     val newEvent: MutableLiveData<EventRequest> = MutableLiveData(editedEvent)
 
-    private val _postCreated = SingleLiveEvent<Unit>()
-    val postCreated: LiveData<Unit>
-        get() = _postCreated
+    private val _eventCreated = SingleLiveEvent<Unit>()
+    val eventCreated: LiveData<Unit>
+        get() = _eventCreated
 
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState: LiveData<FeedModelState>
@@ -64,7 +64,7 @@ class NewEventViewModel @Inject constructor(
             try {
                 repository.addEvent(event)
                 _dataState.value = FeedModelState(error = false)
-                _postCreated.value = Unit
+                _eventCreated.value = Unit
                 deleteEditPost()
             } catch (e: RuntimeException) {
                 _dataState.value = FeedModelState(error = true)
@@ -80,7 +80,7 @@ class NewEventViewModel @Inject constructor(
         }
     }
 
-    fun addPictureToThePost(image: MultipartBody.Part) {
+    fun addPictureToEvent(image: MultipartBody.Part) {
         viewModelScope.launch {
             try {
                 val media = repository.addPictureToTheEvent(AttachmentType.IMAGE, image)

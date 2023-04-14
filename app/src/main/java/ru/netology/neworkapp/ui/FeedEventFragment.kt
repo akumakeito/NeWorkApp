@@ -27,7 +27,6 @@ import ru.netology.neworkapp.util.IntArg
 import ru.netology.neworkapp.viewmodel.AuthViewModel
 import ru.netology.neworkapp.viewmodel.EventViewModel
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
 class FeedEventFragment : Fragment() {
     private val authViewModel: AuthViewModel by viewModels()

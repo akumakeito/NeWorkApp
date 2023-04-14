@@ -16,8 +16,6 @@ import java.io.IOException
 import javax.inject.Inject
 
 
-val emptyJobList = emptyList<Job>()
-
 class JobRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val jobDao: JobDao

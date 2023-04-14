@@ -109,10 +109,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/media_height"
             android:paddingBottom="@dimen/small_spacing"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/date_time"
-            app:srcCompat="@drawable/pick_video_ic"
             tools:ignore="ContentDescription" />
 
         <FrameLayout

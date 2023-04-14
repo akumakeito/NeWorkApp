@@ -88,7 +88,7 @@ class PostViewHolder(
             link.setOnClickListener {
                 var url = link.text.toString()
                 if (!url.startsWith("http://") || !url.startsWith("https://"))
-                    url = "http://" + url;
+                    url = "http://" + url
                 onPostInteractionListener.onLinkClick(url)
             }
 

@@ -13,6 +13,7 @@ import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.snackbar.Snackbar
@@ -99,9 +100,7 @@ class NewPostFragment : Fragment() {
                         Utils.getVideoPathFromUri(selectedVideoUri, requireActivity())
                     if (selectedVideoPath != null) {
                         val resultFile = File(selectedVideoPath)
-                        val file = MultipartBody.Part.createFormData(
-                            "file", resultFile.name, resultFile.asRequestBody()
-                        )
+
                         viewModel.changeMedia(selectedVideoUri, resultFile, AttachmentType.VIDEO)
                     }
                 } else {
@@ -145,26 +144,29 @@ class NewPostFragment : Fragment() {
             pickAudioLauncher.launch(intent)
         }
 
-        viewModel.media.observe(viewLifecycleOwner)
-        { mediaModel ->
-            if (mediaModel.uri == null) {
+        viewModel.media.observe(viewLifecycleOwner) {
+            if (it.uri?.toString().isNullOrBlank()) {
                 binding.mediaContainer.visibility = View.GONE
                 return@observe
-            }
-            when (mediaModel.type) {
-                AttachmentType.IMAGE -> {
-                    binding.mediaContainer.visibility = View.VISIBLE
-                    binding.photo.setImageURI(mediaModel.uri)
+            } else {
+                binding.mediaContainer.visibility = View.VISIBLE
+                when (it.type) {
+                    AttachmentType.IMAGE -> {
+                        Glide.with(this)
+                            .load(it.uri)
+                            .error(R.drawable.error_ic)
+                            .placeholder(R.drawable.avatar_placeholder)
+                            .timeout(10_000)
+                            .into(binding.photo)
+                    }
+                    AttachmentType.VIDEO -> {
+                        binding.photo.setImageURI(it.uri)
+                    }
+                    AttachmentType.AUDIO -> {
+                        binding.photo.setImageURI(it.uri)
+                    }
+                    null -> return@observe
                 }
-                AttachmentType.VIDEO -> {
-                    binding.mediaContainer.visibility = View.VISIBLE
-                    binding.photo.setImageResource(R.drawable.pick_video_ic)
-                }
-                AttachmentType.AUDIO -> {
-                    binding.mediaContainer.visibility = View.VISIBLE
-                    binding.photo.setImageResource(R.drawable.audiotrack_ic)
-                }
-                null -> return@observe
             }
         }
 
