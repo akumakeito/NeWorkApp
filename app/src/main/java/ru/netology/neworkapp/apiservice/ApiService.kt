@@ -59,14 +59,13 @@ interface ApiService {
     @GET("users/{user_id}")
     suspend fun getUserById(@Path("user_id") userId : Int) : Response<User>
 
-    @FormUrlEncoded
     @Multipart
     @POST("users/registration")
     suspend fun registerWithPhoto(
         @Part("login") login: RequestBody,
         @Part("password") pass: RequestBody,
         @Part("name") name: RequestBody,
-        @Part("file") file: MultipartBody.Part?,
+        @Part file: MultipartBody.Part?,
     ): Response<AuthState>
 
 

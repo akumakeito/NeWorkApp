@@ -55,7 +55,7 @@ class RegistrationLoginViewModel @Inject constructor(
             val id = response.id
             val token = response.token ?: "null"
 
-            auth.setAuth(id, token)
+            auth.setAuth(id, token, null, null)
             invalidateDataState()
             _isSignedIn.value = true
         } catch (e: Exception) {
@@ -78,7 +78,7 @@ class RegistrationLoginViewModel @Inject constructor(
             _dataState.value = FeedModelState(loading = true)
             val response = repository.registerWithPhoto(login, pass, name, media)
             response.token?.let {
-                auth.setAuth(response.id, it)
+                auth.setAuth(response.id, response.token, response.avatar, response.name)
             }
             _isSignedIn.value = true
             _dataState.value = FeedModelState()
@@ -99,7 +99,7 @@ class RegistrationLoginViewModel @Inject constructor(
 
             val response = repository.signIn(login, password)
             response.token?.let {
-                auth.setAuth(response.id, it)
+                auth.setAuth(response.id, it, response.avatar, response.name)
             }
             _dataState.value = FeedModelState()
             _isSignedIn.value = true

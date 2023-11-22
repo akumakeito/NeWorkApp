@@ -92,10 +92,12 @@ class RegistrationFragment : Fragment() {
                     )
                         .show()
                 }
+
                 viewModel.photo.value?.file == null -> {
                     viewModel.register(login, pass, name)
                     Utils.hideKeyboard(requireView())
                 }
+
                 else -> {
                     val file = viewModel.photo.value?.file?.let { MediaUpload(it) }
                     file?.let { viewModel.registerWithPhoto(login, pass, name, it) }

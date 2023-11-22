@@ -1,5 +1,6 @@
 package ru.netology.neworkapp.repository
 
+import android.util.Log
 import kotlinx.coroutines.CancellationException
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -94,6 +95,7 @@ class AuthRepositoryImpl @Inject constructor(
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
+            Log.e("error", e.message.toString())
             throw NetworkError
         }
     }
