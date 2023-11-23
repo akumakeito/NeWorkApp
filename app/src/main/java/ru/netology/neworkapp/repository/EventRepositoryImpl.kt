@@ -122,7 +122,7 @@ class EventRepositoryImpl @Inject constructor(
     override suspend fun addPictureToTheEvent(
         attachmentType: AttachmentType,
         image: MultipartBody.Part
-    ): Media {
+    ): MediaResponse {
         try {
             val response = apiService.uploadMedia(image)
             if (!response.isSuccessful) {
@@ -188,7 +188,7 @@ class EventRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun uploadMedia(type: AttachmentType, upload: MediaUpload): Media {
+    override suspend fun uploadMedia(type: AttachmentType, upload: MediaUpload): MediaResponse {
         try {
             val media = MultipartBody.Part.createFormData(
                 "file", upload.file.name, upload.file.asRequestBody()

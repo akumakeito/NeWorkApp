@@ -16,7 +16,7 @@ interface EventRepository {
     suspend fun addPictureToTheEvent(
         attachmentType: AttachmentType,
         image: MultipartBody.Part
-    ): Media
+    ): MediaResponse
 
     suspend fun saveEventWithAttachment(event: Event, mediaUpload: MediaUpload, type: AttachmentType)
     suspend fun getEvent(id: Int): EventRequest
@@ -24,5 +24,5 @@ interface EventRepository {
 
     suspend fun addEvent(event: EventRequest)
 
-    suspend fun uploadMedia(type: AttachmentType, upload: MediaUpload): Media
+    suspend fun uploadMedia(type: AttachmentType, upload: MediaUpload): MediaResponse
 }

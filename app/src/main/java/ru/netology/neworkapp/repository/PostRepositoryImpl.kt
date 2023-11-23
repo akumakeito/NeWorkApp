@@ -1,5 +1,6 @@
 package ru.netology.neworkapp.repository
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.*
 import kotlinx.coroutines.CancellationException
@@ -200,7 +201,7 @@ class PostRepositoryImpl @Inject constructor(
 
     override suspend fun uploadMedia(
         upload: MediaUpload,
-    ): Media {
+    ): MediaResponse {
         try {
             val media = MultipartBody.Part.createFormData(
                 "file", upload.file.name, upload.file.asRequestBody()
@@ -211,7 +212,9 @@ class PostRepositoryImpl @Inject constructor(
             }
             return response.body() ?: throw ApiError(response.code(), response.message())
         } catch (e: IOException) {
+            Log.e("media", e.message.toString())
             throw NetworkError
         }
+
     }
 }

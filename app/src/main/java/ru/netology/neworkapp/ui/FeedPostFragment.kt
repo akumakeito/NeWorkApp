@@ -161,15 +161,17 @@ class FeedPostFragment : Fragment() {
             }
         }
 
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                adapter.loadStateFlow.collectLatest { state ->
-                    binding.swipeRefresh.isRefreshing =
-                        state.refresh is LoadState.Loading
-                }
+        adapter.loadStateFlow
+        lifecycleScope.launchWhenCreated {
+            adapter.loadStateFlow.collectLatest {
+                binding.swipeRefresh.isRefreshing = it.refresh is LoadState.Loading
             }
         }
+
+        binding.swipeRefresh.setOnClickListener {
+            adapter.refresh()
+        }
+
 
         return binding.root
     }

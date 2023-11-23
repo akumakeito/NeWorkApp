@@ -26,6 +26,6 @@ interface PostRepository {
 
     suspend fun getPostById(id: Int) : Post
     suspend fun getUserById(id: Int) : User
-    suspend fun uploadMedia(upload: MediaUpload): Media
+    suspend fun uploadMedia(upload: MediaUpload): MediaResponse
 
 }

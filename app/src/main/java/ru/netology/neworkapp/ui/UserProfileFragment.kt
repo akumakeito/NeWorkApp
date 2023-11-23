@@ -38,7 +38,6 @@ class UserProfileFragment : Fragment() {
         authViewModel.authState.observe(viewLifecycleOwner) {
 
             if (arguments != null || !authViewModel.authenticated ) {
-                binding.addNewJob.visibility = View.GONE
                 navController.navigate(R.id.postFragment)
 
             } else if (authViewModel.authenticated && arguments == null) {

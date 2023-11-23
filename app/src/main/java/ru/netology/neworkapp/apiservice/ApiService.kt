@@ -125,5 +125,5 @@ interface ApiService {
     //media
     @Multipart
     @POST("media")
-    suspend fun uploadMedia(@Part media : MultipartBody.Part) : Response<Media>
+    suspend fun uploadMedia(@Part media : MultipartBody.Part) : Response<MediaResponse>
 }
