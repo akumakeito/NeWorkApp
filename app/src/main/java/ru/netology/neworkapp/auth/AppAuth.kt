@@ -67,4 +67,6 @@ class AppAuth @Inject constructor(
 data class AuthState(
     val id: Int = 0, val token: String? = null,
     val avatar: String? = null, val name: String? = null,
-)
+) {
+    val authenticated = id != 0
+}

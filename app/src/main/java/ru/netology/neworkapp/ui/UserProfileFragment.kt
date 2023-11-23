@@ -36,9 +36,10 @@ class UserProfileFragment : Fragment() {
         navController = findNavController()
 
         authViewModel.authState.observe(viewLifecycleOwner) {
-            (activity as AppCompatActivity?)?.supportActionBar?.title = "profile"
+
             if (!authViewModel.authenticated || arguments != null) {
                 binding.addNewJob.visibility = View.GONE
+                navController.navigate(R.id.postFragment)
 
             } else if (authViewModel.authenticated && arguments == null) {
                 binding.addNewJob.visibility = View.VISIBLE
@@ -94,9 +95,7 @@ class UserProfileFragment : Fragment() {
 
         binding.btnLogOut.setOnClickListener {
             userProfileViewModel.logOut()
-            navController.navigate(R.id.postFragment)
         }
-
 
 
         userProfileViewModel.userData.observe(viewLifecycleOwner) {

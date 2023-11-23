@@ -47,6 +47,10 @@ class UserProfileViewModel @Inject constructor(
     val dataState: LiveData<FeedModelState>
         get() = _dataState
 
+    private val _isSignedIn = MutableLiveData(appAuth.authStateFlow.value.authenticated)
+    val isSignedIn: LiveData<Boolean>
+        get() = _isSignedIn
+
 
 
     fun getUserById(id: Int) {

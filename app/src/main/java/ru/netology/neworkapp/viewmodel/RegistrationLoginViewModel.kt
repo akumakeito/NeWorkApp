@@ -99,7 +99,7 @@ class RegistrationLoginViewModel @Inject constructor(
 
             val response = repository.signIn(login, password)
             response.token?.let {
-                auth.setAuth(response.id, it, response.avatar, response.name)
+                auth.setAuth(response.id, it, null, null)
             }
             _dataState.value = FeedModelState()
             _isSignedIn.value = true

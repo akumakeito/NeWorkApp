@@ -51,7 +51,7 @@ class RegistrationFragment : Fragment() {
             if (isSignedId) {
                 binding.progress.visibility = View.GONE
                 Utils.hideKeyboard(requireView())
-                findNavController().popBackStack()
+                findNavController().navigate(R.id.userProfileFragment)
                 viewModel.invalidateSignedInState()
             }
 
