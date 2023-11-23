@@ -37,7 +37,7 @@ class UserProfileFragment : Fragment() {
 
         authViewModel.authState.observe(viewLifecycleOwner) {
 
-            if (!authViewModel.authenticated || arguments != null) {
+            if (arguments != null || !authViewModel.authenticated ) {
                 binding.addNewJob.visibility = View.GONE
                 navController.navigate(R.id.postFragment)
 
@@ -46,8 +46,8 @@ class UserProfileFragment : Fragment() {
                 val myId = userProfileViewModel.myId
                 userProfileViewModel.getUserById(myId)
                 userProfileViewModel.getMyJobs()
-
             }
+
         }
 
 
@@ -95,7 +95,10 @@ class UserProfileFragment : Fragment() {
 
         binding.btnLogOut.setOnClickListener {
             userProfileViewModel.logOut()
+
         }
+
+
 
 
         userProfileViewModel.userData.observe(viewLifecycleOwner) {

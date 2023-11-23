@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
 
         authViewModel.authState.observe(this) { user ->
             if (!authViewModel.authenticated) {
-                binding.fabLayout.visibility = View.GONE
+                binding.fab.visibility = View.GONE
                 binding.loginButton.visibility = View.VISIBLE
                 binding.signUpButton.visibility = View.VISIBLE
                 binding.bottomNavView.menu.findItem(R.id.userProfileFragment).isEnabled = false

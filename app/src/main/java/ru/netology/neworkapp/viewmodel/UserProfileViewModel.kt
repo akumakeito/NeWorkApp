@@ -8,6 +8,7 @@ import ru.netology.neworkapp.auth.AppAuth
 import ru.netology.neworkapp.dto.Job
 import ru.netology.neworkapp.dto.User
 import ru.netology.neworkapp.model.FeedModelState
+import ru.netology.neworkapp.repository.AuthRepository
 import ru.netology.neworkapp.repository.JobRepository
 import ru.netology.neworkapp.repository.UserRepository
 import ru.netology.neworkapp.util.SingleLiveEvent
@@ -46,10 +47,6 @@ class UserProfileViewModel @Inject constructor(
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState: LiveData<FeedModelState>
         get() = _dataState
-
-    private val _isSignedIn = MutableLiveData(appAuth.authStateFlow.value.authenticated)
-    val isSignedIn: LiveData<Boolean>
-        get() = _isSignedIn
 
 
 
