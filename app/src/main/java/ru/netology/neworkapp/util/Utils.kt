@@ -10,6 +10,7 @@ import android.provider.MediaStore
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.TextView
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -47,7 +48,7 @@ object Utils {
         }
     }
 
-    fun selectDateDialog(editText: EditText?, context: Context) {
+    fun selectDateDialog(text: EditText?, context: Context) {
         val currentDateTime = Calendar.getInstance()
         val startYear = currentDateTime.get(Calendar.YEAR)
         val startMonth = currentDateTime.get(Calendar.MONTH)
@@ -57,8 +58,8 @@ object Utils {
             val pickedDateTime = Calendar.getInstance()
             pickedDateTime.set(year, month, dayOfMonth)
             val result = GregorianCalendar(year, month, dayOfMonth).time
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.uuu'Z'", Locale.getDefault())
-            editText?.setText(dateFormat.format(result))
+            val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+            text?.setText(dateFormat.format(result))
         }, startYear, startMonth, startDay).show()
     }
 

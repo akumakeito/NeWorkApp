@@ -144,6 +144,8 @@ class NewPostFragment : Fragment() {
             pickAudioLauncher.launch(intent)
         }
 
+
+
         viewModel.media.observe(viewLifecycleOwner) {
             if (it.uri?.toString().isNullOrBlank()) {
                 binding.mediaContainer.visibility = View.GONE

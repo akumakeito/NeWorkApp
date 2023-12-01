@@ -19,7 +19,7 @@ val emptyJob = Job(
     name = "",
     position = "",
     start = "",
-    finish = null,
+    finish = "",
     link = null
 )
 

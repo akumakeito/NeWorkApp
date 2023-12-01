@@ -15,6 +15,8 @@ import ru.netology.neworkapp.R
 import ru.netology.neworkapp.databinding.FragmentNewJobBinding
 import ru.netology.neworkapp.util.Utils
 import ru.netology.neworkapp.viewmodel.UserProfileViewModel
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @AndroidEntryPoint
 class NewJobFragment : Fragment() {
@@ -38,15 +40,20 @@ class NewJobFragment : Fragment() {
         }
 
         binding.addStartDate.setOnClickListener {
-            Utils.selectDateDialog(binding.addStartDate, requireContext())
-            val startDate = binding.addStartDate.text.toString()
+            val date  = Utils.selectDateDialog(binding.addStartDate, requireContext())
+            val startDate = date.toString()
             viewModel.updateStartDate(startDate)
         }
 
         binding.addEndDate.setOnClickListener {
             Utils.selectDateDialog(binding.addEndDate, requireContext())
-            val endDate = binding.addEndDate.text.toString()
+            val endDate = Utils.convertDate(binding.addEndDate.text.toString())
             viewModel.updateEndDate(endDate)
+        }
+
+
+        viewModel.jobCreated.observe(viewLifecycleOwner) {
+            navController.navigateUp()
         }
 
         binding.save.setOnClickListener {
@@ -66,11 +73,18 @@ class NewJobFragment : Fragment() {
                 val name = binding.company.text.trim().toString()
                 val position = binding.position.text.trim().toString()
                 val start = binding.addStartDate.text.trim().toString()
+                val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+                val parsedStartDate = dateFormat.parse(start)
+                val formattedStartDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault()).format(parsedStartDate)
+
                 val finish = if (binding.addEndDate.text.toString().isBlank()) {
                     null
                 } else {
                     binding.addEndDate.text.trim().toString()
                 }
+                val parsedFinishDate = dateFormat.parse(finish)
+                val formattedFinishDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault()).format(parsedFinishDate)
+
                 val link = if (binding.link.text.toString().isBlank()) {
                     null
                 } else {
@@ -78,11 +92,10 @@ class NewJobFragment : Fragment() {
                 }
                 viewModel.changeJobCompany(name)
                 viewModel.changeJobPosition(position)
-                viewModel.updateStartDate(start)
+                viewModel.updateStartDate(formattedStartDate)
                 viewModel.changeJobLink(link)
-                viewModel.updateEndDate(finish)
+                viewModel.updateEndDate(formattedFinishDate)
                 viewModel.saveJob()
-                navController.navigateUp()
             }
         }
 
