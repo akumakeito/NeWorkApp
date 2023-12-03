@@ -10,10 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toFile
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.snackbar.Snackbar
@@ -152,20 +152,17 @@ class NewPostFragment : Fragment() {
                 return@observe
             } else {
                 binding.mediaContainer.visibility = View.VISIBLE
+
+
                 when (it.type) {
                     AttachmentType.IMAGE -> {
-                        Glide.with(this)
-                            .load(it.uri)
-                            .error(R.drawable.error_ic)
-                            .placeholder(R.drawable.avatar_placeholder)
-                            .timeout(10_000)
-                            .into(binding.photo)
+                        binding.photo.setImageURI(it.uri)
                     }
                     AttachmentType.VIDEO -> {
-                        binding.photo.setImageURI(it.uri)
+                        binding.photo.setImageResource(R.drawable.ic_video_24)
                     }
                     AttachmentType.AUDIO -> {
-                        binding.photo.setImageURI(it.uri)
+                        binding.photo.setImageResource(R.drawable.audiotrack_ic)
                     }
                     null -> return@observe
                 }
@@ -181,8 +178,12 @@ class NewPostFragment : Fragment() {
 
         binding.save.setOnClickListener {
             val text = binding.editText.text.toString()
-            viewModel.changeContent(text)
-            viewModel.savePost()
+            if (text.isBlank()) {
+                Snackbar.make(binding.root,R.string.content_can_t_be_empty, Snackbar.LENGTH_SHORT).show()
+            } else {
+                viewModel.changeContent(text)
+                viewModel.savePost()
+            }
         }
 
         viewModel.postCreated.observe(viewLifecycleOwner) {
@@ -195,6 +196,10 @@ class NewPostFragment : Fragment() {
                 Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_SHORT)
                     .show()
             }
+
+            binding.progress.isVisible = state.loading
+
+
         }
 
 

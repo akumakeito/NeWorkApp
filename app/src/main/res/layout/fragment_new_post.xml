@@ -7,6 +7,8 @@
     android:orientation="vertical"
     tools:context=".ui.NewPostFragment">
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,12 +66,6 @@
                 android:layout_height="@dimen/media_height"
                 android:layout_gravity="center_horizontal"
                 tools:ignore="ContentDescription" />
-
-            <com.google.android.exoplayer2.ui.PlayerView
-                android:id="@+id/video_player_view"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/media_height"
-                android:layout_gravity="center_horizontal" />
 
 
             <com.google.android.material.button.MaterialButton
@@ -134,8 +130,11 @@
 
     </LinearLayout>
 
-
-
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
 
 </LinearLayout>

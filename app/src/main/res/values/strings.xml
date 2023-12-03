@@ -47,4 +47,5 @@
     <string name="edit_post">Edit post</string>
     <string name="new_event">New event</string>
     <string name="log_out">Log out</string>
+    <string name="content_can_t_be_empty">Content can\'t be empty</string>
 </resources>
