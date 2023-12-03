@@ -27,5 +27,8 @@
 
 
 Демонстрация работы приложения
-https://github.com/madness4love/NeWorkApp/assets/48094567/6e75b318-5793-4f88-8d03-7c9a3c8740a7
+
+https://github.com/madness4love/NeWorkApp/assets/48094567/90162903-2abd-458b-b64b-3829f7a671f6
+
+
 
